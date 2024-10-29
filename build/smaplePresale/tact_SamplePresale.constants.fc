@@ -1,0 +1,35 @@
+;; String "Seed Round Financing"
+slice __gen_slice_string_94e8e93f0812228e571b8daeb81631804e5482ffb121e048ba63723b90abfe3a() asm "B{b5ee9c724101010100160000285365656420526f756e642046696e616e63696e67b4c21fb2} B>boc <s PUSHSLICE";
+
+;; String "Private Sale Round Financing"
+slice __gen_slice_string_a30da35b11a13f7c165f354544348f0e59e4f733f714de9954ad0c5ee8bc0ba1() asm "B{b5ee9c7241010101001e000038507269766174652053616c6520526f756e642046696e616e63696e6755ebac1f} B>boc <s PUSHSLICE";
+
+;; String "Public Sale"
+slice __gen_slice_string_404a9b6bd3e2952c28511dedaf0b331844770f257f36242af3b55d238b8e1220() asm "B{b5ee9c7241010101000d0000165075626c69632053616c65c2259047} B>boc <s PUSHSLICE";
+
+;; String "Ecosystem and Community"
+slice __gen_slice_string_7975f2f8f6fdf41ad27f6b31b47837bb3c13ddf984bfd79b0efd90f5c7cb1d15() asm "B{b5ee9c7241010101001900002e45636f73797374656d20616e6420436f6d6d756e697479f977aa61} B>boc <s PUSHSLICE";
+
+;; String "Team tokens"
+slice __gen_slice_string_4356a74be65283c1e5556f23f289ff7aa13784e82ae7c693d4f909b1b17b2bb1() asm "B{b5ee9c7241010101000d0000165465616d20746f6b656e731cb754cb} B>boc <s PUSHSLICE";
+
+;; String "Advisors and consultancy"
+slice __gen_slice_string_85b8687e528e86a10d0245b159b4524088b23db45798521e0ac3289b5f29c9b7() asm "B{b5ee9c7241010101001a00003041647669736f727320616e6420636f6e73756c74616e63798d8626cc} B>boc <s PUSHSLICE";
+
+;; String "Staking Rewards"
+slice __gen_slice_string_f38a82a01fa1092bc1869cdd0bcc77747180f82e943552573aba0154aa4275b0() asm "B{b5ee9c7241010101001100001e5374616b696e672052657761726473ba0bdf3c} B>boc <s PUSHSLICE";
+
+;; String "Cross-Economy System"
+slice __gen_slice_string_33e8d8abf0bddfe2b43c483aa9c3c3f644497757b56ac17f2c16c3d10074b4c0() asm "B{b5ee9c7241010101001600002843726f73732d45636f6e6f6d792053797374656de4c9d6f1} B>boc <s PUSHSLICE";
+
+;; String "Liquidity"
+slice __gen_slice_string_4ea8d50de9b56e3545704a91804c774b662f1bd0400dde80a2d6039eacf7e9e8() asm "B{b5ee9c7241010101000b0000124c6971756964697479b4417b3d} B>boc <s PUSHSLICE";
+
+;; String "Marketing"
+slice __gen_slice_string_5ef9dbe51a9547187d8fa4204806df0ee9bc42580647e12d97b91b84e07b7b89() asm "B{b5ee9c7241010101000b0000124d61726b6574696e676827fc0f} B>boc <s PUSHSLICE";
+
+;; String "Treasury Reserves"
+slice __gen_slice_string_756293eba67bb40e05a872ed2a3cde8e953d95f4e401fd873e211c2ed78a0c22() asm "B{b5ee9c724101010100130000225472656173757279205265736572766573ba69fd83} B>boc <s PUSHSLICE";
+
+;; Comment ""
+cell __gen_cell_comment_3fe93897158698e4d473b74414d7493716b0fc3a70310934873f0019daaccab4() asm "B{b5ee9c7241010101000600000800000000e300af0f} B>boc PUSHREF";

@@ -1,0 +1,362 @@
+;;
+;; Type: StateInit
+;; TLB: _ code:^cell data:^cell = StateInit
+;;
+
+((cell, cell)) $StateInit$_not_null(tuple v) inline {
+    throw_if(128, null?(v));
+    var (cell vvv'code, cell vvv'data) = __tact_tuple_destroy_2(v);
+    return (vvv'code, vvv'data);
+}
+
+;;
+;; Type: SendParameters
+;; TLB: _ bounce:bool to:address value:int257 mode:int257 body:Maybe ^cell code:Maybe ^cell data:Maybe ^cell = SendParameters
+;;
+
+((int, slice, int, int, cell, cell, cell)) $SendParameters$_constructor_bounce_to_value_mode_body_code_data(int bounce, slice to, int value, int mode, cell body, cell code, cell data) inline {
+    return (bounce, to, value, mode, body, code, data);
+}
+
+((int, slice, int, int, cell, cell, cell)) $SendParameters$_constructor_to_bounce_value_mode(slice to, int bounce, int value, int mode) inline {
+    return (bounce, to, value, mode, null(), null(), null());
+}
+
+((int, slice, int, int, cell, cell, cell)) $SendParameters$_constructor_to_value_mode_bounce_body(slice to, int value, int mode, int bounce, cell body) inline {
+    return (bounce, to, value, mode, body, null(), null());
+}
+
+;;
+;; Type: Deploy
+;; Header: 0x946a98b6
+;; TLB: deploy#946a98b6 queryId:uint64 = Deploy
+;;
+
+(slice, ((int))) $Deploy$_load(slice sc_0) inline {
+    throw_unless(129, sc_0~load_uint(32) == 2490013878);
+    var v'queryId = sc_0~load_uint(64);
+    return (sc_0, (v'queryId));
+}
+
+;;
+;; Type: DeployOk
+;; Header: 0xaff90f57
+;; TLB: deploy_ok#aff90f57 queryId:uint64 = DeployOk
+;;
+
+builder $DeployOk$_store(builder build_0, (int) v) inline {
+    var (v'queryId) = v;
+    build_0 = store_uint(build_0, 2952335191, 32);
+    build_0 = build_0.store_uint(v'queryId, 64);
+    return build_0;
+}
+
+cell $DeployOk$_store_cell((int) v) inline {
+    return $DeployOk$_store(begin_cell(), v).end_cell();
+}
+
+((int)) $DeployOk$_constructor_queryId(int queryId) inline {
+    return (queryId);
+}
+
+;;
+;; Type: TokenTransfer
+;; Header: 0x0f8a7ea5
+;; TLB: token_transfer#0f8a7ea5 queryId:uint64 amount:coins destination:address response_destination:address custom_payload:Maybe ^cell forward_ton_amount:coins forward_payload:remainder<slice> = TokenTransfer
+;;
+
+builder $TokenTransfer$_store(builder build_0, (int, int, slice, slice, cell, int, slice) v) inline_ref {
+    var (v'queryId, v'amount, v'destination, v'response_destination, v'custom_payload, v'forward_ton_amount, v'forward_payload) = v;
+    build_0 = store_uint(build_0, 260734629, 32);
+    build_0 = build_0.store_uint(v'queryId, 64);
+    build_0 = build_0.store_coins(v'amount);
+    build_0 = __tact_store_address(build_0, v'destination);
+    build_0 = __tact_store_address(build_0, v'response_destination);
+    build_0 = ~ null?(v'custom_payload) ? build_0.store_int(true, 1).store_ref(v'custom_payload) : build_0.store_int(false, 1);
+    build_0 = build_0.store_coins(v'forward_ton_amount);
+    build_0 = build_0.store_slice(v'forward_payload);
+    return build_0;
+}
+
+cell $TokenTransfer$_store_cell((int, int, slice, slice, cell, int, slice) v) inline {
+    return $TokenTransfer$_store(begin_cell(), v).end_cell();
+}
+
+((int, int, slice, slice, cell, int, slice)) $TokenTransfer$_constructor_queryId_amount_destination_response_destination_custom_payload_forward_ton_amount_forward_payload(int queryId, int amount, slice destination, slice response_destination, cell custom_payload, int forward_ton_amount, slice forward_payload) inline {
+    return (queryId, amount, destination, response_destination, custom_payload, forward_ton_amount, forward_payload);
+}
+
+;;
+;; Type: TokenDistrubuteInfo
+;; TLB: _ name:^string tokenDistrubutedPercentage:int257 totalPhaseToken:coins percentage:int257 totalSuppliedToken:coins = TokenDistrubuteInfo
+;;
+
+builder $TokenDistrubuteInfo$_store(builder build_0, (slice, int, int, int, int) v) inline {
+    var (v'name, v'tokenDistrubutedPercentage, v'totalPhaseToken, v'percentage, v'totalSuppliedToken) = v;
+    build_0 = build_0.store_ref(begin_cell().store_slice(v'name).end_cell());
+    build_0 = build_0.store_int(v'tokenDistrubutedPercentage, 257);
+    build_0 = build_0.store_coins(v'totalPhaseToken);
+    build_0 = build_0.store_int(v'percentage, 257);
+    build_0 = build_0.store_coins(v'totalSuppliedToken);
+    return build_0;
+}
+
+cell $TokenDistrubuteInfo$_store_cell((slice, int, int, int, int) v) inline {
+    return $TokenDistrubuteInfo$_store(begin_cell(), v).end_cell();
+}
+
+(slice, ((slice, int, int, int, int))) $TokenDistrubuteInfo$_load(slice sc_0) inline {
+    var v'name = sc_0~load_ref().begin_parse();
+    var v'tokenDistrubutedPercentage = sc_0~load_int(257);
+    var v'totalPhaseToken = sc_0~load_coins();
+    var v'percentage = sc_0~load_int(257);
+    var v'totalSuppliedToken = sc_0~load_coins();
+    return (sc_0, (v'name, v'tokenDistrubutedPercentage, v'totalPhaseToken, v'percentage, v'totalSuppliedToken));
+}
+
+tuple $TokenDistrubuteInfo$_as_optional((slice, int, int, int, int) v) inline {
+    var (v'name, v'tokenDistrubutedPercentage, v'totalPhaseToken, v'percentage, v'totalSuppliedToken) = v;
+    return __tact_tuple_create_5(v'name, v'tokenDistrubutedPercentage, v'totalPhaseToken, v'percentage, v'totalSuppliedToken);
+}
+
+tuple $TokenDistrubuteInfo$_load_opt(cell cl) inline {
+    if (null?(cl)) {
+        return null();
+    }
+    var sc = cl.begin_parse();
+    return $TokenDistrubuteInfo$_as_optional(sc~$TokenDistrubuteInfo$_load());
+}
+
+((slice, int, int, int, int)) $TokenDistrubuteInfo$_not_null(tuple v) inline {
+    throw_if(128, null?(v));
+    var (slice vvv'name, int vvv'tokenDistrubutedPercentage, int vvv'totalPhaseToken, int vvv'percentage, int vvv'totalSuppliedToken) = __tact_tuple_destroy_5(v);
+    return (vvv'name, vvv'tokenDistrubutedPercentage, vvv'totalPhaseToken, vvv'percentage, vvv'totalSuppliedToken);
+}
+
+tuple $TokenDistrubuteInfo$_to_tuple(((slice, int, int, int, int)) v) inline {
+    var (v'name, v'tokenDistrubutedPercentage, v'totalPhaseToken, v'percentage, v'totalSuppliedToken) = v;
+    return __tact_tuple_create_5(v'name, v'tokenDistrubutedPercentage, v'totalPhaseToken, v'percentage, v'totalSuppliedToken);
+}
+
+tuple $TokenDistrubuteInfo$_to_opt_tuple(tuple v) inline {
+    if (null?(v)) { return null(); } 
+    return $TokenDistrubuteInfo$_to_tuple($TokenDistrubuteInfo$_not_null(v)); 
+}
+
+tuple $TokenDistrubuteInfo$_to_opt_external(tuple v) inline {
+    var loaded = $TokenDistrubuteInfo$_to_opt_tuple(v);
+    if (null?(loaded)) {
+        return null();
+    } else {
+        return (loaded);
+    }
+}
+
+((slice, int, int, int, int)) $TokenDistrubuteInfo$_constructor_name_tokenDistrubutedPercentage_totalPhaseToken_percentage_totalSuppliedToken(slice name, int tokenDistrubutedPercentage, int totalPhaseToken, int percentage, int totalSuppliedToken) inline {
+    return (name, tokenDistrubutedPercentage, totalPhaseToken, percentage, totalSuppliedToken);
+}
+
+;;
+;; Type: UserData
+;; TLB: _ UserAddress:address TotalToken:coins RemainingToken:coins StartTime:int257 VestingDuration:int257 LastClaimTime:int257 CliffTime:int257 ReleaseInterval:int257 PhaseName:^string Active:bool TonToken:coins = UserData
+;;
+
+builder $UserData$_store(builder build_0, (slice, int, int, int, int, int, int, int, slice, int, int) v) inline_ref {
+    var (v'UserAddress, v'TotalToken, v'RemainingToken, v'StartTime, v'VestingDuration, v'LastClaimTime, v'CliffTime, v'ReleaseInterval, v'PhaseName, v'Active, v'TonToken) = v;
+    build_0 = __tact_store_address(build_0, v'UserAddress);
+    build_0 = build_0.store_coins(v'TotalToken);
+    build_0 = build_0.store_coins(v'RemainingToken);
+    build_0 = build_0.store_int(v'StartTime, 257);
+    var build_1 = begin_cell();
+    build_1 = build_1.store_int(v'VestingDuration, 257);
+    build_1 = build_1.store_int(v'LastClaimTime, 257);
+    build_1 = build_1.store_int(v'CliffTime, 257);
+    var build_2 = begin_cell();
+    build_2 = build_2.store_int(v'ReleaseInterval, 257);
+    build_2 = build_2.store_ref(begin_cell().store_slice(v'PhaseName).end_cell());
+    build_2 = build_2.store_int(v'Active, 1);
+    build_2 = build_2.store_coins(v'TonToken);
+    build_1 = store_ref(build_1, build_2.end_cell());
+    build_0 = store_ref(build_0, build_1.end_cell());
+    return build_0;
+}
+
+cell $UserData$_store_cell((slice, int, int, int, int, int, int, int, slice, int, int) v) inline {
+    return $UserData$_store(begin_cell(), v).end_cell();
+}
+
+(slice, ((slice, int, int, int, int, int, int, int, slice, int, int))) $UserData$_load(slice sc_0) inline_ref {
+    var v'UserAddress = sc_0~__tact_load_address();
+    var v'TotalToken = sc_0~load_coins();
+    var v'RemainingToken = sc_0~load_coins();
+    var v'StartTime = sc_0~load_int(257);
+    slice sc_1 = sc_0~load_ref().begin_parse();
+    var v'VestingDuration = sc_1~load_int(257);
+    var v'LastClaimTime = sc_1~load_int(257);
+    var v'CliffTime = sc_1~load_int(257);
+    slice sc_2 = sc_1~load_ref().begin_parse();
+    var v'ReleaseInterval = sc_2~load_int(257);
+    var v'PhaseName = sc_2~load_ref().begin_parse();
+    var v'Active = sc_2~load_int(1);
+    var v'TonToken = sc_2~load_coins();
+    return (sc_0, (v'UserAddress, v'TotalToken, v'RemainingToken, v'StartTime, v'VestingDuration, v'LastClaimTime, v'CliffTime, v'ReleaseInterval, v'PhaseName, v'Active, v'TonToken));
+}
+
+tuple $UserData$_as_optional((slice, int, int, int, int, int, int, int, slice, int, int) v) inline {
+    var (v'UserAddress, v'TotalToken, v'RemainingToken, v'StartTime, v'VestingDuration, v'LastClaimTime, v'CliffTime, v'ReleaseInterval, v'PhaseName, v'Active, v'TonToken) = v;
+    return __tact_tuple_create_11(v'UserAddress, v'TotalToken, v'RemainingToken, v'StartTime, v'VestingDuration, v'LastClaimTime, v'CliffTime, v'ReleaseInterval, v'PhaseName, v'Active, v'TonToken);
+}
+
+tuple $UserData$_load_opt(cell cl) inline {
+    if (null?(cl)) {
+        return null();
+    }
+    var sc = cl.begin_parse();
+    return $UserData$_as_optional(sc~$UserData$_load());
+}
+
+((slice, int, int, int, int, int, int, int, slice, int, int)) $UserData$_not_null(tuple v) inline {
+    throw_if(128, null?(v));
+    var (slice vvv'UserAddress, int vvv'TotalToken, int vvv'RemainingToken, int vvv'StartTime, int vvv'VestingDuration, int vvv'LastClaimTime, int vvv'CliffTime, int vvv'ReleaseInterval, slice vvv'PhaseName, int vvv'Active, int vvv'TonToken) = __tact_tuple_destroy_11(v);
+    return (vvv'UserAddress, vvv'TotalToken, vvv'RemainingToken, vvv'StartTime, vvv'VestingDuration, vvv'LastClaimTime, vvv'CliffTime, vvv'ReleaseInterval, vvv'PhaseName, vvv'Active, vvv'TonToken);
+}
+
+tuple $UserData$_to_tuple(((slice, int, int, int, int, int, int, int, slice, int, int)) v) inline {
+    var (v'UserAddress, v'TotalToken, v'RemainingToken, v'StartTime, v'VestingDuration, v'LastClaimTime, v'CliffTime, v'ReleaseInterval, v'PhaseName, v'Active, v'TonToken) = v;
+    return __tact_tuple_create_11(v'UserAddress, v'TotalToken, v'RemainingToken, v'StartTime, v'VestingDuration, v'LastClaimTime, v'CliffTime, v'ReleaseInterval, v'PhaseName, v'Active, v'TonToken);
+}
+
+tuple $UserData$_to_opt_tuple(tuple v) inline {
+    if (null?(v)) { return null(); } 
+    return $UserData$_to_tuple($UserData$_not_null(v)); 
+}
+
+tuple $UserData$_to_opt_external(tuple v) inline {
+    var loaded = $UserData$_to_opt_tuple(v);
+    if (null?(loaded)) {
+        return null();
+    } else {
+        return (loaded);
+    }
+}
+
+((slice, int, int, int, int, int, int, int, slice, int, int)) $UserData$_constructor_UserAddress_TotalToken_RemainingToken_StartTime_VestingDuration_LastClaimTime_CliffTime_ReleaseInterval_PhaseName_Active_TonToken(slice UserAddress, int TotalToken, int RemainingToken, int StartTime, int VestingDuration, int LastClaimTime, int CliffTime, int ReleaseInterval, slice PhaseName, int Active, int TonToken) inline {
+    return (UserAddress, TotalToken, RemainingToken, StartTime, VestingDuration, LastClaimTime, CliffTime, ReleaseInterval, PhaseName, Active, TonToken);
+}
+
+;;
+;; Type: UserArrayData
+;; TLB: _ data:dict<int, ^UserData{UserAddress:address,TotalToken:coins,RemainingToken:coins,StartTime:int257,VestingDuration:int257,LastClaimTime:int257,CliffTime:int257,ReleaseInterval:int257,PhaseName:^string,Active:bool,TonToken:coins}> size:int257 = UserArrayData
+;;
+
+builder $UserArrayData$_store(builder build_0, (cell, int) v) inline {
+    var (v'data, v'size) = v;
+    build_0 = build_0.store_dict(v'data);
+    build_0 = build_0.store_int(v'size, 257);
+    return build_0;
+}
+
+cell $UserArrayData$_store_cell((cell, int) v) inline {
+    return $UserArrayData$_store(begin_cell(), v).end_cell();
+}
+
+(slice, ((cell, int))) $UserArrayData$_load(slice sc_0) inline {
+    var v'data = sc_0~load_dict();
+    var v'size = sc_0~load_int(257);
+    return (sc_0, (v'data, v'size));
+}
+
+tuple $UserArrayData$_as_optional((cell, int) v) inline {
+    var (v'data, v'size) = v;
+    return __tact_tuple_create_2(v'data, v'size);
+}
+
+tuple $UserArrayData$_load_opt(cell cl) inline {
+    if (null?(cl)) {
+        return null();
+    }
+    var sc = cl.begin_parse();
+    return $UserArrayData$_as_optional(sc~$UserArrayData$_load());
+}
+
+((cell, int)) $UserArrayData$_not_null(tuple v) inline {
+    throw_if(128, null?(v));
+    var (cell vvv'data, int vvv'size) = __tact_tuple_destroy_2(v);
+    return (vvv'data, vvv'size);
+}
+
+((cell, int)) $UserArrayData$_constructor_data_size(cell data, int size) inline {
+    return (data, size);
+}
+
+;;
+;; Type: BuyTokens
+;; Header: 0xe6900c0a
+;; TLB: buy_tokens#e6900c0a Amount:coins masterAddress:address userAddress:address = BuyTokens
+;;
+
+(slice, ((int, slice, slice))) $BuyTokens$_load(slice sc_0) inline {
+    throw_unless(129, sc_0~load_uint(32) == 3868199946);
+    var v'Amount = sc_0~load_coins();
+    var v'masterAddress = sc_0~__tact_load_address();
+    var v'userAddress = sc_0~__tact_load_address();
+    return (sc_0, (v'Amount, v'masterAddress, v'userAddress));
+}
+
+;;
+;; Type: ClaimTokens
+;; Header: 0x052de464
+;; TLB: claim_tokens#052de464 amount:int257 cenderadd:address senderadd:address = ClaimTokens
+;;
+
+(slice, ((int, slice, slice))) $ClaimTokens$_load(slice sc_0) inline {
+    throw_unless(129, sc_0~load_uint(32) == 86893668);
+    var v'amount = sc_0~load_int(257);
+    var v'cenderadd = sc_0~__tact_load_address();
+    var v'senderadd = sc_0~__tact_load_address();
+    return (sc_0, (v'amount, v'cenderadd, v'senderadd));
+}
+
+;;
+;; Type: SamplePresale
+;;
+
+builder $SamplePresale$_store(builder build_0, (cell, int, slice, int, cell) v) inline {
+    var (v'TokenData, v'TonVal, v'owner, v'TonBalance, v'Data) = v;
+    build_0 = build_0.store_dict(v'TokenData);
+    build_0 = build_0.store_int(v'TonVal, 257);
+    build_0 = __tact_store_address(build_0, v'owner);
+    build_0 = build_0.store_coins(v'TonBalance);
+    build_0 = build_0.store_dict(v'Data);
+    return build_0;
+}
+
+(slice, ((cell, int, slice, int, cell))) $SamplePresale$_load(slice sc_0) inline {
+    var v'TokenData = sc_0~load_dict();
+    var v'TonVal = sc_0~load_int(257);
+    var v'owner = sc_0~__tact_load_address();
+    var v'TonBalance = sc_0~load_coins();
+    var v'Data = sc_0~load_dict();
+    return (sc_0, (v'TokenData, v'TonVal, v'owner, v'TonBalance, v'Data));
+}
+
+(cell, int, slice, int, cell) $SamplePresale$_contract_load() impure inline_ref {
+    slice $sc = get_data().begin_parse();
+    __tact_context_sys = $sc~load_ref();
+    int $loaded = $sc~load_int(1);
+    if ($loaded) {
+        return $sc~$SamplePresale$_load();
+    } else {
+        ;; Allow only workchain deployments
+        throw_unless(137, my_address().preload_uint(11) == 1024);
+        return $SamplePresale$_contract_init();
+    }
+}
+
+() $SamplePresale$_contract_store((cell, int, slice, int, cell) v) impure inline {
+    builder b = begin_cell();
+    b = b.store_ref(__tact_context_sys);
+    b = b.store_int(true, 1);
+    b = $SamplePresale$_store(b, v);
+    set_data(b.end_cell());
+}
