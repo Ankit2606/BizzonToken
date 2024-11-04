@@ -19,7 +19,7 @@ export async function run(provider: NetworkProvider) {
 
     // const samplePresale = provider.open(await SamplePresale.fromInit());
     const samplePresale = provider.open(await SamplePresale.fromAddress(
-      Address.parse("EQDj_bE4uzKaMmg3ZFWhaHSK2iS0bS482WvvKDbFRTo10g0A")
+      Address.parse("EQBEa9K1NRsl2kY4TsoGNkvpAyUNQ1uXjvpi4b0QQWvq831I")
     ));
 
     // await samplePresale.send(
@@ -40,12 +40,7 @@ export async function run(provider: NetworkProvider) {
     //     {
     //         value: toNano('0.5'),
     //     },
-    //     {
-    //         $$type: 'BuyTokens',
-    //         Amount: 100n,
-    //         masterAddress: Address.parse("0QBony_meSMNl6w6cMQpEvW9dQbvy-AwJFKDJeA5CydJ4p4q") as Address,
-    //         userAddress: Address.parse("0QBony_meSMNl6w6cMQpEvW9dQbvy-AwJFKDJeA5CydJ4p4q") as Address,
-    //     }
+    //      'Buy Tokens'
     // );
 
     // const tx =  await samplePresale.send(
@@ -61,11 +56,11 @@ export async function run(provider: NetworkProvider) {
     //  const walletData = await samplePresale.getGetTokenInfo(i);
     //  console.log(walletData);
     // }
-    const walletDatas1 = await samplePresale.getGetData( Address.parse("0QBony_meSMNl6w6cMQpEvW9dQbvy-AwJFKDJeA5CydJ4p4q") as Address,1n);
-     console.log(walletDatas1);
+    // const walletDatas1 = await samplePresale.getGetData( Address.parse("0QBony_meSMNl6w6cMQpEvW9dQbvy-AwJFKDJeA5CydJ4p4q") as Address,1n);
+    //  console.log(walletDatas1);
 
-     const walletDatas = await samplePresale.getGetData( Address.parse("0QBony_meSMNl6w6cMQpEvW9dQbvy-AwJFKDJeA5CydJ4p4q") as Address,2n);
-     console.log(walletDatas);
+    //  const walletDatas = await samplePresale.getGetData( Address.parse("0QBony_meSMNl6w6cMQpEvW9dQbvy-AwJFKDJeA5CydJ4p4q") as Address,2n);
+    //  console.log(walletDatas);
 
     //  const balance = await samplePresale.getBalance();
     //  console.log(balance);
@@ -87,8 +82,9 @@ export async function run(provider: NetworkProvider) {
     // const callerToken = provider.open(Caller22.fromAddress(Address.parse("EQAuGAFHQgr9oyXwOFeCTxxW_Bgy5PJYvfnoad4aK-Yt428x")));
     
     const sampleJetton = provider.open(SampleJetton.fromAddress(Address.parse("kQDPaqVHTSDzv1GMvIUS9agdoDy_TVZ2qraVDF6fKR7y_JTq")));
-    const contwalladd = await sampleJetton.getGetWalletAddress(Address.parse("EQDj_bE4uzKaMmg3ZFWhaHSK2iS0bS482WvvKDbFRTo10g0A"));
-    console.log(contwalladd);
+    const contwalladd = await sampleJetton.getGetWalletAddress(Address.parse("EQBEa9K1NRsl2kY4TsoGNkvpAyUNQ1uXjvpi4b0QQWvq831I"));
+    console.log(contwalladd,"hjbhjubjhbgujbujhbhjuhbjuhbikh");
+    
     
     await samplePresale.send(
         provider.sender(),

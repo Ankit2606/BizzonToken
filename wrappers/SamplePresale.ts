@@ -1,1 +1,1 @@
-export * from '../build/smaplePresale/tact_SampleJetton';
+export * from '../build/smaplePresale/tact_SamplePresale';

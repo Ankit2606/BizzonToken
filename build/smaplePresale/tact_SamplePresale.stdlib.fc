@@ -112,6 +112,10 @@ forall X0, X1, X2, X3, X4 -> tuple __tact_tuple_create_5((X0, X1, X2, X3, X4) v)
 
 forall X0, X1, X2, X3, X4 -> (X0, X1, X2, X3, X4) __tact_tuple_destroy_5(tuple v) asm "5 UNTUPLE";
 
+forall X0, X1, X2, X3, X4, X5, X6, X7, X8 -> tuple __tact_tuple_create_9((X0, X1, X2, X3, X4, X5, X6, X7, X8) v) asm "9 TUPLE";
+
+forall X0, X1, X2, X3, X4, X5, X6, X7, X8 -> (X0, X1, X2, X3, X4, X5, X6, X7, X8) __tact_tuple_destroy_9(tuple v) asm "9 UNTUPLE";
+
 forall X0, X1, X2, X3, X4, X5, X6, X7, X8, X9, X10 -> tuple __tact_tuple_create_11((X0, X1, X2, X3, X4, X5, X6, X7, X8, X9, X10) v) asm "11 TUPLE";
 
 forall X0, X1, X2, X3, X4, X5, X6, X7, X8, X9, X10 -> (X0, X1, X2, X3, X4, X5, X6, X7, X8, X9, X10) __tact_tuple_destroy_11(tuple v) asm "11 UNTUPLE";
@@ -223,8 +227,8 @@ int $Context$_fun_readForwardFee((int, slice, int, slice) $self) impure inline_r
     return (($sc~load_coins() * 3) / 2);
 }
 
-((cell, int, slice, int, cell), ()) $SamplePresale$_fun_forward((cell, int, slice, int, cell) $self, slice $to, cell $body, int $bounce, tuple $init) impure inline_ref {
-    var (($self'TokenData, $self'TonVal, $self'owner, $self'TonBalance, $self'Data)) = $self;
+((int, slice, int, cell, cell, cell, cell, cell, cell, cell), ()) $SamplePresale$_fun_forward((int, slice, int, cell, cell, cell, cell, cell, cell, cell) $self, slice $to, cell $body, int $bounce, tuple $init) impure inline_ref {
+    var (($self'TonVal, $self'owner, $self'TonBalance, $self'TokenData, $self'SeedData, $self'PrivateSaleData, $self'MarketingData, $self'TeamData, $self'AdvisorData, $self'TreasuryData)) = $self;
     var ($init) = $init;
     cell $code = null();
     cell $data = null();
@@ -240,15 +244,15 @@ int $Context$_fun_readForwardFee((int, slice, int, slice) $self) impure inline_r
         if (($balanceBeforeMessage < 0)) {
             raw_reserve(0, 0);
             $global_send($SendParameters$_constructor_bounce_to_value_mode_body_code_data($bounce, $to, 0, (128 | 2), $body, $code, $data));
-            return (($self'TokenData, $self'TonVal, $self'owner, $self'TonBalance, $self'Data), ());
+            return (($self'TonVal, $self'owner, $self'TonBalance, $self'TokenData, $self'SeedData, $self'PrivateSaleData, $self'MarketingData, $self'TeamData, $self'AdvisorData, $self'TreasuryData), ());
         }
     }
     $global_send($SendParameters$_constructor_bounce_to_value_mode_body_code_data($bounce, $to, 0, (64 | 2), $body, $code, $data));
-    return (($self'TokenData, $self'TonVal, $self'owner, $self'TonBalance, $self'Data), ());
+    return (($self'TonVal, $self'owner, $self'TonBalance, $self'TokenData, $self'SeedData, $self'PrivateSaleData, $self'MarketingData, $self'TeamData, $self'AdvisorData, $self'TreasuryData), ());
 }
 
-((cell, int, slice, int, cell), ()) $SamplePresale$_fun_notify((cell, int, slice, int, cell) $self, cell $body) impure inline {
-    var (($self'TokenData, $self'TonVal, $self'owner, $self'TonBalance, $self'Data)) = $self;
-    ($self'TokenData, $self'TonVal, $self'owner, $self'TonBalance, $self'Data)~$SamplePresale$_fun_forward(__tact_context_get_sender(), $body, false, null());
-    return (($self'TokenData, $self'TonVal, $self'owner, $self'TonBalance, $self'Data), ());
+((int, slice, int, cell, cell, cell, cell, cell, cell, cell), ()) $SamplePresale$_fun_notify((int, slice, int, cell, cell, cell, cell, cell, cell, cell) $self, cell $body) impure inline {
+    var (($self'TonVal, $self'owner, $self'TonBalance, $self'TokenData, $self'SeedData, $self'PrivateSaleData, $self'MarketingData, $self'TeamData, $self'AdvisorData, $self'TreasuryData)) = $self;
+    ($self'TonVal, $self'owner, $self'TonBalance, $self'TokenData, $self'SeedData, $self'PrivateSaleData, $self'MarketingData, $self'TeamData, $self'AdvisorData, $self'TreasuryData)~$SamplePresale$_fun_forward(__tact_context_get_sender(), $body, false, null());
+    return (($self'TonVal, $self'owner, $self'TonBalance, $self'TokenData, $self'SeedData, $self'PrivateSaleData, $self'MarketingData, $self'TeamData, $self'AdvisorData, $self'TreasuryData), ());
 }

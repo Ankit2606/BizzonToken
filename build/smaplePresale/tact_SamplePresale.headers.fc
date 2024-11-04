@@ -96,6 +96,21 @@ tuple $UserData$_as_optional((slice, int, int, int, int, int, int, int, slice, i
 ;; $UserData$_load_opt
 tuple $UserData$_load_opt(cell cl) inline;
 
+;; $TokenVestingInfo$_store
+builder $TokenVestingInfo$_store(builder build_0, (slice, int, int, int, int, int, int, int, slice) v) inline_ref;
+
+;; $TokenVestingInfo$_store_cell
+cell $TokenVestingInfo$_store_cell((slice, int, int, int, int, int, int, int, slice) v) inline;
+
+;; $TokenVestingInfo$_load
+(slice, ((slice, int, int, int, int, int, int, int, slice))) $TokenVestingInfo$_load(slice sc_0) inline_ref;
+
+;; $TokenVestingInfo$_as_optional
+tuple $TokenVestingInfo$_as_optional((slice, int, int, int, int, int, int, int, slice) v) inline;
+
+;; $TokenVestingInfo$_load_opt
+tuple $TokenVestingInfo$_load_opt(cell cl) inline;
+
 ;; $UserArrayData$_store
 builder $UserArrayData$_store(builder build_0, (cell, int) v) inline;
 
@@ -111,32 +126,125 @@ tuple $UserArrayData$_as_optional((cell, int) v) inline;
 ;; $UserArrayData$_load_opt
 tuple $UserArrayData$_load_opt(cell cl) inline;
 
-;; $BuyTokens$_load
-(slice, ((int, slice, slice))) $BuyTokens$_load(slice sc_0) inline;
+;; $PrivateSaleArrayData$_store
+builder $PrivateSaleArrayData$_store(builder build_0, (cell, int) v) inline;
+
+;; $PrivateSaleArrayData$_store_cell
+cell $PrivateSaleArrayData$_store_cell((cell, int) v) inline;
+
+;; $PrivateSaleArrayData$_load
+(slice, ((cell, int))) $PrivateSaleArrayData$_load(slice sc_0) inline;
+
+;; $PrivateSaleArrayData$_as_optional
+tuple $PrivateSaleArrayData$_as_optional((cell, int) v) inline;
+
+;; $PrivateSaleArrayData$_load_opt
+tuple $PrivateSaleArrayData$_load_opt(cell cl) inline;
+
+;; $MarketingArrayData$_store
+builder $MarketingArrayData$_store(builder build_0, (cell, int) v) inline;
+
+;; $MarketingArrayData$_store_cell
+cell $MarketingArrayData$_store_cell((cell, int) v) inline;
+
+;; $MarketingArrayData$_load
+(slice, ((cell, int))) $MarketingArrayData$_load(slice sc_0) inline;
+
+;; $MarketingArrayData$_as_optional
+tuple $MarketingArrayData$_as_optional((cell, int) v) inline;
+
+;; $MarketingArrayData$_load_opt
+tuple $MarketingArrayData$_load_opt(cell cl) inline;
+
+;; $TeamArrayData$_store
+builder $TeamArrayData$_store(builder build_0, (cell, int) v) inline;
+
+;; $TeamArrayData$_store_cell
+cell $TeamArrayData$_store_cell((cell, int) v) inline;
+
+;; $TeamArrayData$_load
+(slice, ((cell, int))) $TeamArrayData$_load(slice sc_0) inline;
+
+;; $TeamArrayData$_as_optional
+tuple $TeamArrayData$_as_optional((cell, int) v) inline;
+
+;; $TeamArrayData$_load_opt
+tuple $TeamArrayData$_load_opt(cell cl) inline;
+
+;; $AdvisorArrayData$_store
+builder $AdvisorArrayData$_store(builder build_0, (cell, int) v) inline;
+
+;; $AdvisorArrayData$_store_cell
+cell $AdvisorArrayData$_store_cell((cell, int) v) inline;
+
+;; $AdvisorArrayData$_load
+(slice, ((cell, int))) $AdvisorArrayData$_load(slice sc_0) inline;
+
+;; $AdvisorArrayData$_as_optional
+tuple $AdvisorArrayData$_as_optional((cell, int) v) inline;
+
+;; $AdvisorArrayData$_load_opt
+tuple $AdvisorArrayData$_load_opt(cell cl) inline;
+
+;; $TreasuryArrayData$_store
+builder $TreasuryArrayData$_store(builder build_0, (cell, int) v) inline;
+
+;; $TreasuryArrayData$_store_cell
+cell $TreasuryArrayData$_store_cell((cell, int) v) inline;
+
+;; $TreasuryArrayData$_load
+(slice, ((cell, int))) $TreasuryArrayData$_load(slice sc_0) inline;
+
+;; $TreasuryArrayData$_as_optional
+tuple $TreasuryArrayData$_as_optional((cell, int) v) inline;
+
+;; $TreasuryArrayData$_load_opt
+tuple $TreasuryArrayData$_load_opt(cell cl) inline;
+
+;; $PrivateSaleMessage$_load
+(slice, ((int, slice))) $PrivateSaleMessage$_load(slice sc_0) inline;
+
+;; $MarketingMessage$_load
+(slice, ((int, slice))) $MarketingMessage$_load(slice sc_0) inline;
+
+;; $TeamMessage$_load
+(slice, ((int, slice))) $TeamMessage$_load(slice sc_0) inline;
+
+;; $AdvisorMessage$_load
+(slice, ((int, slice))) $AdvisorMessage$_load(slice sc_0) inline;
+
+;; $TreasuryMessage$_load
+(slice, ((int, slice))) $TreasuryMessage$_load(slice sc_0) inline;
 
 ;; $ClaimTokens$_load
 (slice, ((int, slice, slice))) $ClaimTokens$_load(slice sc_0) inline;
 
+;; $ClaimPrivateSaleTokens$_load
+(slice, ((int, slice, slice))) $ClaimPrivateSaleTokens$_load(slice sc_0) inline;
+
+;; $ClaimMarketingeTokens$_load
+(slice, ((int, slice, slice))) $ClaimMarketingeTokens$_load(slice sc_0) inline;
+
+;; $ClaimTeamTokens$_load
+(slice, ((int, slice, slice))) $ClaimTeamTokens$_load(slice sc_0) inline;
+
+;; $ClaimAdvisorTokens$_load
+(slice, ((int, slice, slice))) $ClaimAdvisorTokens$_load(slice sc_0) inline;
+
+;; $ClaimTreasuryTokens$_load
+(slice, ((int, slice, slice))) $ClaimTreasuryTokens$_load(slice sc_0) inline;
+
 ;; $SamplePresale$_store
-builder $SamplePresale$_store(builder build_0, (cell, int, slice, int, cell) v) inline;
+builder $SamplePresale$_store(builder build_0, (int, slice, int, cell, cell, cell, cell, cell, cell, cell) v) inline;
 
 ;; $SamplePresale$_load
-(slice, ((cell, int, slice, int, cell))) $SamplePresale$_load(slice sc_0) inline;
+(slice, ((int, slice, int, cell, cell, cell, cell, cell, cell, cell))) $SamplePresale$_load(slice sc_0) inline;
 
 ;; $StateInit$_not_null
 ((cell, cell)) $StateInit$_not_null(tuple v) inline;
 
 ;; $TokenDistrubuteInfo$_not_null
 ((slice, int, int, int, int)) $TokenDistrubuteInfo$_not_null(tuple v) inline;
-
-;; $TokenDistrubuteInfo$_to_tuple
-tuple $TokenDistrubuteInfo$_to_tuple(((slice, int, int, int, int)) v) inline;
-
-;; $TokenDistrubuteInfo$_to_opt_tuple
-tuple $TokenDistrubuteInfo$_to_opt_tuple(tuple v) inline;
-
-;; $TokenDistrubuteInfo$_to_opt_external
-tuple $TokenDistrubuteInfo$_to_opt_external(tuple v) inline;
 
 ;; $UserData$_not_null
 ((slice, int, int, int, int, int, int, int, slice, int, int)) $UserData$_not_null(tuple v) inline;
@@ -150,20 +258,38 @@ tuple $UserData$_to_opt_tuple(tuple v) inline;
 ;; $UserData$_to_opt_external
 tuple $UserData$_to_opt_external(tuple v) inline;
 
+;; $TokenVestingInfo$_not_null
+((slice, int, int, int, int, int, int, int, slice)) $TokenVestingInfo$_not_null(tuple v) inline;
+
 ;; $UserArrayData$_not_null
 ((cell, int)) $UserArrayData$_not_null(tuple v) inline;
+
+;; $PrivateSaleArrayData$_not_null
+((cell, int)) $PrivateSaleArrayData$_not_null(tuple v) inline;
+
+;; $MarketingArrayData$_not_null
+((cell, int)) $MarketingArrayData$_not_null(tuple v) inline;
+
+;; $TeamArrayData$_not_null
+((cell, int)) $TeamArrayData$_not_null(tuple v) inline;
+
+;; $AdvisorArrayData$_not_null
+((cell, int)) $AdvisorArrayData$_not_null(tuple v) inline;
+
+;; $TreasuryArrayData$_not_null
+((cell, int)) $TreasuryArrayData$_not_null(tuple v) inline;
 
 ;; $TokenDistrubuteInfo$_constructor_name_tokenDistrubutedPercentage_totalPhaseToken_percentage_totalSuppliedToken
 ((slice, int, int, int, int)) $TokenDistrubuteInfo$_constructor_name_tokenDistrubutedPercentage_totalPhaseToken_percentage_totalSuppliedToken(slice name, int tokenDistrubutedPercentage, int totalPhaseToken, int percentage, int totalSuppliedToken) inline;
 
 ;; $SamplePresale$_contract_init
-(cell, int, slice, int, cell) $SamplePresale$_contract_init() impure inline_ref;
+(int, slice, int, cell, cell, cell, cell, cell, cell, cell) $SamplePresale$_contract_init() impure inline_ref;
 
 ;; $SamplePresale$_contract_load
-(cell, int, slice, int, cell) $SamplePresale$_contract_load() impure inline_ref;
+(int, slice, int, cell, cell, cell, cell, cell, cell, cell) $SamplePresale$_contract_load() impure inline_ref;
 
 ;; $SamplePresale$_contract_store
-() $SamplePresale$_contract_store((cell, int, slice, int, cell) v) impure inline;
+() $SamplePresale$_contract_store((int, slice, int, cell, cell, cell, cell, cell, cell, cell) v) impure inline;
 
 ;; $global_send
 () $global_send((int, slice, int, int, cell, cell, cell) $params) impure inline_ref;
@@ -175,31 +301,67 @@ slice $Int$_fun_toCoinsString(int $self) impure inline;
 int $Context$_fun_readForwardFee((int, slice, int, slice) $self) impure inline_ref;
 
 ;; $SamplePresale$_fun_getData
-((cell, int, slice, int, cell), tuple) $SamplePresale$_fun_getData((cell, int, slice, int, cell) $self, slice $addr, int $num) impure inline_ref;
-
-;; $SamplePresale$_fun_getTokenInfo
-((cell, int, slice, int, cell), tuple) $SamplePresale$_fun_getTokenInfo((cell, int, slice, int, cell) $self, int $index) impure inline_ref;
+((int, slice, int, cell, cell, cell, cell, cell, cell, cell), tuple) $SamplePresale$_fun_getData((int, slice, int, cell, cell, cell, cell, cell, cell, cell) $self, slice $addr, int $num) impure inline_ref;
 
 ;; $SamplePresale$_fun_balance
-((cell, int, slice, int, cell), slice) $SamplePresale$_fun_balance((cell, int, slice, int, cell) $self) impure inline_ref;
+((int, slice, int, cell, cell, cell, cell, cell, cell, cell), slice) $SamplePresale$_fun_balance((int, slice, int, cell, cell, cell, cell, cell, cell, cell) $self) impure inline_ref;
+
+;; $SamplePresale$_fun_getAllSeedTokenData
+((int, slice, int, cell, cell, cell, cell, cell, cell, cell), cell) $SamplePresale$_fun_getAllSeedTokenData((int, slice, int, cell, cell, cell, cell, cell, cell, cell) $self, slice $addr) impure inline_ref;
+
+;; $SamplePresale$_fun_getAllPrivateTokenData
+((int, slice, int, cell, cell, cell, cell, cell, cell, cell), cell) $SamplePresale$_fun_getAllPrivateTokenData((int, slice, int, cell, cell, cell, cell, cell, cell, cell) $self, slice $addr) impure inline_ref;
+
+;; $SamplePresale$_fun_getAllMarketingTokenData
+((int, slice, int, cell, cell, cell, cell, cell, cell, cell), cell) $SamplePresale$_fun_getAllMarketingTokenData((int, slice, int, cell, cell, cell, cell, cell, cell, cell) $self, slice $addr) impure inline_ref;
+
+;; $SamplePresale$_fun_getAllTeamTokenData
+((int, slice, int, cell, cell, cell, cell, cell, cell, cell), cell) $SamplePresale$_fun_getAllTeamTokenData((int, slice, int, cell, cell, cell, cell, cell, cell, cell) $self, slice $addr) impure inline_ref;
+
+;; $SamplePresale$_fun_getAllAdvisorTokenData
+((int, slice, int, cell, cell, cell, cell, cell, cell, cell), cell) $SamplePresale$_fun_getAllAdvisorTokenData((int, slice, int, cell, cell, cell, cell, cell, cell, cell) $self, slice $addr) impure inline_ref;
+
+;; $SamplePresale$_fun_getAllTreasuryTokenData
+((int, slice, int, cell, cell, cell, cell, cell, cell, cell), cell) $SamplePresale$_fun_getAllTreasuryTokenData((int, slice, int, cell, cell, cell, cell, cell, cell, cell) $self, slice $addr) impure inline_ref;
+
+;; $SamplePresale$_fun_getTokonomicsData
+((int, slice, int, cell, cell, cell, cell, cell, cell, cell), cell) $SamplePresale$_fun_getTokonomicsData((int, slice, int, cell, cell, cell, cell, cell, cell, cell) $self) impure inline_ref;
 
 ;; $SendParameters$_constructor_bounce_to_value_mode_body_code_data
 ((int, slice, int, int, cell, cell, cell)) $SendParameters$_constructor_bounce_to_value_mode_body_code_data(int bounce, slice to, int value, int mode, cell body, cell code, cell data) inline;
 
 ;; $SamplePresale$_fun_forward
-((cell, int, slice, int, cell), ()) $SamplePresale$_fun_forward((cell, int, slice, int, cell) $self, slice $to, cell $body, int $bounce, tuple $init) impure inline_ref;
+((int, slice, int, cell, cell, cell, cell, cell, cell, cell), ()) $SamplePresale$_fun_forward((int, slice, int, cell, cell, cell, cell, cell, cell, cell) $self, slice $to, cell $body, int $bounce, tuple $init) impure inline_ref;
 
 ;; $SamplePresale$_fun_notify
-((cell, int, slice, int, cell), ()) $SamplePresale$_fun_notify((cell, int, slice, int, cell) $self, cell $body) impure inline;
+((int, slice, int, cell, cell, cell, cell, cell, cell, cell), ()) $SamplePresale$_fun_notify((int, slice, int, cell, cell, cell, cell, cell, cell, cell) $self, cell $body) impure inline;
 
 ;; $SamplePresale$_fun_owner
-((cell, int, slice, int, cell), slice) $SamplePresale$_fun_owner((cell, int, slice, int, cell) $self) impure inline_ref;
+((int, slice, int, cell, cell, cell, cell, cell, cell, cell), slice) $SamplePresale$_fun_owner((int, slice, int, cell, cell, cell, cell, cell, cell, cell) $self) impure inline_ref;
 
 ;; $UserData$_constructor_UserAddress_TotalToken_RemainingToken_StartTime_VestingDuration_LastClaimTime_CliffTime_ReleaseInterval_PhaseName_Active_TonToken
 ((slice, int, int, int, int, int, int, int, slice, int, int)) $UserData$_constructor_UserAddress_TotalToken_RemainingToken_StartTime_VestingDuration_LastClaimTime_CliffTime_ReleaseInterval_PhaseName_Active_TonToken(slice UserAddress, int TotalToken, int RemainingToken, int StartTime, int VestingDuration, int LastClaimTime, int CliffTime, int ReleaseInterval, slice PhaseName, int Active, int TonToken) inline;
 
 ;; $UserArrayData$_constructor_data_size
 ((cell, int)) $UserArrayData$_constructor_data_size(cell data, int size) inline;
+
+;; $TokenVestingInfo$_constructor_beneficiary_TotalToken_remainingToken_startTime_vestingDuration_lastClaimTime_releaseInterval_initialCliff_phaseName
+((slice, int, int, int, int, int, int, int, slice)) $TokenVestingInfo$_constructor_beneficiary_TotalToken_remainingToken_startTime_vestingDuration_lastClaimTime_releaseInterval_initialCliff_phaseName(slice beneficiary, int TotalToken, int remainingToken, int startTime, int vestingDuration, int lastClaimTime, int releaseInterval, int initialCliff, slice phaseName) inline;
+
+;; $PrivateSaleArrayData$_constructor_data_size
+((cell, int)) $PrivateSaleArrayData$_constructor_data_size(cell data, int size) inline;
+
+;; $MarketingArrayData$_constructor_data_size
+((cell, int)) $MarketingArrayData$_constructor_data_size(cell data, int size) inline;
+
+;; $TeamArrayData$_constructor_data_size
+((cell, int)) $TeamArrayData$_constructor_data_size(cell data, int size) inline;
+
+;; $AdvisorArrayData$_constructor_data_size
+((cell, int)) $AdvisorArrayData$_constructor_data_size(cell data, int size) inline;
+
+;; $TreasuryArrayData$_constructor_data_size
+((cell, int)) $TreasuryArrayData$_constructor_data_size(cell data, int size) inline;
 
 ;; $SendParameters$_constructor_to_bounce_value_mode
 ((int, slice, int, int, cell, cell, cell)) $SendParameters$_constructor_to_bounce_value_mode(slice to, int bounce, int value, int mode) inline;

@@ -1,9 +1,9 @@
 # TACT Compilation Report
 Contract: SamplePresale
-BOC Size: 3564 bytes
+BOC Size: 9573 bytes
 
 # Types
-Total Types: 21
+Total Types: 36
 
 ## StateInit
 TLB: `_ code:^cell data:^cell = StateInit`
@@ -77,29 +77,106 @@ Signature: `TokenDistrubuteInfo{name:^string,tokenDistrubutedPercentage:int257,t
 TLB: `_ UserAddress:address TotalToken:coins RemainingToken:coins StartTime:int257 VestingDuration:int257 LastClaimTime:int257 CliffTime:int257 ReleaseInterval:int257 PhaseName:^string Active:bool TonToken:coins = UserData`
 Signature: `UserData{UserAddress:address,TotalToken:coins,RemainingToken:coins,StartTime:int257,VestingDuration:int257,LastClaimTime:int257,CliffTime:int257,ReleaseInterval:int257,PhaseName:^string,Active:bool,TonToken:coins}`
 
+## TokenVestingInfo
+TLB: `_ beneficiary:address TotalToken:coins remainingToken:coins startTime:int257 vestingDuration:int257 lastClaimTime:int257 releaseInterval:int257 initialCliff:int257 phaseName:^string = TokenVestingInfo`
+Signature: `TokenVestingInfo{beneficiary:address,TotalToken:coins,remainingToken:coins,startTime:int257,vestingDuration:int257,lastClaimTime:int257,releaseInterval:int257,initialCliff:int257,phaseName:^string}`
+
 ## UserArrayData
 TLB: `_ data:dict<int, ^UserData{UserAddress:address,TotalToken:coins,RemainingToken:coins,StartTime:int257,VestingDuration:int257,LastClaimTime:int257,CliffTime:int257,ReleaseInterval:int257,PhaseName:^string,Active:bool,TonToken:coins}> size:int257 = UserArrayData`
 Signature: `UserArrayData{data:dict<int, ^UserData{UserAddress:address,TotalToken:coins,RemainingToken:coins,StartTime:int257,VestingDuration:int257,LastClaimTime:int257,CliffTime:int257,ReleaseInterval:int257,PhaseName:^string,Active:bool,TonToken:coins}>,size:int257}`
 
-## BuyTokens
-TLB: `buy_tokens#e6900c0a Amount:coins masterAddress:address userAddress:address = BuyTokens`
-Signature: `BuyTokens{Amount:coins,masterAddress:address,userAddress:address}`
+## PrivateSaleArrayData
+TLB: `_ data:dict<int, ^TokenVestingInfo{beneficiary:address,TotalToken:coins,remainingToken:coins,startTime:int257,vestingDuration:int257,lastClaimTime:int257,releaseInterval:int257,initialCliff:int257,phaseName:^string}> size:int257 = PrivateSaleArrayData`
+Signature: `PrivateSaleArrayData{data:dict<int, ^TokenVestingInfo{beneficiary:address,TotalToken:coins,remainingToken:coins,startTime:int257,vestingDuration:int257,lastClaimTime:int257,releaseInterval:int257,initialCliff:int257,phaseName:^string}>,size:int257}`
+
+## MarketingArrayData
+TLB: `_ data:dict<int, ^TokenVestingInfo{beneficiary:address,TotalToken:coins,remainingToken:coins,startTime:int257,vestingDuration:int257,lastClaimTime:int257,releaseInterval:int257,initialCliff:int257,phaseName:^string}> size:int257 = MarketingArrayData`
+Signature: `MarketingArrayData{data:dict<int, ^TokenVestingInfo{beneficiary:address,TotalToken:coins,remainingToken:coins,startTime:int257,vestingDuration:int257,lastClaimTime:int257,releaseInterval:int257,initialCliff:int257,phaseName:^string}>,size:int257}`
+
+## TeamArrayData
+TLB: `_ data:dict<int, ^TokenVestingInfo{beneficiary:address,TotalToken:coins,remainingToken:coins,startTime:int257,vestingDuration:int257,lastClaimTime:int257,releaseInterval:int257,initialCliff:int257,phaseName:^string}> size:int257 = TeamArrayData`
+Signature: `TeamArrayData{data:dict<int, ^TokenVestingInfo{beneficiary:address,TotalToken:coins,remainingToken:coins,startTime:int257,vestingDuration:int257,lastClaimTime:int257,releaseInterval:int257,initialCliff:int257,phaseName:^string}>,size:int257}`
+
+## AdvisorArrayData
+TLB: `_ data:dict<int, ^TokenVestingInfo{beneficiary:address,TotalToken:coins,remainingToken:coins,startTime:int257,vestingDuration:int257,lastClaimTime:int257,releaseInterval:int257,initialCliff:int257,phaseName:^string}> size:int257 = AdvisorArrayData`
+Signature: `AdvisorArrayData{data:dict<int, ^TokenVestingInfo{beneficiary:address,TotalToken:coins,remainingToken:coins,startTime:int257,vestingDuration:int257,lastClaimTime:int257,releaseInterval:int257,initialCliff:int257,phaseName:^string}>,size:int257}`
+
+## TreasuryArrayData
+TLB: `_ data:dict<int, ^TokenVestingInfo{beneficiary:address,TotalToken:coins,remainingToken:coins,startTime:int257,vestingDuration:int257,lastClaimTime:int257,releaseInterval:int257,initialCliff:int257,phaseName:^string}> size:int257 = TreasuryArrayData`
+Signature: `TreasuryArrayData{data:dict<int, ^TokenVestingInfo{beneficiary:address,TotalToken:coins,remainingToken:coins,startTime:int257,vestingDuration:int257,lastClaimTime:int257,releaseInterval:int257,initialCliff:int257,phaseName:^string}>,size:int257}`
+
+## PrivateSaleMessage
+TLB: `private_sale_message#9c65dad8 amount:int257 UserAddress:address = PrivateSaleMessage`
+Signature: `PrivateSaleMessage{amount:int257,UserAddress:address}`
+
+## MarketingMessage
+TLB: `marketing_message#5e97c4a3 amount:int257 UserAddress:address = MarketingMessage`
+Signature: `MarketingMessage{amount:int257,UserAddress:address}`
+
+## TeamMessage
+TLB: `team_message#d6257545 amount:int257 UserAddress:address = TeamMessage`
+Signature: `TeamMessage{amount:int257,UserAddress:address}`
+
+## AdvisorMessage
+TLB: `advisor_message#1e6127b4 amount:int257 UserAddress:address = AdvisorMessage`
+Signature: `AdvisorMessage{amount:int257,UserAddress:address}`
+
+## TreasuryMessage
+TLB: `treasury_message#fa93f8ed amount:int257 UserAddress:address = TreasuryMessage`
+Signature: `TreasuryMessage{amount:int257,UserAddress:address}`
 
 ## ClaimTokens
 TLB: `claim_tokens#052de464 amount:int257 cenderadd:address senderadd:address = ClaimTokens`
 Signature: `ClaimTokens{amount:int257,cenderadd:address,senderadd:address}`
 
+## ClaimPrivateSaleTokens
+TLB: `claim_private_sale_tokens#e05cba04 amount:int257 cenderadd:address senderadd:address = ClaimPrivateSaleTokens`
+Signature: `ClaimPrivateSaleTokens{amount:int257,cenderadd:address,senderadd:address}`
+
+## ClaimMarketingeTokens
+TLB: `claim_marketinge_tokens#e06accbb amount:int257 cenderadd:address senderadd:address = ClaimMarketingeTokens`
+Signature: `ClaimMarketingeTokens{amount:int257,cenderadd:address,senderadd:address}`
+
+## ClaimTeamTokens
+TLB: `claim_team_tokens#c8e628b9 amount:int257 cenderadd:address senderadd:address = ClaimTeamTokens`
+Signature: `ClaimTeamTokens{amount:int257,cenderadd:address,senderadd:address}`
+
+## ClaimAdvisorTokens
+TLB: `claim_advisor_tokens#fc729521 amount:int257 cenderadd:address senderadd:address = ClaimAdvisorTokens`
+Signature: `ClaimAdvisorTokens{amount:int257,cenderadd:address,senderadd:address}`
+
+## ClaimTreasuryTokens
+TLB: `claim_treasury_tokens#1f73bf94 amount:int257 cenderadd:address senderadd:address = ClaimTreasuryTokens`
+Signature: `ClaimTreasuryTokens{amount:int257,cenderadd:address,senderadd:address}`
+
 # Get Methods
-Total Get Methods: 4
+Total Get Methods: 10
 
 ## getData
 Argument: addr
 Argument: num
 
-## getTokenInfo
-Argument: index
-
 ## balance
+
+## getAllSeedTokenData
+Argument: addr
+
+## getAllPrivateTokenData
+Argument: addr
+
+## getAllMarketingTokenData
+Argument: addr
+
+## getAllTeamTokenData
+Argument: addr
+
+## getAllAdvisorTokenData
+Argument: addr
+
+## getAllTreasuryTokenData
+Argument: addr
+
+## getTokonomicsData
 
 ## owner
 
@@ -130,3 +207,4 @@ Argument: index
 137: Masterchain support is not enabled for this contract
 15509: Only deployer is allowed to withdraw
 35441: Seed Token Supply is completed
+44418: You have not sufficient Token
