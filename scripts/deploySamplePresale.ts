@@ -17,23 +17,23 @@ export async function run(provider: NetworkProvider) {
     // Create content Cell
     // let content = buildOnchainMetadata(jettonParams);
 
-    // const samplePresale = provider.open(await SamplePresale.fromInit());
-    const samplePresale = provider.open(await SamplePresale.fromAddress(
-      Address.parse("EQBEa9K1NRsl2kY4TsoGNkvpAyUNQ1uXjvpi4b0QQWvq831I")
-    ));
+    const samplePresale = provider.open(await SamplePresale.fromInit());
+    // const samplePresale = provider.open(await SamplePresale.fromAddress(
+    //   Address.parse("EQBEa9K1NRsl2kY4TsoGNkvpAyUNQ1uXjvpi4b0QQWvq831I")
+    // ));
 
-    // await samplePresale.send(
-    //     provider.sender(),
-    //     {
-    //         value: toNano('0.05'),
-    //     },
-    //     {
-    //         $$type: 'Deploy',
-    //         queryId: 0n
-    //     }
-    // );
+    await samplePresale.send(
+        provider.sender(),
+        {
+            value: toNano('0.05'),
+        },
+        {
+            $$type: 'Deploy',
+            queryId: 0n
+        }
+    );
 
-    // await provider.waitForDeploy(samplePresale.address);
+    await provider.waitForDeploy(samplePresale.address);
 
     // await samplePresale.send(
     //     provider.sender(),
@@ -81,24 +81,24 @@ export async function run(provider: NetworkProvider) {
 
     // const callerToken = provider.open(Caller22.fromAddress(Address.parse("EQAuGAFHQgr9oyXwOFeCTxxW_Bgy5PJYvfnoad4aK-Yt428x")));
     
-    const sampleJetton = provider.open(SampleJetton.fromAddress(Address.parse("kQDPaqVHTSDzv1GMvIUS9agdoDy_TVZ2qraVDF6fKR7y_JTq")));
-    const contwalladd = await sampleJetton.getGetWalletAddress(Address.parse("EQBEa9K1NRsl2kY4TsoGNkvpAyUNQ1uXjvpi4b0QQWvq831I"));
-    console.log(contwalladd,"hjbhjubjhbgujbujhbhjuhbjuhbikh");
+    // const sampleJetton = provider.open(SampleJetton.fromAddress(Address.parse("kQDPaqVHTSDzv1GMvIUS9agdoDy_TVZ2qraVDF6fKR7y_JTq")));
+    // const contwalladd = await sampleJetton.getGetWalletAddress(Address.parse("EQBEa9K1NRsl2kY4TsoGNkvpAyUNQ1uXjvpi4b0QQWvq831I"));
+    // console.log(contwalladd,"hjbhjubjhbgujbujhbhjuhbjuhbikh");
     
     
-    await samplePresale.send(
-        provider.sender(),
+    // await samplePresale.send(
+    //     provider.sender(),
 
-        {
-            value: toNano(0.05),
-        },  
-        {
-            $$type: 'ClaimTokens',
-            amount:10n,
-            cenderadd:contwalladd,
-            senderadd:Address.parse("0QBony_meSMNl6w6cMQpEvW9dQbvy-AwJFKDJeA5CydJ4p4q"),
-        }
-    );
+    //     {
+    //         value: toNano(0.05),
+    //     },  
+    //     {
+    //         $$type: 'ClaimTokens',
+    //         amount:10n,
+    //         cenderadd:contwalladd,
+    //         senderadd:Address.parse("0QBony_meSMNl6w6cMQpEvW9dQbvy-AwJFKDJeA5CydJ4p4q"),
+    //     }
+    // );
     // await provider.waitForDeploy(sampleJetton.address);
 
     // const jettonWalletContract = await provider.open(

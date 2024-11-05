@@ -588,7 +588,7 @@ contract SamplePresale with Ownable, Deployable {
                     forward_payload: "".asComment().beginParse(),
                 }.toCell()
             });
-    } 
+  } 
 
   receive(msg : ClaimPrivateSaleTokens) {
     let privatesaleData : PrivateSaleArrayData = self.PrivateSaleData.get(sender())!!;
