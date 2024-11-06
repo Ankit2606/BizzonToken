@@ -1,9 +1,9 @@
 # TACT Compilation Report
 Contract: SamplePresale
-BOC Size: 9573 bytes
+BOC Size: 10072 bytes
 
 # Types
-Total Types: 36
+Total Types: 37
 
 ## StateInit
 TLB: `_ code:^cell data:^cell = StateInit`
@@ -149,6 +149,10 @@ Signature: `ClaimAdvisorTokens{amount:int257,cenderadd:address,senderadd:address
 TLB: `claim_treasury_tokens#1f73bf94 amount:int257 cenderadd:address senderadd:address = ClaimTreasuryTokens`
 Signature: `ClaimTreasuryTokens{amount:int257,cenderadd:address,senderadd:address}`
 
+## ClaimSingleToken
+TLB: `claim_single_token#9d9fc853 index:int257 cenderadd:address senderadd:address = ClaimSingleToken`
+Signature: `ClaimSingleToken{index:int257,cenderadd:address,senderadd:address}`
+
 # Get Methods
 Total Get Methods: 10
 
@@ -207,4 +211,5 @@ Argument: addr
 137: Masterchain support is not enabled for this contract
 15509: Only deployer is allowed to withdraw
 35441: Seed Token Supply is completed
+43297: Index not found!
 44418: You have not sufficient Token

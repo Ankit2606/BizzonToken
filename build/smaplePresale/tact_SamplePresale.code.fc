@@ -124,14 +124,14 @@
     throw_unless(35441, ($seedData'totalPhaseToken >= ($seedData'totalSuppliedToken + $TokenAmount)));
     if ((~ null?($gotButUnsure))) {
         var ($gotButsure'data, $gotButsure'size) = $UserArrayData$_not_null($UserArrayData$_load_opt(__tact_dict_get_slice_cell($self'SeedData, 267, __tact_context_get_sender())));
-        var ($userInfo'UserAddress, $userInfo'TotalToken, $userInfo'RemainingToken, $userInfo'StartTime, $userInfo'VestingDuration, $userInfo'LastClaimTime, $userInfo'CliffTime, $userInfo'ReleaseInterval, $userInfo'PhaseName, $userInfo'Active, $userInfo'TonToken) = $UserData$_constructor_UserAddress_TotalToken_RemainingToken_StartTime_VestingDuration_LastClaimTime_CliffTime_ReleaseInterval_PhaseName_Active_TonToken(__tact_context_get_sender(), $TokenAmount, $TokenAmount, now(), (now() + 300), (now() + 30), 90, 30, $seedData'name, true, $ctx'value);
+        var ($userInfo'UserAddress, $userInfo'TotalToken, $userInfo'RemainingToken, $userInfo'StartTime, $userInfo'VestingDuration, $userInfo'LastClaimTime, $userInfo'CliffTime, $userInfo'ReleaseInterval, $userInfo'PhaseName, $userInfo'Active, $userInfo'TonToken) = $UserData$_constructor_UserAddress_TotalToken_RemainingToken_StartTime_VestingDuration_LastClaimTime_CliffTime_ReleaseInterval_PhaseName_Active_TonToken(__tact_context_get_sender(), $TokenAmount, $TokenAmount, now(), (now() + 630), (now() + 90), 90, 30, $seedData'name, true, $ctx'value);
         $gotButsure'data~__tact_dict_set_int_cell(257, ($gotButsure'size + 1), $UserData$_store_cell(($userInfo'UserAddress, $userInfo'TotalToken, $userInfo'RemainingToken, $userInfo'StartTime, $userInfo'VestingDuration, $userInfo'LastClaimTime, $userInfo'CliffTime, $userInfo'ReleaseInterval, $userInfo'PhaseName, $userInfo'Active, $userInfo'TonToken)));
         $gotButsure'size = ($gotButsure'size + 1);
         $self'SeedData~__tact_dict_set_slice_cell(267, __tact_context_get_sender(), $UserArrayData$_store_cell(($gotButsure'data, $gotButsure'size)));
     } else {
         tuple $getData = $UserArrayData$_load_opt(__tact_dict_get_slice_cell($self'SeedData, 267, __tact_context_get_sender()));
         cell $x = null();
-        var ($userInfo'UserAddress, $userInfo'TotalToken, $userInfo'RemainingToken, $userInfo'StartTime, $userInfo'VestingDuration, $userInfo'LastClaimTime, $userInfo'CliffTime, $userInfo'ReleaseInterval, $userInfo'PhaseName, $userInfo'Active, $userInfo'TonToken) = $UserData$_constructor_UserAddress_TotalToken_RemainingToken_StartTime_VestingDuration_LastClaimTime_CliffTime_ReleaseInterval_PhaseName_Active_TonToken(__tact_context_get_sender(), $TokenAmount, $TokenAmount, now(), (now() + 300), (now() + 30), 90, 30, $seedData'name, true, $ctx'value);
+        var ($userInfo'UserAddress, $userInfo'TotalToken, $userInfo'RemainingToken, $userInfo'StartTime, $userInfo'VestingDuration, $userInfo'LastClaimTime, $userInfo'CliffTime, $userInfo'ReleaseInterval, $userInfo'PhaseName, $userInfo'Active, $userInfo'TonToken) = $UserData$_constructor_UserAddress_TotalToken_RemainingToken_StartTime_VestingDuration_LastClaimTime_CliffTime_ReleaseInterval_PhaseName_Active_TonToken(__tact_context_get_sender(), $TokenAmount, $TokenAmount, now(), (now() + 630), (now() + 90), 90, 30, $seedData'name, true, $ctx'value);
         $x~__tact_dict_set_int_cell(257, 1, $UserData$_store_cell(($userInfo'UserAddress, $userInfo'TotalToken, $userInfo'RemainingToken, $userInfo'StartTime, $userInfo'VestingDuration, $userInfo'LastClaimTime, $userInfo'CliffTime, $userInfo'ReleaseInterval, $userInfo'PhaseName, $userInfo'Active, $userInfo'TonToken)));
         var ($storeData'data, $storeData'size) = $UserArrayData$_constructor_data_size($x, 1);
         $self'SeedData~__tact_dict_set_slice_cell(267, __tact_context_get_sender(), $UserArrayData$_store_cell(($storeData'data, $storeData'size)));
@@ -308,6 +308,40 @@
             $self'SeedData~__tact_dict_set_slice_cell(267, __tact_context_get_sender(), $UserArrayData$_store_cell(($newStruct'data, $newStruct'size)));
         }
         ($key, $value, $fresh$flag_0) = __tact_dict_next_int_cell($x, 257, $key);
+    }
+    throw_unless(44418, ($amount != 0));
+    $global_send($SendParameters$_constructor_to_value_mode_bounce_body($msg'cenderadd, 0, 128, true, $TokenTransfer$_store_cell($TokenTransfer$_constructor_queryId_amount_destination_response_destination_custom_payload_forward_ton_amount_forward_payload(0, $amount, $msg'senderadd, $msg'senderadd, null(), 1, begin_parse(__gen_cell_comment_3fe93897158698e4d473b74414d7493716b0fc3a70310934873f0019daaccab4())))));
+    return (($self'TonVal, $self'owner, $self'TonBalance, $self'TokenData, $self'SeedData, $self'PrivateSaleData, $self'MarketingData, $self'TeamData, $self'AdvisorData, $self'TreasuryData), ());
+}
+
+(((int, slice, int, cell, cell, cell, cell, cell, cell, cell)), ()) $SamplePresale$_internal_binary_ClaimSingleToken((int, slice, int, cell, cell, cell, cell, cell, cell, cell) $self, (int, slice, slice) $msg) impure inline {
+    var ($self'TonVal, $self'owner, $self'TonBalance, $self'TokenData, $self'SeedData, $self'PrivateSaleData, $self'MarketingData, $self'TeamData, $self'AdvisorData, $self'TreasuryData) = $self;
+    var ($msg'index, $msg'cenderadd, $msg'senderadd) = $msg;
+    var ($presaleData'data, $presaleData'size) = $UserArrayData$_not_null($UserArrayData$_load_opt(__tact_dict_get_slice_cell($self'SeedData, 267, __tact_context_get_sender())));
+    int $size = $presaleData'size;
+    cell $x = $presaleData'data;
+    tuple $cheker = $UserData$_load_opt(__tact_dict_get_int_cell($presaleData'data, 257, $msg'index));
+    throw_unless(43297, (~ null?($cheker)));
+    var ($value'UserAddress, $value'TotalToken, $value'RemainingToken, $value'StartTime, $value'VestingDuration, $value'LastClaimTime, $value'CliffTime, $value'ReleaseInterval, $value'PhaseName, $value'Active, $value'TonToken) = $UserData$_not_null($UserData$_load_opt(__tact_dict_get_int_cell($presaleData'data, 257, $msg'index)));
+    int $amount = 0;
+    if ((now() >= $value'VestingDuration)) {
+        $amount = $amount + $value'RemainingToken;
+        $value'Active = false;
+        $value'LastClaimTime = $value'VestingDuration;
+        $value'RemainingToken = 0;
+        $x~__tact_dict_set_int_cell(257, $msg'index, $UserData$_store_cell(($value'UserAddress, $value'TotalToken, $value'RemainingToken, $value'StartTime, $value'VestingDuration, $value'LastClaimTime, $value'CliffTime, $value'ReleaseInterval, $value'PhaseName, $value'Active, $value'TonToken)));
+        var ($newStruct'data, $newStruct'size) = $UserArrayData$_constructor_data_size($x, $size);
+        $self'SeedData~__tact_dict_set_slice_cell(267, __tact_context_get_sender(), $UserArrayData$_store_cell(($newStruct'data, $newStruct'size)));
+    } else {
+        int $totalClaim = ((now() - $value'LastClaimTime) / $value'ReleaseInterval);
+        var ($seedData'name, $seedData'tokenDistrubutedPercentage, $seedData'totalPhaseToken, $seedData'percentage, $seedData'totalSuppliedToken) = $TokenDistrubuteInfo$_not_null($TokenDistrubuteInfo$_load_opt(__tact_dict_get_int_cell($self'TokenData, 257, 0)));
+        int $tokenClaimed = ((($value'TotalToken / 10000) * $seedData'percentage) * $totalClaim);
+        $amount = $amount + $tokenClaimed;
+        $value'LastClaimTime = $value'LastClaimTime + ($totalClaim * $value'ReleaseInterval);
+        $value'RemainingToken = $value'RemainingToken - $tokenClaimed;
+        $x~__tact_dict_set_int_cell(257, $msg'index, $UserData$_store_cell(($value'UserAddress, $value'TotalToken, $value'RemainingToken, $value'StartTime, $value'VestingDuration, $value'LastClaimTime, $value'CliffTime, $value'ReleaseInterval, $value'PhaseName, $value'Active, $value'TonToken)));
+        var ($newStruct'data, $newStruct'size) = $UserArrayData$_constructor_data_size($x, $size);
+        $self'SeedData~__tact_dict_set_slice_cell(267, __tact_context_get_sender(), $UserArrayData$_store_cell(($newStruct'data, $newStruct'size)));
     }
     throw_unless(44418, ($amount != 0));
     $global_send($SendParameters$_constructor_to_value_mode_bounce_body($msg'cenderadd, 0, 128, true, $TokenTransfer$_store_cell($TokenTransfer$_constructor_queryId_amount_destination_response_destination_custom_payload_forward_ton_amount_forward_payload(0, $amount, $msg'senderadd, $msg'senderadd, null(), 1, begin_parse(__gen_cell_comment_3fe93897158698e4d473b74414d7493716b0fc3a70310934873f0019daaccab4())))));
@@ -579,7 +613,7 @@ _ supported_interfaces() method_id {
 }
 
 _ get_abi_ipfs() method_id {
-    return "ipfs://QmbYppw79qkqJAKVFasqXtQ6hwR5GxvGgtnjPfgb7J8rUW";
+    return "ipfs://Qma67dkXPbMy8JJDj1sGnrw4pMRnPr8V8NJa2gLYtqCZqy";
 }
 
 _ lazy_deployment_completed() method_id {
@@ -642,6 +676,13 @@ _ lazy_deployment_completed() method_id {
     if (op == 86893668) {
         var msg = in_msg~$ClaimTokens$_load();
         self~$SamplePresale$_internal_binary_ClaimTokens(msg);
+        return (self, true);
+    }
+    
+    ;; Receive ClaimSingleToken message
+    if (op == 2644494419) {
+        var msg = in_msg~$ClaimSingleToken$_load();
+        self~$SamplePresale$_internal_binary_ClaimSingleToken(msg);
         return (self, true);
     }
     

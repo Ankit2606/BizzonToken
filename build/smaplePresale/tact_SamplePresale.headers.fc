@@ -234,6 +234,9 @@ tuple $TreasuryArrayData$_load_opt(cell cl) inline;
 ;; $ClaimTreasuryTokens$_load
 (slice, ((int, slice, slice))) $ClaimTreasuryTokens$_load(slice sc_0) inline;
 
+;; $ClaimSingleToken$_load
+(slice, ((int, slice, slice))) $ClaimSingleToken$_load(slice sc_0) inline;
+
 ;; $SamplePresale$_store
 builder $SamplePresale$_store(builder build_0, (int, slice, int, cell, cell, cell, cell, cell, cell, cell) v) inline;
 

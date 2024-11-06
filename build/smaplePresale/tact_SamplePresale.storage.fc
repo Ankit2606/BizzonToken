@@ -710,6 +710,20 @@ tuple $TreasuryArrayData$_load_opt(cell cl) inline {
 }
 
 ;;
+;; Type: ClaimSingleToken
+;; Header: 0x9d9fc853
+;; TLB: claim_single_token#9d9fc853 index:int257 cenderadd:address senderadd:address = ClaimSingleToken
+;;
+
+(slice, ((int, slice, slice))) $ClaimSingleToken$_load(slice sc_0) inline {
+    throw_unless(129, sc_0~load_uint(32) == 2644494419);
+    var v'index = sc_0~load_int(257);
+    var v'cenderadd = sc_0~__tact_load_address();
+    var v'senderadd = sc_0~__tact_load_address();
+    return (sc_0, (v'index, v'cenderadd, v'senderadd));
+}
+
+;;
 ;; Type: SamplePresale
 ;;
 

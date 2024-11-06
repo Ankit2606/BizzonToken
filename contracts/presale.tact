@@ -41,6 +41,18 @@ struct UserArrayData{
   size : Int;
 }
 
+
+struct RefferData {
+  refferalAddress: Address;
+  amount: Int;
+  claim: Bool;
+}
+
+struct RefferDetails{
+  reffer: map<Int,RefferData>;
+  size : Int;
+}
+
 struct PrivateSaleArrayData{
   data: map<Int,TokenVestingInfo>;
   size : Int;
@@ -64,6 +76,19 @@ struct AdvisorArrayData{
 struct TreasuryArrayData{
   data: map<Int,TokenVestingInfo>;
   size : Int;
+}
+
+message BuyTokens{
+  referrer: Address;
+  usdt: Int as coins;
+}
+
+message AddReferAddress{
+  referrer : Address;
+}
+
+message ClaimReferralTokens{
+  cenderadd : Address;
 }
 
 message PrivateSaleMessage{
@@ -93,6 +118,12 @@ message TreasuryMessage{
 
 message ClaimTokens {
     amount:Int;
+    cenderadd:Address;
+    senderadd:Address;
+}
+
+message ClaimSingleToken {
+    index:Int;
     cenderadd:Address;
     senderadd:Address;
 }
@@ -130,6 +161,8 @@ message ClaimTreasuryTokens {
 contract SamplePresale with Ownable, Deployable {
 
   const MinTonForStorage: Int = ton("0.1");
+  const REFERRAL_VALUE : Int = 1;
+  
   TonVal : Int = 100;
   owner: Address;
   TonBalance : Int as coins;
@@ -140,6 +173,8 @@ contract SamplePresale with Ownable, Deployable {
   TeamData: map<Address, TeamArrayData>;
   AdvisorData: map<Address, AdvisorArrayData>;
   TreasuryData: map<Address, TreasuryArrayData>;
+  checkReferrers: map<Address, Address>;
+  refferInfo: map<Address, RefferDetails>;
 
   init(){
     self.owner = sender();
@@ -246,7 +281,7 @@ contract SamplePresale with Ownable, Deployable {
     );
   }
 
-  receive("Buy Tokens"){
+  receive(msg: BuyTokens){
     let ctx:Context = context();
     let fee:Int  = ctx.readForwardFee();
     let TokenAmount : Int = (ctx.value - fee) * self.TonVal;
@@ -273,6 +308,10 @@ contract SamplePresale with Ownable, Deployable {
     gotButsure.size = gotButsure.size + 1;
     self.SeedData.set(sender(),gotButsure);
     } else {
+      let newadd : Address = newAddress(0,0);
+      if(msg.referrer != newadd){
+        self.AddReferAddress(msg.referrer, msg.usdt);
+      }
       let getData: UserArrayData? = self.SeedData.get(sender());
       let x : map<Int,UserData> = emptyMap();
       let userInfo : UserData = UserData{
@@ -590,6 +629,61 @@ contract SamplePresale with Ownable, Deployable {
             });
   } 
 
+  receive(msg:ClaimSingleToken){
+      let presaleData : UserArrayData = self.SeedData.get(sender())!!;
+      let size : Int =presaleData.size;
+      let x : map<Int,UserData> =  presaleData.data;
+      let cheker : UserData? =  presaleData.data.get(msg.index);
+      require(cheker != null,"Index not found!");
+      let value : UserData =  presaleData.data.get(msg.index)!!;
+      
+      let amount: Int = 0;
+      
+      if (now() >= value.VestingDuration) {
+          amount += value.RemainingToken;
+          value.Active = false;
+          value.LastClaimTime = value.VestingDuration;
+          value.RemainingToken = 0;
+          x.set(msg.index,value);
+          let newStruct: UserArrayData = UserArrayData{
+            data:x,
+            size:size,
+          };
+          self.SeedData.set(sender(),newStruct);
+      }else {
+          let totalClaim : Int = (now() - value.LastClaimTime) /
+              value.ReleaseInterval;
+          let seedData: TokenDistrubuteInfo = self.TokenData.get(0)!!;
+          let tokenClaimed : Int = ((value.TotalToken / 10000) * seedData.percentage) * totalClaim;
+          amount += tokenClaimed;
+          value.LastClaimTime += totalClaim * value.ReleaseInterval;
+          value.RemainingToken -= tokenClaimed;
+          x.set(msg.index,value);
+           let newStruct: UserArrayData = UserArrayData{
+            data:x,
+            size:size,
+          };
+          self.SeedData.set(sender(),newStruct);
+      }
+      
+      require(amount != 0,"You have not sufficient Token");
+      send(SendParameters{
+              to: msg.cenderadd,
+              value: 0,
+              mode:  SendRemainingBalance,
+              bounce: true,
+              body: TokenTransfer{
+                  queryId:0,
+                  amount: amount,
+                  destination: msg.senderadd,
+                  response_destination: msg.senderadd,
+                  custom_payload: null,
+                  forward_ton_amount: 1,
+                  forward_payload: "".asComment().beginParse(),
+              }.toCell()
+      });
+  } 
+
   receive(msg : ClaimPrivateSaleTokens) {
     let privatesaleData : PrivateSaleArrayData = self.PrivateSaleData.get(sender())!!;
     let size:Int =privatesaleData.size;
@@ -840,6 +934,84 @@ contract SamplePresale with Ownable, Deployable {
         });
   }
 
+  fun AddReferAddress(referrer: Address, amount: Int) //addReferAddress(address referrer) private {
+  {
+      let ne: Address = newAddress(0,0);
+      let amt:Int = (amount * 5) / 100;
+      require(referrer != ne, "INVALID_ADDRESS");
+      require(sender() != referrer, "REFERRER_CANNOT_BE_A_REFERRAL");
+      require(self.checkReferrers.get(sender()) == null, "ALREADY_ADDED_REFERRER");
+      self.checkReferrers.set(sender(),referrer); 
+
+      let newData: RefferData = RefferData{
+        refferalAddress: sender(),
+        amount: amt,
+        claim: false,
+      };
+
+      let refferdatacopy: RefferDetails? = self.refferInfo.get(referrer);
+
+      if(refferdatacopy != null){
+        let refferdatas: map<Int,RefferData> = self.refferInfo.get(referrer)!!.reffer;
+        let size: Int = self.refferInfo.get(referrer)!!.size;
+        refferdatas.set(size+1,newData);
+        let newRefferDetail: RefferDetails = RefferDetails{
+          reffer: refferdatas,
+          size : size+1,
+        };
+        self.refferInfo.set(referrer,newRefferDetail);
+      }
+      else{
+        let x: map<Int,RefferData> = emptyMap();
+        x.set(1,newData);
+        let newRefferDetail: RefferDetails = RefferDetails{
+          reffer: x,
+          size : 1,
+        };
+        self.refferInfo.set(referrer,newRefferDetail);
+      }
+  }
+
+  receive(msg: ClaimReferralTokens){
+      // require(
+      //     new() > _privateSalePhaseTime[2],
+      //     "PRIVATESALE_PERIOD_INCOMPLETE"
+      // );
+      let usercopy: RefferDetails? = self.refferInfo.get(sender());
+      require(usercopy != null,"not have any refferals");
+      let user: RefferDetails = self.refferInfo.get(sender())!!;
+      
+      let totalToken:Int = 0;
+      let x: map<Int,RefferData> =  user.reffer;
+      foreach(key, value in x){
+        if (value.claim) {}
+        else{
+          totalToken += value.amount;
+          value.claim = true;
+        }
+        x.set(key,value);
+      }
+      user.reffer = x;
+      self.refferInfo.set(sender(),user);
+      require(totalToken != 0, "NO_REFERRAL_TOKENS_AVAILABLE");
+      send(SendParameters{
+        to: msg.cenderadd,
+        value: 0,
+        mode:  SendRemainingBalance,
+        bounce: true,
+        body: TokenTransfer{
+            queryId:0,
+            amount: totalToken,
+            destination: sender(),
+            response_destination: sender(),
+            custom_payload: null,
+            forward_ton_amount: 1,
+            forward_payload: "".asComment().beginParse(),
+        }.toCell()
+      });
+     
+  }
+    
   get fun getData(addr: Address,num: Int):UserData?{
     let data: UserArrayData = self.SeedData.get(addr)!!;
     return data.data.get(num);
@@ -917,4 +1089,25 @@ contract SamplePresale with Ownable, Deployable {
   get fun getTokonomicsData(): map<Int, TokenDistrubuteInfo>{
     return self.TokenData;
   }
+
+  
+  get fun getAllReferralDetails(referrerAddress: Address):  map<Int,RefferData> 
+  {
+    let data: RefferDetails = self.refferInfo.get(referrerAddress)!!;
+    return data.reffer;
+  }
+
+  get fun getReferrer(userAddress: Address):Address
+  {
+    let add: Address? = self.checkReferrers.get(userAddress);
+    if(add!=null){
+      let radd: Address = self.checkReferrers.get(userAddress)!!;
+      return radd;
+    }
+    else{
+      return newAddress(0,0);
+    }
+    
+  }
+
 }
