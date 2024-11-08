@@ -21,7 +21,7 @@ struct UserData{
   ReleaseInterval: Int;
   PhaseName: String;
   Active: Bool;
-  TonToken : Int as coins;
+  USDTToken : Int as coins;
 }
 
 struct TokenVestingInfo {
@@ -163,7 +163,7 @@ contract SamplePresale with Ownable, Deployable {
   const MinTonForStorage: Int = ton("0.1");
   const REFERRAL_VALUE : Int = 1;
   
-  TonVal : Int = 100;
+  TonVal : Int = 4;
   owner: Address;
   TonBalance : Int as coins;
   TokenData: map<Int, TokenDistrubuteInfo>;
@@ -281,17 +281,17 @@ contract SamplePresale with Ownable, Deployable {
     );
   }
 
-  receive(msg: BuyTokens){
-    let ctx:Context = context();
-    let fee:Int  = ctx.readForwardFee();
-    let TokenAmount : Int = (ctx.value - fee) * self.TonVal;
-    let gotButUnsure: UserArrayData? = self.SeedData.get(sender());
+  receive(msg: TokenNotification){
+    // let ctx:Context = context();
+    // let fee:Int  = ctx.readForwardFee();
+    let TokenAmount : Int = msg.amount  * self.TonVal;
+    let gotButUnsure: UserArrayData? = self.SeedData.get(msg.from);
     let seedData : TokenDistrubuteInfo = self.TokenData.get(0)!!;
     require(seedData.totalPhaseToken >= seedData.totalSuppliedToken + TokenAmount,"Seed Token Supply is completed");
     if (gotButUnsure != null) {
-    let gotButsure: UserArrayData = self.SeedData.get(sender())!!;
+    let gotButsure: UserArrayData = self.SeedData.get(msg.from)!!;
     let userInfo : UserData = UserData{
-        UserAddress : sender(),
+        UserAddress : msg.from,
         TotalToken : TokenAmount,
         RemainingToken : TokenAmount,
         StartTime: now(),
@@ -301,21 +301,21 @@ contract SamplePresale with Ownable, Deployable {
         ReleaseInterval: 30,
         PhaseName: seedData.name,
         Active : true,
-        TonToken : ctx.value,
+        USDTToken : msg.amount,
     };
     
     gotButsure.data.set(gotButsure.size + 1,userInfo);
     gotButsure.size = gotButsure.size + 1;
-    self.SeedData.set(sender(),gotButsure);
+    self.SeedData.set(msg.from,gotButsure);
     } else {
-      let newadd : Address = newAddress(0,0);
-      if(msg.referrer != newadd){
-        self.AddReferAddress(msg.referrer, msg.usdt);
-      }
-      let getData: UserArrayData? = self.SeedData.get(sender());
+      // let newadd : Address = newAddress(0,0);
+      // if(msg.referrer != newadd){
+      //   self.AddReferAddress(msg.referrer, msg.usdt);
+      // }
+      let getData: UserArrayData? = self.SeedData.get(msg.from);
       let x : map<Int,UserData> = emptyMap();
       let userInfo : UserData = UserData{
-       UserAddress : sender(),
+       UserAddress : msg.from,
         TotalToken : TokenAmount,
         RemainingToken : TokenAmount,
         StartTime: now(),
@@ -325,14 +325,14 @@ contract SamplePresale with Ownable, Deployable {
         ReleaseInterval:  30,
         PhaseName: seedData.name,
         Active : true,
-        TonToken : ctx.value,
+        USDTToken : msg.amount,
     };
     x.set(1,userInfo);
     let storeData : UserArrayData  = UserArrayData {
       data : x,
       size:1,
     };
-    self.SeedData.set(sender(),storeData);
+    self.SeedData.set(msg.from,storeData);
     }
     seedData.totalSuppliedToken += TokenAmount;
     self.TokenData.set(0,seedData);

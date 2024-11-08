@@ -87,6 +87,21 @@ cell $TokenTransfer$_store_cell((int, int, slice, slice, cell, int, slice) v) in
 }
 
 ;;
+;; Type: TokenNotification
+;; Header: 0x7362d09c
+;; TLB: token_notification#7362d09c queryId:uint64 amount:coins from:address forward_payload:remainder<slice> = TokenNotification
+;;
+
+(slice, ((int, int, slice, slice))) $TokenNotification$_load(slice sc_0) inline {
+    throw_unless(129, sc_0~load_uint(32) == 1935855772);
+    var v'queryId = sc_0~load_uint(64);
+    var v'amount = sc_0~load_coins();
+    var v'from = sc_0~__tact_load_address();
+    var v'forward_payload = sc_0;
+    return (sc_0, (v'queryId, v'amount, v'from, v'forward_payload));
+}
+
+;;
 ;; Type: TokenDistrubuteInfo
 ;; TLB: _ name:^string tokenDistrubutedPercentage:int257 totalPhaseToken:coins percentage:int257 totalSuppliedToken:coins = TokenDistrubuteInfo
 ;;
@@ -139,11 +154,11 @@ tuple $TokenDistrubuteInfo$_load_opt(cell cl) inline {
 
 ;;
 ;; Type: UserData
-;; TLB: _ UserAddress:address TotalToken:coins RemainingToken:coins StartTime:int257 VestingDuration:int257 LastClaimTime:int257 CliffTime:int257 ReleaseInterval:int257 PhaseName:^string Active:bool TonToken:coins = UserData
+;; TLB: _ UserAddress:address TotalToken:coins RemainingToken:coins StartTime:int257 VestingDuration:int257 LastClaimTime:int257 CliffTime:int257 ReleaseInterval:int257 PhaseName:^string Active:bool USDTToken:coins = UserData
 ;;
 
 builder $UserData$_store(builder build_0, (slice, int, int, int, int, int, int, int, slice, int, int) v) inline_ref {
-    var (v'UserAddress, v'TotalToken, v'RemainingToken, v'StartTime, v'VestingDuration, v'LastClaimTime, v'CliffTime, v'ReleaseInterval, v'PhaseName, v'Active, v'TonToken) = v;
+    var (v'UserAddress, v'TotalToken, v'RemainingToken, v'StartTime, v'VestingDuration, v'LastClaimTime, v'CliffTime, v'ReleaseInterval, v'PhaseName, v'Active, v'USDTToken) = v;
     build_0 = __tact_store_address(build_0, v'UserAddress);
     build_0 = build_0.store_coins(v'TotalToken);
     build_0 = build_0.store_coins(v'RemainingToken);
@@ -156,7 +171,7 @@ builder $UserData$_store(builder build_0, (slice, int, int, int, int, int, int, 
     build_2 = build_2.store_int(v'ReleaseInterval, 257);
     build_2 = build_2.store_ref(begin_cell().store_slice(v'PhaseName).end_cell());
     build_2 = build_2.store_int(v'Active, 1);
-    build_2 = build_2.store_coins(v'TonToken);
+    build_2 = build_2.store_coins(v'USDTToken);
     build_1 = store_ref(build_1, build_2.end_cell());
     build_0 = store_ref(build_0, build_1.end_cell());
     return build_0;
@@ -179,13 +194,13 @@ cell $UserData$_store_cell((slice, int, int, int, int, int, int, int, slice, int
     var v'ReleaseInterval = sc_2~load_int(257);
     var v'PhaseName = sc_2~load_ref().begin_parse();
     var v'Active = sc_2~load_int(1);
-    var v'TonToken = sc_2~load_coins();
-    return (sc_0, (v'UserAddress, v'TotalToken, v'RemainingToken, v'StartTime, v'VestingDuration, v'LastClaimTime, v'CliffTime, v'ReleaseInterval, v'PhaseName, v'Active, v'TonToken));
+    var v'USDTToken = sc_2~load_coins();
+    return (sc_0, (v'UserAddress, v'TotalToken, v'RemainingToken, v'StartTime, v'VestingDuration, v'LastClaimTime, v'CliffTime, v'ReleaseInterval, v'PhaseName, v'Active, v'USDTToken));
 }
 
 tuple $UserData$_as_optional((slice, int, int, int, int, int, int, int, slice, int, int) v) inline {
-    var (v'UserAddress, v'TotalToken, v'RemainingToken, v'StartTime, v'VestingDuration, v'LastClaimTime, v'CliffTime, v'ReleaseInterval, v'PhaseName, v'Active, v'TonToken) = v;
-    return __tact_tuple_create_11(v'UserAddress, v'TotalToken, v'RemainingToken, v'StartTime, v'VestingDuration, v'LastClaimTime, v'CliffTime, v'ReleaseInterval, v'PhaseName, v'Active, v'TonToken);
+    var (v'UserAddress, v'TotalToken, v'RemainingToken, v'StartTime, v'VestingDuration, v'LastClaimTime, v'CliffTime, v'ReleaseInterval, v'PhaseName, v'Active, v'USDTToken) = v;
+    return __tact_tuple_create_11(v'UserAddress, v'TotalToken, v'RemainingToken, v'StartTime, v'VestingDuration, v'LastClaimTime, v'CliffTime, v'ReleaseInterval, v'PhaseName, v'Active, v'USDTToken);
 }
 
 tuple $UserData$_load_opt(cell cl) inline {
@@ -198,13 +213,13 @@ tuple $UserData$_load_opt(cell cl) inline {
 
 ((slice, int, int, int, int, int, int, int, slice, int, int)) $UserData$_not_null(tuple v) inline {
     throw_if(128, null?(v));
-    var (slice vvv'UserAddress, int vvv'TotalToken, int vvv'RemainingToken, int vvv'StartTime, int vvv'VestingDuration, int vvv'LastClaimTime, int vvv'CliffTime, int vvv'ReleaseInterval, slice vvv'PhaseName, int vvv'Active, int vvv'TonToken) = __tact_tuple_destroy_11(v);
-    return (vvv'UserAddress, vvv'TotalToken, vvv'RemainingToken, vvv'StartTime, vvv'VestingDuration, vvv'LastClaimTime, vvv'CliffTime, vvv'ReleaseInterval, vvv'PhaseName, vvv'Active, vvv'TonToken);
+    var (slice vvv'UserAddress, int vvv'TotalToken, int vvv'RemainingToken, int vvv'StartTime, int vvv'VestingDuration, int vvv'LastClaimTime, int vvv'CliffTime, int vvv'ReleaseInterval, slice vvv'PhaseName, int vvv'Active, int vvv'USDTToken) = __tact_tuple_destroy_11(v);
+    return (vvv'UserAddress, vvv'TotalToken, vvv'RemainingToken, vvv'StartTime, vvv'VestingDuration, vvv'LastClaimTime, vvv'CliffTime, vvv'ReleaseInterval, vvv'PhaseName, vvv'Active, vvv'USDTToken);
 }
 
 tuple $UserData$_to_tuple(((slice, int, int, int, int, int, int, int, slice, int, int)) v) inline {
-    var (v'UserAddress, v'TotalToken, v'RemainingToken, v'StartTime, v'VestingDuration, v'LastClaimTime, v'CliffTime, v'ReleaseInterval, v'PhaseName, v'Active, v'TonToken) = v;
-    return __tact_tuple_create_11(v'UserAddress, v'TotalToken, v'RemainingToken, v'StartTime, v'VestingDuration, v'LastClaimTime, v'CliffTime, v'ReleaseInterval, v'PhaseName, v'Active, v'TonToken);
+    var (v'UserAddress, v'TotalToken, v'RemainingToken, v'StartTime, v'VestingDuration, v'LastClaimTime, v'CliffTime, v'ReleaseInterval, v'PhaseName, v'Active, v'USDTToken) = v;
+    return __tact_tuple_create_11(v'UserAddress, v'TotalToken, v'RemainingToken, v'StartTime, v'VestingDuration, v'LastClaimTime, v'CliffTime, v'ReleaseInterval, v'PhaseName, v'Active, v'USDTToken);
 }
 
 tuple $UserData$_to_opt_tuple(tuple v) inline {
@@ -221,8 +236,8 @@ tuple $UserData$_to_opt_external(tuple v) inline {
     }
 }
 
-((slice, int, int, int, int, int, int, int, slice, int, int)) $UserData$_constructor_UserAddress_TotalToken_RemainingToken_StartTime_VestingDuration_LastClaimTime_CliffTime_ReleaseInterval_PhaseName_Active_TonToken(slice UserAddress, int TotalToken, int RemainingToken, int StartTime, int VestingDuration, int LastClaimTime, int CliffTime, int ReleaseInterval, slice PhaseName, int Active, int TonToken) inline {
-    return (UserAddress, TotalToken, RemainingToken, StartTime, VestingDuration, LastClaimTime, CliffTime, ReleaseInterval, PhaseName, Active, TonToken);
+((slice, int, int, int, int, int, int, int, slice, int, int)) $UserData$_constructor_UserAddress_TotalToken_RemainingToken_StartTime_VestingDuration_LastClaimTime_CliffTime_ReleaseInterval_PhaseName_Active_USDTToken(slice UserAddress, int TotalToken, int RemainingToken, int StartTime, int VestingDuration, int LastClaimTime, int CliffTime, int ReleaseInterval, slice PhaseName, int Active, int USDTToken) inline {
+    return (UserAddress, TotalToken, RemainingToken, StartTime, VestingDuration, LastClaimTime, CliffTime, ReleaseInterval, PhaseName, Active, USDTToken);
 }
 
 ;;
@@ -292,7 +307,7 @@ tuple $TokenVestingInfo$_load_opt(cell cl) inline {
 
 ;;
 ;; Type: UserArrayData
-;; TLB: _ data:dict<int, ^UserData{UserAddress:address,TotalToken:coins,RemainingToken:coins,StartTime:int257,VestingDuration:int257,LastClaimTime:int257,CliffTime:int257,ReleaseInterval:int257,PhaseName:^string,Active:bool,TonToken:coins}> size:int257 = UserArrayData
+;; TLB: _ data:dict<int, ^UserData{UserAddress:address,TotalToken:coins,RemainingToken:coins,StartTime:int257,VestingDuration:int257,LastClaimTime:int257,CliffTime:int257,ReleaseInterval:int257,PhaseName:^string,Active:bool,USDTToken:coins}> size:int257 = UserArrayData
 ;;
 
 builder $UserArrayData$_store(builder build_0, (cell, int) v) inline {
@@ -333,6 +348,90 @@ tuple $UserArrayData$_load_opt(cell cl) inline {
 
 ((cell, int)) $UserArrayData$_constructor_data_size(cell data, int size) inline {
     return (data, size);
+}
+
+;;
+;; Type: RefferData
+;; TLB: _ refferalAddress:address amount:int257 claim:bool = RefferData
+;;
+
+builder $RefferData$_store(builder build_0, (slice, int, int) v) inline {
+    var (v'refferalAddress, v'amount, v'claim) = v;
+    build_0 = __tact_store_address(build_0, v'refferalAddress);
+    build_0 = build_0.store_int(v'amount, 257);
+    build_0 = build_0.store_int(v'claim, 1);
+    return build_0;
+}
+
+cell $RefferData$_store_cell((slice, int, int) v) inline {
+    return $RefferData$_store(begin_cell(), v).end_cell();
+}
+
+(slice, ((slice, int, int))) $RefferData$_load(slice sc_0) inline {
+    var v'refferalAddress = sc_0~__tact_load_address();
+    var v'amount = sc_0~load_int(257);
+    var v'claim = sc_0~load_int(1);
+    return (sc_0, (v'refferalAddress, v'amount, v'claim));
+}
+
+tuple $RefferData$_as_optional((slice, int, int) v) inline {
+    var (v'refferalAddress, v'amount, v'claim) = v;
+    return __tact_tuple_create_3(v'refferalAddress, v'amount, v'claim);
+}
+
+tuple $RefferData$_load_opt(cell cl) inline {
+    if (null?(cl)) {
+        return null();
+    }
+    var sc = cl.begin_parse();
+    return $RefferData$_as_optional(sc~$RefferData$_load());
+}
+
+((slice, int, int)) $RefferData$_not_null(tuple v) inline {
+    throw_if(128, null?(v));
+    var (slice vvv'refferalAddress, int vvv'amount, int vvv'claim) = __tact_tuple_destroy_3(v);
+    return (vvv'refferalAddress, vvv'amount, vvv'claim);
+}
+
+;;
+;; Type: RefferDetails
+;; TLB: _ reffer:dict<int, ^RefferData{refferalAddress:address,amount:int257,claim:bool}> size:int257 = RefferDetails
+;;
+
+builder $RefferDetails$_store(builder build_0, (cell, int) v) inline {
+    var (v'reffer, v'size) = v;
+    build_0 = build_0.store_dict(v'reffer);
+    build_0 = build_0.store_int(v'size, 257);
+    return build_0;
+}
+
+cell $RefferDetails$_store_cell((cell, int) v) inline {
+    return $RefferDetails$_store(begin_cell(), v).end_cell();
+}
+
+(slice, ((cell, int))) $RefferDetails$_load(slice sc_0) inline {
+    var v'reffer = sc_0~load_dict();
+    var v'size = sc_0~load_int(257);
+    return (sc_0, (v'reffer, v'size));
+}
+
+tuple $RefferDetails$_as_optional((cell, int) v) inline {
+    var (v'reffer, v'size) = v;
+    return __tact_tuple_create_2(v'reffer, v'size);
+}
+
+tuple $RefferDetails$_load_opt(cell cl) inline {
+    if (null?(cl)) {
+        return null();
+    }
+    var sc = cl.begin_parse();
+    return $RefferDetails$_as_optional(sc~$RefferDetails$_load());
+}
+
+((cell, int)) $RefferDetails$_not_null(tuple v) inline {
+    throw_if(128, null?(v));
+    var (cell vvv'reffer, int vvv'size) = __tact_tuple_destroy_2(v);
+    return (vvv'reffer, vvv'size);
 }
 
 ;;
@@ -561,6 +660,18 @@ tuple $TreasuryArrayData$_load_opt(cell cl) inline {
 }
 
 ;;
+;; Type: ClaimReferralTokens
+;; Header: 0x76a9753f
+;; TLB: claim_referral_tokens#76a9753f cenderadd:address = ClaimReferralTokens
+;;
+
+(slice, ((slice))) $ClaimReferralTokens$_load(slice sc_0) inline {
+    throw_unless(129, sc_0~load_uint(32) == 1990817087);
+    var v'cenderadd = sc_0~__tact_load_address();
+    return (sc_0, (v'cenderadd));
+}
+
+;;
 ;; Type: PrivateSaleMessage
 ;; Header: 0x9c65dad8
 ;; TLB: private_sale_message#9c65dad8 amount:int257 UserAddress:address = PrivateSaleMessage
@@ -640,6 +751,20 @@ tuple $TreasuryArrayData$_load_opt(cell cl) inline {
 }
 
 ;;
+;; Type: ClaimSingleToken
+;; Header: 0x9d9fc853
+;; TLB: claim_single_token#9d9fc853 index:int257 cenderadd:address senderadd:address = ClaimSingleToken
+;;
+
+(slice, ((int, slice, slice))) $ClaimSingleToken$_load(slice sc_0) inline {
+    throw_unless(129, sc_0~load_uint(32) == 2644494419);
+    var v'index = sc_0~load_int(257);
+    var v'cenderadd = sc_0~__tact_load_address();
+    var v'senderadd = sc_0~__tact_load_address();
+    return (sc_0, (v'index, v'cenderadd, v'senderadd));
+}
+
+;;
 ;; Type: ClaimPrivateSaleTokens
 ;; Header: 0xe05cba04
 ;; TLB: claim_private_sale_tokens#e05cba04 amount:int257 cenderadd:address senderadd:address = ClaimPrivateSaleTokens
@@ -710,25 +835,11 @@ tuple $TreasuryArrayData$_load_opt(cell cl) inline {
 }
 
 ;;
-;; Type: ClaimSingleToken
-;; Header: 0x9d9fc853
-;; TLB: claim_single_token#9d9fc853 index:int257 cenderadd:address senderadd:address = ClaimSingleToken
-;;
-
-(slice, ((int, slice, slice))) $ClaimSingleToken$_load(slice sc_0) inline {
-    throw_unless(129, sc_0~load_uint(32) == 2644494419);
-    var v'index = sc_0~load_int(257);
-    var v'cenderadd = sc_0~__tact_load_address();
-    var v'senderadd = sc_0~__tact_load_address();
-    return (sc_0, (v'index, v'cenderadd, v'senderadd));
-}
-
-;;
 ;; Type: SamplePresale
 ;;
 
-builder $SamplePresale$_store(builder build_0, (int, slice, int, cell, cell, cell, cell, cell, cell, cell) v) inline {
-    var (v'TonVal, v'owner, v'TonBalance, v'TokenData, v'SeedData, v'PrivateSaleData, v'MarketingData, v'TeamData, v'AdvisorData, v'TreasuryData) = v;
+builder $SamplePresale$_store(builder build_0, (int, slice, int, cell, cell, cell, cell, cell, cell, cell, cell, cell) v) inline {
+    var (v'TonVal, v'owner, v'TonBalance, v'TokenData, v'SeedData, v'PrivateSaleData, v'MarketingData, v'TeamData, v'AdvisorData, v'TreasuryData, v'checkReferrers, v'refferInfo) = v;
     build_0 = build_0.store_int(v'TonVal, 257);
     build_0 = __tact_store_address(build_0, v'owner);
     build_0 = build_0.store_coins(v'TonBalance);
@@ -741,12 +852,16 @@ builder $SamplePresale$_store(builder build_0, (int, slice, int, cell, cell, cel
     var build_2 = begin_cell();
     build_2 = build_2.store_dict(v'AdvisorData);
     build_2 = build_2.store_dict(v'TreasuryData);
+    build_2 = build_2.store_dict(v'checkReferrers);
+    var build_3 = begin_cell();
+    build_3 = build_3.store_dict(v'refferInfo);
+    build_2 = store_ref(build_2, build_3.end_cell());
     build_1 = store_ref(build_1, build_2.end_cell());
     build_0 = store_ref(build_0, build_1.end_cell());
     return build_0;
 }
 
-(slice, ((int, slice, int, cell, cell, cell, cell, cell, cell, cell))) $SamplePresale$_load(slice sc_0) inline {
+(slice, ((int, slice, int, cell, cell, cell, cell, cell, cell, cell, cell, cell))) $SamplePresale$_load(slice sc_0) inline {
     var v'TonVal = sc_0~load_int(257);
     var v'owner = sc_0~__tact_load_address();
     var v'TonBalance = sc_0~load_coins();
@@ -759,10 +874,13 @@ builder $SamplePresale$_store(builder build_0, (int, slice, int, cell, cell, cel
     slice sc_2 = sc_1~load_ref().begin_parse();
     var v'AdvisorData = sc_2~load_dict();
     var v'TreasuryData = sc_2~load_dict();
-    return (sc_0, (v'TonVal, v'owner, v'TonBalance, v'TokenData, v'SeedData, v'PrivateSaleData, v'MarketingData, v'TeamData, v'AdvisorData, v'TreasuryData));
+    var v'checkReferrers = sc_2~load_dict();
+    slice sc_3 = sc_2~load_ref().begin_parse();
+    var v'refferInfo = sc_3~load_dict();
+    return (sc_0, (v'TonVal, v'owner, v'TonBalance, v'TokenData, v'SeedData, v'PrivateSaleData, v'MarketingData, v'TeamData, v'AdvisorData, v'TreasuryData, v'checkReferrers, v'refferInfo));
 }
 
-(int, slice, int, cell, cell, cell, cell, cell, cell, cell) $SamplePresale$_contract_load() impure inline_ref {
+(int, slice, int, cell, cell, cell, cell, cell, cell, cell, cell, cell) $SamplePresale$_contract_load() impure inline_ref {
     slice $sc = get_data().begin_parse();
     __tact_context_sys = $sc~load_ref();
     int $loaded = $sc~load_int(1);
@@ -775,7 +893,7 @@ builder $SamplePresale$_store(builder build_0, (int, slice, int, cell, cell, cel
     }
 }
 
-() $SamplePresale$_contract_store((int, slice, int, cell, cell, cell, cell, cell, cell, cell) v) impure inline {
+() $SamplePresale$_contract_store((int, slice, int, cell, cell, cell, cell, cell, cell, cell, cell, cell) v) impure inline {
     builder b = begin_cell();
     b = b.store_ref(__tact_context_sys);
     b = b.store_int(true, 1);

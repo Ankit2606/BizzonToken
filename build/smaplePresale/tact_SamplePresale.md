@@ -1,9 +1,9 @@
 # TACT Compilation Report
 Contract: SamplePresale
-BOC Size: 10072 bytes
+BOC Size: 10716 bytes
 
 # Types
-Total Types: 37
+Total Types: 42
 
 ## StateInit
 TLB: `_ code:^cell data:^cell = StateInit`
@@ -74,16 +74,24 @@ TLB: `_ name:^string tokenDistrubutedPercentage:int257 totalPhaseToken:coins per
 Signature: `TokenDistrubuteInfo{name:^string,tokenDistrubutedPercentage:int257,totalPhaseToken:coins,percentage:int257,totalSuppliedToken:coins}`
 
 ## UserData
-TLB: `_ UserAddress:address TotalToken:coins RemainingToken:coins StartTime:int257 VestingDuration:int257 LastClaimTime:int257 CliffTime:int257 ReleaseInterval:int257 PhaseName:^string Active:bool TonToken:coins = UserData`
-Signature: `UserData{UserAddress:address,TotalToken:coins,RemainingToken:coins,StartTime:int257,VestingDuration:int257,LastClaimTime:int257,CliffTime:int257,ReleaseInterval:int257,PhaseName:^string,Active:bool,TonToken:coins}`
+TLB: `_ UserAddress:address TotalToken:coins RemainingToken:coins StartTime:int257 VestingDuration:int257 LastClaimTime:int257 CliffTime:int257 ReleaseInterval:int257 PhaseName:^string Active:bool USDTToken:coins = UserData`
+Signature: `UserData{UserAddress:address,TotalToken:coins,RemainingToken:coins,StartTime:int257,VestingDuration:int257,LastClaimTime:int257,CliffTime:int257,ReleaseInterval:int257,PhaseName:^string,Active:bool,USDTToken:coins}`
 
 ## TokenVestingInfo
 TLB: `_ beneficiary:address TotalToken:coins remainingToken:coins startTime:int257 vestingDuration:int257 lastClaimTime:int257 releaseInterval:int257 initialCliff:int257 phaseName:^string = TokenVestingInfo`
 Signature: `TokenVestingInfo{beneficiary:address,TotalToken:coins,remainingToken:coins,startTime:int257,vestingDuration:int257,lastClaimTime:int257,releaseInterval:int257,initialCliff:int257,phaseName:^string}`
 
 ## UserArrayData
-TLB: `_ data:dict<int, ^UserData{UserAddress:address,TotalToken:coins,RemainingToken:coins,StartTime:int257,VestingDuration:int257,LastClaimTime:int257,CliffTime:int257,ReleaseInterval:int257,PhaseName:^string,Active:bool,TonToken:coins}> size:int257 = UserArrayData`
-Signature: `UserArrayData{data:dict<int, ^UserData{UserAddress:address,TotalToken:coins,RemainingToken:coins,StartTime:int257,VestingDuration:int257,LastClaimTime:int257,CliffTime:int257,ReleaseInterval:int257,PhaseName:^string,Active:bool,TonToken:coins}>,size:int257}`
+TLB: `_ data:dict<int, ^UserData{UserAddress:address,TotalToken:coins,RemainingToken:coins,StartTime:int257,VestingDuration:int257,LastClaimTime:int257,CliffTime:int257,ReleaseInterval:int257,PhaseName:^string,Active:bool,USDTToken:coins}> size:int257 = UserArrayData`
+Signature: `UserArrayData{data:dict<int, ^UserData{UserAddress:address,TotalToken:coins,RemainingToken:coins,StartTime:int257,VestingDuration:int257,LastClaimTime:int257,CliffTime:int257,ReleaseInterval:int257,PhaseName:^string,Active:bool,USDTToken:coins}>,size:int257}`
+
+## RefferData
+TLB: `_ refferalAddress:address amount:int257 claim:bool = RefferData`
+Signature: `RefferData{refferalAddress:address,amount:int257,claim:bool}`
+
+## RefferDetails
+TLB: `_ reffer:dict<int, ^RefferData{refferalAddress:address,amount:int257,claim:bool}> size:int257 = RefferDetails`
+Signature: `RefferDetails{reffer:dict<int, ^RefferData{refferalAddress:address,amount:int257,claim:bool}>,size:int257}`
 
 ## PrivateSaleArrayData
 TLB: `_ data:dict<int, ^TokenVestingInfo{beneficiary:address,TotalToken:coins,remainingToken:coins,startTime:int257,vestingDuration:int257,lastClaimTime:int257,releaseInterval:int257,initialCliff:int257,phaseName:^string}> size:int257 = PrivateSaleArrayData`
@@ -104,6 +112,18 @@ Signature: `AdvisorArrayData{data:dict<int, ^TokenVestingInfo{beneficiary:addres
 ## TreasuryArrayData
 TLB: `_ data:dict<int, ^TokenVestingInfo{beneficiary:address,TotalToken:coins,remainingToken:coins,startTime:int257,vestingDuration:int257,lastClaimTime:int257,releaseInterval:int257,initialCliff:int257,phaseName:^string}> size:int257 = TreasuryArrayData`
 Signature: `TreasuryArrayData{data:dict<int, ^TokenVestingInfo{beneficiary:address,TotalToken:coins,remainingToken:coins,startTime:int257,vestingDuration:int257,lastClaimTime:int257,releaseInterval:int257,initialCliff:int257,phaseName:^string}>,size:int257}`
+
+## BuyTokens
+TLB: `buy_tokens#5abfc0c2 referrer:address usdt:coins = BuyTokens`
+Signature: `BuyTokens{referrer:address,usdt:coins}`
+
+## AddReferAddress
+TLB: `add_refer_address#ea983c55 referrer:address = AddReferAddress`
+Signature: `AddReferAddress{referrer:address}`
+
+## ClaimReferralTokens
+TLB: `claim_referral_tokens#76a9753f cenderadd:address = ClaimReferralTokens`
+Signature: `ClaimReferralTokens{cenderadd:address}`
 
 ## PrivateSaleMessage
 TLB: `private_sale_message#9c65dad8 amount:int257 UserAddress:address = PrivateSaleMessage`
@@ -129,6 +149,10 @@ Signature: `TreasuryMessage{amount:int257,UserAddress:address}`
 TLB: `claim_tokens#052de464 amount:int257 cenderadd:address senderadd:address = ClaimTokens`
 Signature: `ClaimTokens{amount:int257,cenderadd:address,senderadd:address}`
 
+## ClaimSingleToken
+TLB: `claim_single_token#9d9fc853 index:int257 cenderadd:address senderadd:address = ClaimSingleToken`
+Signature: `ClaimSingleToken{index:int257,cenderadd:address,senderadd:address}`
+
 ## ClaimPrivateSaleTokens
 TLB: `claim_private_sale_tokens#e05cba04 amount:int257 cenderadd:address senderadd:address = ClaimPrivateSaleTokens`
 Signature: `ClaimPrivateSaleTokens{amount:int257,cenderadd:address,senderadd:address}`
@@ -149,12 +173,8 @@ Signature: `ClaimAdvisorTokens{amount:int257,cenderadd:address,senderadd:address
 TLB: `claim_treasury_tokens#1f73bf94 amount:int257 cenderadd:address senderadd:address = ClaimTreasuryTokens`
 Signature: `ClaimTreasuryTokens{amount:int257,cenderadd:address,senderadd:address}`
 
-## ClaimSingleToken
-TLB: `claim_single_token#9d9fc853 index:int257 cenderadd:address senderadd:address = ClaimSingleToken`
-Signature: `ClaimSingleToken{index:int257,cenderadd:address,senderadd:address}`
-
 # Get Methods
-Total Get Methods: 10
+Total Get Methods: 12
 
 ## getData
 Argument: addr
@@ -181,6 +201,12 @@ Argument: addr
 Argument: addr
 
 ## getTokonomicsData
+
+## getAllReferralDetails
+Argument: referrerAddress
+
+## getReferrer
+Argument: userAddress
 
 ## owner
 
@@ -210,6 +236,11 @@ Argument: addr
 136: Invalid address
 137: Masterchain support is not enabled for this contract
 15509: Only deployer is allowed to withdraw
+30183: NO_REFERRAL_TOKENS_AVAILABLE
 35441: Seed Token Supply is completed
+38859: INVALID_ADDRESS
 43297: Index not found!
 44418: You have not sufficient Token
+46387: not have any refferals
+60511: ALREADY_ADDED_REFERRER
+61906: REFERRER_CANNOT_BE_A_REFERRAL
