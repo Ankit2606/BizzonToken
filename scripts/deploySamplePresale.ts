@@ -18,44 +18,44 @@ export async function run(provider: NetworkProvider) {
     // Create content Cell
     // let content = buildOnchainMetadata(jettonParams);
 
-    // const samplePresale = provider.open(await SamplePresale.fromInit());
-    const samplePresale = provider.open(await SamplePresale.fromAddress(
-      Address.parse("EQAwN6JQ3Z2F7zPdkAck_hLAcilEU-YoFgLg4Eg7p39R5635")
-    ));
+    const samplePresale = provider.open(await SamplePresale.fromInit());
+    // const samplePresale = provider.open(await SamplePresale.fromAddress(
+    //   Address.parse("EQAwN6JQ3Z2F7zPdkAck_hLAcilEU-YoFgLg4Eg7p39R5635")
+    // ));
 
-    // await samplePresale.send(
-    //     provider.sender(),
-    //     {
-    //         value: toNano('0.05'),
-    //     },
-    //     {
-    //         $$type: 'Deploy',
-    //         queryId: 0n
-    //     }
-    // );
-
-    // await provider.waitForDeploy(samplePresale.address);
-
-    const userWalladd = provider.open(await JettonDefaultWallet.fromInit(Address.parse("kQCSCXajfljIux5OS3JBParNJe6AvmWr7O08-hiHW6bzvRB_"),Address.parse("EQBony_meSMNl6w6cMQpEvW9dQbvy-AwJFKDJeA5CydJ4nhl")));
-
-    
-    await userWalladd.send(
+    await samplePresale.send(
         provider.sender(),
         {
-            value: toNano('0.5'),
+            value: toNano('0.05'),
         },
         {
-            $$type: 'TokenTransfer',
-            queryId: 0n,
-            amount: 1000000000n,
-            destination: Address.parse("EQAwN6JQ3Z2F7zPdkAck_hLAcilEU-YoFgLg4Eg7p39R5635"),
-            response_destination: Address.parse("EQAwN6JQ3Z2F7zPdkAck_hLAcilEU-YoFgLg4Eg7p39R5635"),
-            custom_payload: null,
-            forward_ton_amount: toNano("0.01"),
-            forward_payload:comment("")
-            
+            $$type: 'Deploy',
+            queryId: 0n
         }
     );
+
+    await provider.waitForDeploy(samplePresale.address);
+
+    // const userWalladd = provider.open(await JettonDefaultWallet.fromInit(Address.parse("kQCSCXajfljIux5OS3JBParNJe6AvmWr7O08-hiHW6bzvRB_"),Address.parse("EQBony_meSMNl6w6cMQpEvW9dQbvy-AwJFKDJeA5CydJ4nhl")));
+
+    
+    // await userWalladd.send(
+    //     provider.sender(),
+    //     {
+    //         value: toNano('0.5'),
+    //     },
+    //     {
+    //         $$type: 'TokenTransfer',
+    //         queryId: 0n,
+    //         amount: 1000000000n,
+    //         destination: Address.parse("EQAwN6JQ3Z2F7zPdkAck_hLAcilEU-YoFgLg4Eg7p39R5635"),
+    //         response_destination: Address.parse("EQAwN6JQ3Z2F7zPdkAck_hLAcilEU-YoFgLg4Eg7p39R5635"),
+    //         custom_payload: null,
+    //         forward_ton_amount: toNano("0.01"),
+    //         forward_payload:comment("")
+            
+    //     }
+    // );
 
 
     // await samplePresale.send(
@@ -79,8 +79,8 @@ export async function run(provider: NetworkProvider) {
     //  const walletData = await samplePresale.getGetTokenInfo(i);
     //  console.log(walletData);
     // }
-    const walletDatas1 = await samplePresale.getGetData( Address.parse("0QCL20gS8GdNJy5hLuJjxwCFTL9kveyW3yiC4wqdosCT2Q0A") as Address,1n);
-     console.log(walletDatas1);
+    // const walletDatas1 = await samplePresale.getGetData( Address.parse("0QCL20gS8GdNJy5hLuJjxwCFTL9kveyW3yiC4wqdosCT2Q0A") as Address,1n);
+    //  console.log(walletDatas1);
 
     //  const walletDatas = await samplePresale.getGetData( Address.parse("0QBony_meSMNl6w6cMQpEvW9dQbvy-AwJFKDJeA5CydJ4p4q") as Address,2n);
     //  console.log(walletDatas);

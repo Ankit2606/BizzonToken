@@ -83,10 +83,6 @@ message BuyTokens{
   usdt: Int as coins;
 }
 
-message AddReferAddress{
-  referrer : Address;
-}
-
 message ClaimReferralTokens{
   cenderadd : Address;
 }
@@ -129,31 +125,31 @@ message ClaimSingleToken {
 }
 
 message ClaimPrivateSaleTokens {
-    amount:Int;
+    index:Int;
     cenderadd:Address;
     senderadd:Address;
 }
 
 message ClaimMarketingeTokens {
-    amount:Int;
+    index:Int;
     cenderadd:Address;
     senderadd:Address;
 }
 
 message ClaimTeamTokens {
-    amount:Int;
+    index:Int;
     cenderadd:Address;
     senderadd:Address;
 }
 
 message ClaimAdvisorTokens {
-    amount:Int;
+    index:Int;
     cenderadd:Address;
     senderadd:Address;
 }
 
 message ClaimTreasuryTokens {
-    amount:Int;
+    index:Int;
     cenderadd:Address;
     senderadd:Address;
 }
@@ -162,7 +158,6 @@ contract SamplePresale with Ownable, Deployable {
 
   const MinTonForStorage: Int = ton("0.1");
   const REFERRAL_VALUE : Int = 1;
-  
   TonVal : Int = 4;
   owner: Address;
   TonBalance : Int as coins;
@@ -284,6 +279,7 @@ contract SamplePresale with Ownable, Deployable {
   receive(msg: TokenNotification){
     // let ctx:Context = context();
     // let fee:Int  = ctx.readForwardFee();
+    let referrer : Address = msg.forward_payload.loadAddress();
     let TokenAmount : Int = msg.amount  * self.TonVal;
     let gotButUnsure: UserArrayData? = self.SeedData.get(msg.from);
     let seedData : TokenDistrubuteInfo = self.TokenData.get(0)!!;
@@ -295,8 +291,8 @@ contract SamplePresale with Ownable, Deployable {
         TotalToken : TokenAmount,
         RemainingToken : TokenAmount,
         StartTime: now(),
-        VestingDuration: now() + 300,
-        LastClaimTime: now() + 30,
+        VestingDuration: now() + 630,
+        LastClaimTime: now() + 90,
         CliffTime: 90,
         ReleaseInterval: 30,
         PhaseName: seedData.name,
@@ -308,10 +304,10 @@ contract SamplePresale with Ownable, Deployable {
     gotButsure.size = gotButsure.size + 1;
     self.SeedData.set(msg.from,gotButsure);
     } else {
-      // let newadd : Address = newAddress(0,0);
-      // if(msg.referrer != newadd){
-      //   self.AddReferAddress(msg.referrer, msg.usdt);
-      // }
+      let newadd : Address = newAddress(0,0);
+      if(referrer != newadd){
+        self.AddReferAddress(referrer, msg.amount);
+      }
       let getData: UserArrayData? = self.SeedData.get(msg.from);
       let x : map<Int,UserData> = emptyMap();
       let userInfo : UserData = UserData{
@@ -319,8 +315,8 @@ contract SamplePresale with Ownable, Deployable {
         TotalToken : TokenAmount,
         RemainingToken : TokenAmount,
         StartTime: now(),
-        VestingDuration: now() + 300,
-        LastClaimTime: now() + 30,
+        VestingDuration: now() + 630,
+        LastClaimTime: now() + 90,
         CliffTime: 90,
         ReleaseInterval:  30,
         PhaseName: seedData.name,
@@ -350,8 +346,8 @@ contract SamplePresale with Ownable, Deployable {
         TotalToken : msg.amount ,
         remainingToken : msg.amount,
         startTime : now() ,
-        vestingDuration : now() + 300 ,
-        lastClaimTime : now() + 30 ,
+        vestingDuration : now() + 750 ,
+        lastClaimTime : now() + 90 ,
         releaseInterval : 30,
         initialCliff : 90 ,
         phaseName : seedData.name,
@@ -367,8 +363,8 @@ contract SamplePresale with Ownable, Deployable {
         TotalToken : msg.amount ,
         remainingToken : msg.amount,
         startTime : now() ,
-        vestingDuration : now() + 300 ,
-        lastClaimTime : now() + 30 ,
+        vestingDuration : now() + 750 ,
+        lastClaimTime : now() + 90 ,
         releaseInterval : 30,
         initialCliff : 90 ,
         phaseName : seedData.name,
@@ -396,10 +392,10 @@ contract SamplePresale with Ownable, Deployable {
         TotalToken : msg.amount ,
         remainingToken : msg.amount,
         startTime : now() ,
-        vestingDuration : now() + 300 ,
+        vestingDuration : now() + 570 ,
         lastClaimTime : now() + 30 ,
         releaseInterval : 30,
-        initialCliff : 90 ,
+        initialCliff : 30 ,
         phaseName : seedData.name,
     };
     gotButsure.data.set(gotButsure.size + 1,userInfo);
@@ -413,10 +409,10 @@ contract SamplePresale with Ownable, Deployable {
         TotalToken : msg.amount ,
         remainingToken : msg.amount,
         startTime : now() ,
-        vestingDuration : now() + 300 ,
+        vestingDuration : now() + 570 ,
         lastClaimTime : now() + 30 ,
         releaseInterval : 30,
-        initialCliff : 90 ,
+        initialCliff : 30 ,
         phaseName : seedData.name,
     };
     x.set(1,userInfo);
@@ -442,10 +438,10 @@ contract SamplePresale with Ownable, Deployable {
         TotalToken : msg.amount ,
         remainingToken : msg.amount,
         startTime : now() ,
-        vestingDuration : now() + 300 ,
-        lastClaimTime : now() + 30 ,
+        vestingDuration : now() + 1200 ,
+        lastClaimTime : now() + 120 ,
         releaseInterval : 30,
-        initialCliff : 90 ,
+        initialCliff : 120 ,
         phaseName : seedData.name,
     };
     gotButsure.data.set(gotButsure.size + 1,userInfo);
@@ -459,10 +455,10 @@ contract SamplePresale with Ownable, Deployable {
         TotalToken : msg.amount ,
         remainingToken : msg.amount,
         startTime : now() ,
-        vestingDuration : now() + 300 ,
-        lastClaimTime : now() + 30 ,
+        vestingDuration : now() + 1200 ,
+        lastClaimTime : now() + 120 ,
         releaseInterval : 30,
-        initialCliff : 90 ,
+        initialCliff : 120 ,
         phaseName : seedData.name,
     };
     x.set(1,userInfo);
@@ -488,10 +484,10 @@ contract SamplePresale with Ownable, Deployable {
         TotalToken : msg.amount ,
         remainingToken : msg.amount,
         startTime : now() ,
-        vestingDuration : now() + 300 ,
-        lastClaimTime : now() + 30 ,
+        vestingDuration : now() + 840 ,
+        lastClaimTime : now() + 120 ,
         releaseInterval : 30,
-        initialCliff : 90 ,
+        initialCliff : 120 ,
         phaseName : seedData.name,
     };
     gotButsure.data.set(gotButsure.size + 1,userInfo);
@@ -505,10 +501,10 @@ contract SamplePresale with Ownable, Deployable {
         TotalToken : msg.amount ,
         remainingToken : msg.amount,
         startTime : now() ,
-        vestingDuration : now() + 300 ,
-        lastClaimTime : now() + 30 ,
+        vestingDuration : now() + 840 ,
+        lastClaimTime : now() + 120 ,
         releaseInterval : 30,
-        initialCliff : 90 ,
+        initialCliff : 120 ,
         phaseName : seedData.name,
     };
     x.set(1,userInfo);
@@ -534,8 +530,8 @@ contract SamplePresale with Ownable, Deployable {
         TotalToken : msg.amount ,
         remainingToken : msg.amount,
         startTime : now() ,
-        vestingDuration : now() + 300 ,
-        lastClaimTime : now() + 30 ,
+        vestingDuration : now() + 810 ,
+        lastClaimTime : now() + 90 ,
         releaseInterval : 30,
         initialCliff : 90 ,
         phaseName : seedData.name,
@@ -551,8 +547,8 @@ contract SamplePresale with Ownable, Deployable {
         TotalToken : msg.amount ,
         remainingToken : msg.amount,
         startTime : now() ,
-        vestingDuration : now() + 300 ,
-        lastClaimTime : now() + 30 ,
+        vestingDuration : now() + 810 ,
+        lastClaimTime : now() + 90 ,
         releaseInterval : 30,
         initialCliff : 90 ,
         phaseName : seedData.name,
@@ -623,7 +619,7 @@ contract SamplePresale with Ownable, Deployable {
                     destination: msg.senderadd,
                     response_destination: msg.senderadd,
                     custom_payload: null,
-                    forward_ton_amount: 1,
+                    forward_ton_amount: ton("0.01"),
                     forward_payload: "".asComment().beginParse(),
                 }.toCell()
             });
@@ -684,257 +680,527 @@ contract SamplePresale with Ownable, Deployable {
       });
   } 
 
-  receive(msg : ClaimPrivateSaleTokens) {
-    let privatesaleData : PrivateSaleArrayData = self.PrivateSaleData.get(sender())!!;
-    let size:Int =privatesaleData.size;
-    let x:map<Int,TokenVestingInfo> =  privatesaleData.data;
-    let amount: Int = 0;
-    foreach(key, value in x){
-        if (now() >= value.vestingDuration) {
-            amount += value.remainingToken;
-            value.lastClaimTime = value.vestingDuration;
-            value.remainingToken = 0;
-            x.set(key,value);
-            let newStruct: PrivateSaleArrayData = PrivateSaleArrayData{
-              data:x,
-              size:size,
-            };
-            self.PrivateSaleData.set(sender(),newStruct);
-        }else {
-            let totalClaim : Int = (now() - value.lastClaimTime) /
-                value.releaseInterval;
-            let seedData: TokenDistrubuteInfo = self.TokenData.get(1)!!;
-            let tokenClaimed : Int = ((value.TotalToken / 10000) * seedData.percentage) * totalClaim;
-            amount += tokenClaimed;
-            value.lastClaimTime += totalClaim * value.releaseInterval;
-            value.remainingToken -= tokenClaimed;
-            x.set(key,value);
-             let newStruct: PrivateSaleArrayData = PrivateSaleArrayData{
-              data:x,
-              size:size,
-            };
-            self.PrivateSaleData.set(sender(),newStruct);
-        }
-        require(amount == 0,"You have not sufficient Token");
+  // receive(msg : ClaimPrivateSaleTokens) {
+  //   let privatesaleData : PrivateSaleArrayData = self.PrivateSaleData.get(sender())!!;
+  //   let size:Int =privatesaleData.size;
+  //   let x:map<Int,TokenVestingInfo> =  privatesaleData.data;
+  //   let amount: Int = 0;
+  //   foreach(key, value in x){
+  //       if (now() >= value.vestingDuration) {
+  //           amount += value.remainingToken;
+  //           value.lastClaimTime = value.vestingDuration;
+  //           value.remainingToken = 0;
+  //           x.set(key,value);
+  //           let newStruct: PrivateSaleArrayData = PrivateSaleArrayData{
+  //             data:x,
+  //             size:size,
+  //           };
+  //           self.PrivateSaleData.set(sender(),newStruct);
+  //       }else {
+  //           let totalClaim : Int = (now() - value.lastClaimTime) /
+  //               value.releaseInterval;
+  //           let seedData: TokenDistrubuteInfo = self.TokenData.get(1)!!;
+  //           let tokenClaimed : Int = ((value.TotalToken / 10000) * seedData.percentage) * totalClaim;
+  //           amount += tokenClaimed;
+  //           value.lastClaimTime += totalClaim * value.releaseInterval;
+  //           value.remainingToken -= tokenClaimed;
+  //           x.set(key,value);
+  //            let newStruct: PrivateSaleArrayData = PrivateSaleArrayData{
+  //             data:x,
+  //             size:size,
+  //           };
+  //           self.PrivateSaleData.set(sender(),newStruct);
+  //       }
+  //       require(amount == 0,"You have not sufficient Token");
+  //     }
+  //        send(SendParameters{
+  //               to: msg.cenderadd,
+  //               value: 0,
+  //               mode:  SendRemainingBalance,
+  //               bounce: true,
+  //               body: TokenTransfer{
+  //                   queryId:0,
+  //                   amount: amount,
+  //                   destination: msg.senderadd,
+  //                   response_destination: msg.senderadd,
+  //                   custom_payload: null,
+  //                   forward_ton_amount: 1,
+  //                   forward_payload: "".asComment().beginParse(),
+  //               }.toCell()
+  //           });
+  // }
+
+  receive(msg:ClaimPrivateSaleTokens){
+      let privateSaleData : PrivateSaleArrayData  = self.PrivateSaleData.get(sender())!!;
+      let size : Int =privateSaleData.size;
+      let x : map<Int, TokenVestingInfo> =  privateSaleData.data;
+      let cheker : TokenVestingInfo? =  privateSaleData.data.get(msg.index);
+      require(cheker != null,"Index not found!");
+      let value : TokenVestingInfo =  privateSaleData.data.get(msg.index)!!;
+      
+      let amount: Int = 0;
+      
+      if (now() >= value.vestingDuration) {
+          amount += value.remainingToken;
+          value.lastClaimTime = value.vestingDuration;
+          value.remainingToken = 0;
+          x.set(msg.index,value);
+          let newStruct: PrivateSaleArrayData = PrivateSaleArrayData{
+            data:x,
+            size:size,
+          };
+          self.PrivateSaleData.set(sender(),newStruct);
+      }else {
+          let totalClaim : Int = (now() - value.lastClaimTime) /
+              value.releaseInterval;
+          let seedData: TokenDistrubuteInfo = self.TokenData.get(0)!!;
+          let tokenClaimed : Int = ((value.TotalToken / 10000) * seedData.percentage) * totalClaim;
+          amount += tokenClaimed;
+          value.lastClaimTime += totalClaim * value.releaseInterval;
+          value.remainingToken -= tokenClaimed;
+          x.set(msg.index,value);
+           let newStruct: PrivateSaleArrayData = PrivateSaleArrayData{
+            data:x,
+            size:size,
+          };
+          self.PrivateSaleData.set(sender(),newStruct);
       }
-         send(SendParameters{
-                to: msg.cenderadd,
-                value: 0,
-                mode:  SendRemainingBalance,
-                bounce: true,
-                body: TokenTransfer{
-                    queryId:0,
-                    amount: amount,
-                    destination: msg.senderadd,
-                    response_destination: msg.senderadd,
-                    custom_payload: null,
-                    forward_ton_amount: 1,
-                    forward_payload: "".asComment().beginParse(),
-                }.toCell()
-            });
+      
+      require(amount != 0,"You have not sufficient Token");
+      send(SendParameters{
+              to: msg.cenderadd,
+              value: 0,
+              mode:  SendRemainingBalance,
+              bounce: true,
+              body: TokenTransfer{
+                  queryId:0,
+                  amount: amount,
+                  destination: msg.senderadd,
+                  response_destination: msg.senderadd,
+                  custom_payload: null,
+                  forward_ton_amount: 1,
+                  forward_payload: "".asComment().beginParse(),
+              }.toCell()
+      });
+  } 
+
+  // receive(msg : ClaimMarketingeTokens) {
+  //   let marketingData : MarketingArrayData = self.MarketingData.get(sender())!!;
+  //   let size:Int = marketingData.size;
+  //   let x:map<Int,TokenVestingInfo> =  marketingData.data;
+  //   let amount: Int = 0;
+  //   foreach(key, value in x){
+  //       if (now() >= value.vestingDuration) {
+  //           amount += value.remainingToken;
+  //           value.lastClaimTime = value.vestingDuration;
+  //           value.remainingToken = 0;
+  //           x.set(key,value);
+  //           let newStruct: MarketingArrayData = MarketingArrayData{
+  //             data:x,
+  //             size:size,
+  //           };
+  //           self.MarketingData.set(sender(),newStruct);
+  //       }else {
+  //           let totalClaim : Int = (now() - value.lastClaimTime) /
+  //               value.releaseInterval;
+  //           let seedData: TokenDistrubuteInfo = self.TokenData.get(9)!!;
+  //           let tokenClaimed : Int = ((value.TotalToken / 10000) * seedData.percentage) * totalClaim;
+  //           amount += tokenClaimed;
+  //           value.lastClaimTime += totalClaim * value.releaseInterval;
+  //           value.remainingToken -= tokenClaimed;
+  //           x.set(key,value);
+  //            let newStruct: MarketingArrayData = MarketingArrayData{
+  //             data:x,
+  //             size:size,
+  //           };
+  //           self.MarketingData.set(sender(),newStruct);
+  //       }
+  //       require(amount == 0,"You have not sufficient Token");
+  //     }
+  //        send(SendParameters{
+  //               to: msg.cenderadd,
+  //               value: 0,
+  //               mode:  SendRemainingBalance,
+  //               bounce: true,
+  //               body: TokenTransfer{
+  //                   queryId:0,
+  //                   amount: amount,
+  //                   destination: msg.senderadd,
+  //                   response_destination: msg.senderadd,
+  //                   custom_payload: null,
+  //                   forward_ton_amount: 1,
+  //                   forward_payload: "".asComment().beginParse(),
+  //               }.toCell()
+  //           });
+  // }
+
+  receive(msg:ClaimMarketingeTokens){
+      let marketingSaleData : MarketingArrayData  = self.MarketingData.get(sender())!!;
+      let size : Int =marketingSaleData.size;
+      let x : map<Int, TokenVestingInfo> =  marketingSaleData.data;
+      let cheker : TokenVestingInfo? =  marketingSaleData.data.get(msg.index);
+      require(cheker != null,"Index not found!");
+      let value : TokenVestingInfo =  marketingSaleData.data.get(msg.index)!!;
+      
+      let amount: Int = 0;
+      
+      if (now() >= value.vestingDuration) {
+          amount += value.remainingToken;
+          value.lastClaimTime = value.vestingDuration;
+          value.remainingToken = 0;
+          x.set(msg.index,value);
+          let newStruct: MarketingArrayData = MarketingArrayData{
+            data:x,
+            size:size,
+          };
+          self.MarketingData.set(sender(),newStruct);
+      }else {
+          let totalClaim : Int = (now() - value.lastClaimTime) /
+              value.releaseInterval;
+          let seedData: TokenDistrubuteInfo = self.TokenData.get(0)!!;
+          let tokenClaimed : Int = ((value.TotalToken / 10000) * seedData.percentage) * totalClaim;
+          amount += tokenClaimed;
+          value.lastClaimTime += totalClaim * value.releaseInterval;
+          value.remainingToken -= tokenClaimed;
+          x.set(msg.index,value);
+           let newStruct: MarketingArrayData = MarketingArrayData{
+            data:x,
+            size:size,
+          };
+          self.MarketingData.set(sender(),newStruct);
+      }
+      
+      require(amount != 0,"You have not sufficient Token");
+      send(SendParameters{
+              to: msg.cenderadd,
+              value: 0,
+              mode:  SendRemainingBalance,
+              bounce: true,
+              body: TokenTransfer{
+                  queryId:0,
+                  amount: amount,
+                  destination: msg.senderadd,
+                  response_destination: msg.senderadd,
+                  custom_payload: null,
+                  forward_ton_amount: 1,
+                  forward_payload: "".asComment().beginParse(),
+              }.toCell()
+      });
   }
 
-  receive(msg : ClaimMarketingeTokens) {
-    let marketingData : MarketingArrayData = self.MarketingData.get(sender())!!;
-    let size:Int = marketingData.size;
-    let x:map<Int,TokenVestingInfo> =  marketingData.data;
-    let amount: Int = 0;
-    foreach(key, value in x){
-        if (now() >= value.vestingDuration) {
-            amount += value.remainingToken;
-            value.lastClaimTime = value.vestingDuration;
-            value.remainingToken = 0;
-            x.set(key,value);
-            let newStruct: MarketingArrayData = MarketingArrayData{
-              data:x,
-              size:size,
-            };
-            self.MarketingData.set(sender(),newStruct);
-        }else {
-            let totalClaim : Int = (now() - value.lastClaimTime) /
-                value.releaseInterval;
-            let seedData: TokenDistrubuteInfo = self.TokenData.get(9)!!;
-            let tokenClaimed : Int = ((value.TotalToken / 10000) * seedData.percentage) * totalClaim;
-            amount += tokenClaimed;
-            value.lastClaimTime += totalClaim * value.releaseInterval;
-            value.remainingToken -= tokenClaimed;
-            x.set(key,value);
-             let newStruct: MarketingArrayData = MarketingArrayData{
-              data:x,
-              size:size,
-            };
-            self.MarketingData.set(sender(),newStruct);
-        }
-        require(amount == 0,"You have not sufficient Token");
+  // receive(msg : ClaimTeamTokens) {
+  //   let teamDataInfo : TeamArrayData = self.TeamData.get(sender())!!;
+  //   let size:Int = teamDataInfo.size;
+  //   let x:map<Int,TokenVestingInfo> =  teamDataInfo.data;
+  //   let amount: Int = 0;
+  //   foreach(key, value in x){
+  //       if (now() >= value.vestingDuration) {
+  //           amount += value.remainingToken;
+  //           value.lastClaimTime = value.vestingDuration;
+  //           value.remainingToken = 0;
+  //           x.set(key,value);
+  //           let newStruct: TeamArrayData = TeamArrayData{
+  //             data:x,
+  //             size:size,
+  //           };
+  //           self.TeamData.set(sender(),newStruct);
+  //       }else {
+  //           let totalClaim : Int = (now() - value.lastClaimTime) /
+  //               value.releaseInterval;
+  //           let seedData: TokenDistrubuteInfo = self.TokenData.get(4)!!;
+  //           let tokenClaimed : Int = ((value.TotalToken / 10000) * seedData.percentage) * totalClaim;
+  //           amount += tokenClaimed;
+  //           value.lastClaimTime += totalClaim * value.releaseInterval;
+  //           value.remainingToken -= tokenClaimed;
+  //           x.set(key,value);
+  //            let newStruct: TeamArrayData = TeamArrayData{
+  //             data:x,
+  //             size:size,
+  //           };
+  //           self.TeamData.set(sender(),newStruct);
+  //       }
+  //       require(amount == 0,"You have not sufficient Token");
+  //     }
+  //        send(SendParameters{
+  //               to: msg.cenderadd,
+  //               value: 0,
+  //               mode:  SendRemainingBalance,
+  //               bounce: true,
+  //               body: TokenTransfer{
+  //                   queryId:0,
+  //                   amount: amount,
+  //                   destination: msg.senderadd,
+  //                   response_destination: msg.senderadd,
+  //                   custom_payload: null,
+  //                   forward_ton_amount: 1,
+  //                   forward_payload: "".asComment().beginParse(),
+  //               }.toCell()
+  //           });
+  // }
+
+  receive(msg: ClaimTeamTokens){
+      let teamSaleData : TeamArrayData  = self.TeamData.get(sender())!!;
+      let size : Int =teamSaleData.size;
+      let x : map<Int, TokenVestingInfo> =  teamSaleData.data;
+      let cheker : TokenVestingInfo? =  teamSaleData.data.get(msg.index);
+      require(cheker != null,"Index not found!");
+      let value : TokenVestingInfo =  teamSaleData.data.get(msg.index)!!;
+      
+      let amount: Int = 0;
+      
+      if (now() >= value.vestingDuration) {
+          amount += value.remainingToken;
+          value.lastClaimTime = value.vestingDuration;
+          value.remainingToken = 0;
+          x.set(msg.index,value);
+          let newStruct: TeamArrayData = TeamArrayData{
+            data:x,
+            size:size,
+          };
+          self.TeamData.set(sender(),newStruct);
+      }else {
+          let totalClaim : Int = (now() - value.lastClaimTime) /
+              value.releaseInterval;
+          let seedData: TokenDistrubuteInfo = self.TokenData.get(0)!!;
+          let tokenClaimed : Int = ((value.TotalToken / 10000) * seedData.percentage) * totalClaim;
+          amount += tokenClaimed;
+          value.lastClaimTime += totalClaim * value.releaseInterval;
+          value.remainingToken -= tokenClaimed;
+          x.set(msg.index,value);
+           let newStruct: TeamArrayData = TeamArrayData{
+            data:x,
+            size:size,
+          };
+          self.TeamData.set(sender(),newStruct);
       }
-         send(SendParameters{
-                to: msg.cenderadd,
-                value: 0,
-                mode:  SendRemainingBalance,
-                bounce: true,
-                body: TokenTransfer{
-                    queryId:0,
-                    amount: amount,
-                    destination: msg.senderadd,
-                    response_destination: msg.senderadd,
-                    custom_payload: null,
-                    forward_ton_amount: 1,
-                    forward_payload: "".asComment().beginParse(),
-                }.toCell()
-            });
+      
+      require(amount != 0,"You have not sufficient Token");
+      send(SendParameters{
+              to: msg.cenderadd,
+              value: 0,
+              mode:  SendRemainingBalance,
+              bounce: true,
+              body: TokenTransfer{
+                  queryId:0,
+                  amount: amount,
+                  destination: msg.senderadd,
+                  response_destination: msg.senderadd,
+                  custom_payload: null,
+                  forward_ton_amount: 1,
+                  forward_payload: "".asComment().beginParse(),
+              }.toCell()
+      });
   }
 
-  receive(msg : ClaimTeamTokens) {
-    let teamDataInfo : TeamArrayData = self.TeamData.get(sender())!!;
-    let size:Int = teamDataInfo.size;
-    let x:map<Int,TokenVestingInfo> =  teamDataInfo.data;
-    let amount: Int = 0;
-    foreach(key, value in x){
-        if (now() >= value.vestingDuration) {
-            amount += value.remainingToken;
-            value.lastClaimTime = value.vestingDuration;
-            value.remainingToken = 0;
-            x.set(key,value);
-            let newStruct: TeamArrayData = TeamArrayData{
-              data:x,
-              size:size,
-            };
-            self.TeamData.set(sender(),newStruct);
-        }else {
-            let totalClaim : Int = (now() - value.lastClaimTime) /
-                value.releaseInterval;
-            let seedData: TokenDistrubuteInfo = self.TokenData.get(4)!!;
-            let tokenClaimed : Int = ((value.TotalToken / 10000) * seedData.percentage) * totalClaim;
-            amount += tokenClaimed;
-            value.lastClaimTime += totalClaim * value.releaseInterval;
-            value.remainingToken -= tokenClaimed;
-            x.set(key,value);
-             let newStruct: TeamArrayData = TeamArrayData{
-              data:x,
-              size:size,
-            };
-            self.TeamData.set(sender(),newStruct);
-        }
-        require(amount == 0,"You have not sufficient Token");
+  // receive(msg : ClaimAdvisorTokens) {
+  //   let teamDataInfo : AdvisorArrayData = self.AdvisorData.get(sender())!!;
+  //   let size:Int = teamDataInfo.size;
+  //   let x:map<Int,TokenVestingInfo> =  teamDataInfo.data;
+  //   let amount: Int = 0;
+  //   foreach(key, value in x){
+  //       if (now() >= value.vestingDuration) {
+  //           amount += value.remainingToken;
+  //           value.lastClaimTime = value.vestingDuration;
+  //           value.remainingToken = 0;
+  //           x.set(key,value);
+  //           let newStruct: AdvisorArrayData = AdvisorArrayData{
+  //             data:x,
+  //             size:size,
+  //           };
+  //           self.AdvisorData.set(sender(),newStruct);
+  //       }else {
+  //           let totalClaim : Int = (now() - value.lastClaimTime) /
+  //               value.releaseInterval;
+  //           let seedData: TokenDistrubuteInfo = self.TokenData.get(5)!!;
+  //           let tokenClaimed : Int = ((value.TotalToken / 10000) * seedData.percentage) * totalClaim;
+  //           amount += tokenClaimed;
+  //           value.lastClaimTime += totalClaim * value.releaseInterval;
+  //           value.remainingToken -= tokenClaimed;
+  //           x.set(key,value);
+  //            let newStruct: AdvisorArrayData = AdvisorArrayData{
+  //             data:x,
+  //             size:size,
+  //           };
+  //           self.AdvisorData.set(sender(),newStruct);
+  //       }
+  //       require(amount == 0,"You have not sufficient Token");
+  //     }
+  //       send(SendParameters{
+  //               to: msg.cenderadd,
+  //               value: 0,
+  //               mode:  SendRemainingBalance,
+  //               bounce: true,
+  //               body: TokenTransfer{
+  //                   queryId:0,
+  //                   amount: amount,
+  //                   destination: msg.senderadd,
+  //                   response_destination: msg.senderadd,
+  //                   custom_payload: null,
+  //                   forward_ton_amount: 1,
+  //                   forward_payload: "".asComment().beginParse(),
+  //               }.toCell()
+  //       });
+  // }
+
+  receive(msg: ClaimAdvisorTokens){
+      let advisorSaleData : AdvisorArrayData  = self.AdvisorData.get(sender())!!;
+      let size : Int =advisorSaleData.size;
+      let x : map<Int, TokenVestingInfo> =  advisorSaleData.data;
+      let cheker : TokenVestingInfo? =  advisorSaleData.data.get(msg.index);
+      require(cheker != null,"Index not found!");
+      let value : TokenVestingInfo =  advisorSaleData.data.get(msg.index)!!;
+      
+      let amount: Int = 0;
+      
+      if (now() >= value.vestingDuration) {
+          amount += value.remainingToken;
+          value.lastClaimTime = value.vestingDuration;
+          value.remainingToken = 0;
+          x.set(msg.index,value);
+          let newStruct: AdvisorArrayData = AdvisorArrayData{
+            data:x,
+            size:size,
+          };
+          self.AdvisorData.set(sender(),newStruct);
+      }else {
+          let totalClaim : Int = (now() - value.lastClaimTime) /
+              value.releaseInterval;
+          let seedData: TokenDistrubuteInfo = self.TokenData.get(0)!!;
+          let tokenClaimed : Int = ((value.TotalToken / 10000) * seedData.percentage) * totalClaim;
+          amount += tokenClaimed;
+          value.lastClaimTime += totalClaim * value.releaseInterval;
+          value.remainingToken -= tokenClaimed;
+          x.set(msg.index,value);
+           let newStruct: AdvisorArrayData = AdvisorArrayData{
+            data:x,
+            size:size,
+          };
+          self.AdvisorData.set(sender(),newStruct);
       }
-         send(SendParameters{
-                to: msg.cenderadd,
-                value: 0,
-                mode:  SendRemainingBalance,
-                bounce: true,
-                body: TokenTransfer{
-                    queryId:0,
-                    amount: amount,
-                    destination: msg.senderadd,
-                    response_destination: msg.senderadd,
-                    custom_payload: null,
-                    forward_ton_amount: 1,
-                    forward_payload: "".asComment().beginParse(),
-                }.toCell()
-            });
+      
+      require(amount != 0,"You have not sufficient Token");
+      send(SendParameters{
+              to: msg.cenderadd,
+              value: 0,
+              mode:  SendRemainingBalance,
+              bounce: true,
+              body: TokenTransfer{
+                  queryId:0,
+                  amount: amount,
+                  destination: msg.senderadd,
+                  response_destination: msg.senderadd,
+                  custom_payload: null,
+                  forward_ton_amount: 1,
+                  forward_payload: "".asComment().beginParse(),
+              }.toCell()
+      });
   }
 
-  receive(msg : ClaimAdvisorTokens) {
-    let teamDataInfo : AdvisorArrayData = self.AdvisorData.get(sender())!!;
-    let size:Int = teamDataInfo.size;
-    let x:map<Int,TokenVestingInfo> =  teamDataInfo.data;
-    let amount: Int = 0;
-    foreach(key, value in x){
-        if (now() >= value.vestingDuration) {
-            amount += value.remainingToken;
-            value.lastClaimTime = value.vestingDuration;
-            value.remainingToken = 0;
-            x.set(key,value);
-            let newStruct: AdvisorArrayData = AdvisorArrayData{
-              data:x,
-              size:size,
-            };
-            self.AdvisorData.set(sender(),newStruct);
-        }else {
-            let totalClaim : Int = (now() - value.lastClaimTime) /
-                value.releaseInterval;
-            let seedData: TokenDistrubuteInfo = self.TokenData.get(5)!!;
-            let tokenClaimed : Int = ((value.TotalToken / 10000) * seedData.percentage) * totalClaim;
-            amount += tokenClaimed;
-            value.lastClaimTime += totalClaim * value.releaseInterval;
-            value.remainingToken -= tokenClaimed;
-            x.set(key,value);
-             let newStruct: AdvisorArrayData = AdvisorArrayData{
-              data:x,
-              size:size,
-            };
-            self.AdvisorData.set(sender(),newStruct);
-        }
-        require(amount == 0,"You have not sufficient Token");
+  // receive(msg : ClaimTreasuryTokens) {
+  //   let teamDataInfo : TreasuryArrayData = self.TreasuryData.get(sender())!!;
+  //   let size:Int = teamDataInfo.size;
+  //   let x:map<Int,TokenVestingInfo> =  teamDataInfo.data;
+  //   let amount: Int = 0;
+  //   foreach(key, value in x){
+  //       if (now() >= value.vestingDuration) {
+  //           amount += value.remainingToken;
+  //           value.lastClaimTime = value.vestingDuration;
+  //           value.remainingToken = 0;
+  //           x.set(key,value);
+  //           let newStruct: TreasuryArrayData = TreasuryArrayData{
+  //             data:x,
+  //             size:size,
+  //           };
+  //           self.TreasuryData.set(sender(),newStruct);
+  //       }else {
+  //           let totalClaim : Int = (now() - value.lastClaimTime) /
+  //               value.releaseInterval;
+  //           let seedData: TokenDistrubuteInfo = self.TokenData.get(10)!!;
+  //           let tokenClaimed : Int = ((value.TotalToken / 10000) * seedData.percentage) * totalClaim;
+  //           amount += tokenClaimed;
+  //           value.lastClaimTime += totalClaim * value.releaseInterval;
+  //           value.remainingToken -= tokenClaimed;
+  //           x.set(key,value);
+  //            let newStruct: TreasuryArrayData = TreasuryArrayData{
+  //             data:x,
+  //             size:size,
+  //           };
+  //           self.TreasuryData.set(sender(),newStruct);
+  //       }
+  //       require(amount == 0,"You have not sufficient Token");
+  //     }
+  //       send(SendParameters{
+  //               to: msg.cenderadd,
+  //               value: 0,
+  //               mode:  SendRemainingBalance,
+  //               bounce: true,
+  //               body: TokenTransfer{
+  //                   queryId:0,
+  //                   amount: amount,
+  //                   destination: msg.senderadd,
+  //                   response_destination: msg.senderadd,
+  //                   custom_payload: null,
+  //                   forward_ton_amount: 1,
+  //                   forward_payload: "".asComment().beginParse(),
+  //               }.toCell()
+  //       });
+  // }
+
+  receive(msg: ClaimTreasuryTokens){
+      let tresurySaleData : TreasuryArrayData  = self.TreasuryData.get(sender())!!;
+      let size : Int =tresurySaleData.size;
+      let x : map<Int, TokenVestingInfo> =  tresurySaleData.data;
+      let cheker : TokenVestingInfo? =  tresurySaleData.data.get(msg.index);
+      require(cheker != null,"Index not found!");
+      let value : TokenVestingInfo =  tresurySaleData.data.get(msg.index)!!;
+      
+      let amount: Int = 0;
+      
+      if (now() >= value.vestingDuration) {
+          amount += value.remainingToken;
+          value.lastClaimTime = value.vestingDuration;
+          value.remainingToken = 0;
+          x.set(msg.index,value);
+          let newStruct: TreasuryArrayData = TreasuryArrayData{
+            data:x,
+            size:size,
+          };
+          self.TreasuryData.set(sender(),newStruct);
+      }else {
+          let totalClaim : Int = (now() - value.lastClaimTime) /
+              value.releaseInterval;
+          let seedData: TokenDistrubuteInfo = self.TokenData.get(0)!!;
+          let tokenClaimed : Int = ((value.TotalToken / 10000) * seedData.percentage) * totalClaim;
+          amount += tokenClaimed;
+          value.lastClaimTime += totalClaim * value.releaseInterval;
+          value.remainingToken -= tokenClaimed;
+          x.set(msg.index,value);
+           let newStruct: TreasuryArrayData = TreasuryArrayData{
+            data:x,
+            size:size,
+          };
+          self.TreasuryData.set(sender(),newStruct);
       }
-        send(SendParameters{
-                to: msg.cenderadd,
-                value: 0,
-                mode:  SendRemainingBalance,
-                bounce: true,
-                body: TokenTransfer{
-                    queryId:0,
-                    amount: amount,
-                    destination: msg.senderadd,
-                    response_destination: msg.senderadd,
-                    custom_payload: null,
-                    forward_ton_amount: 1,
-                    forward_payload: "".asComment().beginParse(),
-                }.toCell()
-        });
+      
+      require(amount != 0,"You have not sufficient Token");
+      send(SendParameters{
+              to: msg.cenderadd,
+              value: 0,
+              mode:  SendRemainingBalance,
+              bounce: true,
+              body: TokenTransfer{
+                  queryId:0,
+                  amount: amount,
+                  destination: msg.senderadd,
+                  response_destination: msg.senderadd,
+                  custom_payload: null,
+                  forward_ton_amount: 1,
+                  forward_payload: "".asComment().beginParse(),
+              }.toCell()
+      });
   }
 
-  receive(msg : ClaimTreasuryTokens) {
-    let teamDataInfo : TreasuryArrayData = self.TreasuryData.get(sender())!!;
-    let size:Int = teamDataInfo.size;
-    let x:map<Int,TokenVestingInfo> =  teamDataInfo.data;
-    let amount: Int = 0;
-    foreach(key, value in x){
-        if (now() >= value.vestingDuration) {
-            amount += value.remainingToken;
-            value.lastClaimTime = value.vestingDuration;
-            value.remainingToken = 0;
-            x.set(key,value);
-            let newStruct: TreasuryArrayData = TreasuryArrayData{
-              data:x,
-              size:size,
-            };
-            self.TreasuryData.set(sender(),newStruct);
-        }else {
-            let totalClaim : Int = (now() - value.lastClaimTime) /
-                value.releaseInterval;
-            let seedData: TokenDistrubuteInfo = self.TokenData.get(10)!!;
-            let tokenClaimed : Int = ((value.TotalToken / 10000) * seedData.percentage) * totalClaim;
-            amount += tokenClaimed;
-            value.lastClaimTime += totalClaim * value.releaseInterval;
-            value.remainingToken -= tokenClaimed;
-            x.set(key,value);
-             let newStruct: TreasuryArrayData = TreasuryArrayData{
-              data:x,
-              size:size,
-            };
-            self.TreasuryData.set(sender(),newStruct);
-        }
-        require(amount == 0,"You have not sufficient Token");
-      }
-        send(SendParameters{
-                to: msg.cenderadd,
-                value: 0,
-                mode:  SendRemainingBalance,
-                bounce: true,
-                body: TokenTransfer{
-                    queryId:0,
-                    amount: amount,
-                    destination: msg.senderadd,
-                    response_destination: msg.senderadd,
-                    custom_payload: null,
-                    forward_ton_amount: 1,
-                    forward_payload: "".asComment().beginParse(),
-                }.toCell()
-        });
-  }
-
-  fun AddReferAddress(referrer: Address, amount: Int) //addReferAddress(address referrer) private {
+  fun AddReferAddress(referrer: Address, amount: Int) 
   {
       let ne: Address = newAddress(0,0);
       let amt:Int = (amount * 5) / 100;

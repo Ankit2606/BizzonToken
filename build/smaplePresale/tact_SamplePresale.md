@@ -1,9 +1,9 @@
 # TACT Compilation Report
 Contract: SamplePresale
-BOC Size: 10716 bytes
+BOC Size: 11374 bytes
 
 # Types
-Total Types: 42
+Total Types: 41
 
 ## StateInit
 TLB: `_ code:^cell data:^cell = StateInit`
@@ -117,10 +117,6 @@ Signature: `TreasuryArrayData{data:dict<int, ^TokenVestingInfo{beneficiary:addre
 TLB: `buy_tokens#5abfc0c2 referrer:address usdt:coins = BuyTokens`
 Signature: `BuyTokens{referrer:address,usdt:coins}`
 
-## AddReferAddress
-TLB: `add_refer_address#ea983c55 referrer:address = AddReferAddress`
-Signature: `AddReferAddress{referrer:address}`
-
 ## ClaimReferralTokens
 TLB: `claim_referral_tokens#76a9753f cenderadd:address = ClaimReferralTokens`
 Signature: `ClaimReferralTokens{cenderadd:address}`
@@ -154,24 +150,24 @@ TLB: `claim_single_token#9d9fc853 index:int257 cenderadd:address senderadd:addre
 Signature: `ClaimSingleToken{index:int257,cenderadd:address,senderadd:address}`
 
 ## ClaimPrivateSaleTokens
-TLB: `claim_private_sale_tokens#e05cba04 amount:int257 cenderadd:address senderadd:address = ClaimPrivateSaleTokens`
-Signature: `ClaimPrivateSaleTokens{amount:int257,cenderadd:address,senderadd:address}`
+TLB: `claim_private_sale_tokens#107d24eb index:int257 cenderadd:address senderadd:address = ClaimPrivateSaleTokens`
+Signature: `ClaimPrivateSaleTokens{index:int257,cenderadd:address,senderadd:address}`
 
 ## ClaimMarketingeTokens
-TLB: `claim_marketinge_tokens#e06accbb amount:int257 cenderadd:address senderadd:address = ClaimMarketingeTokens`
-Signature: `ClaimMarketingeTokens{amount:int257,cenderadd:address,senderadd:address}`
+TLB: `claim_marketinge_tokens#1dec6ced index:int257 cenderadd:address senderadd:address = ClaimMarketingeTokens`
+Signature: `ClaimMarketingeTokens{index:int257,cenderadd:address,senderadd:address}`
 
 ## ClaimTeamTokens
-TLB: `claim_team_tokens#c8e628b9 amount:int257 cenderadd:address senderadd:address = ClaimTeamTokens`
-Signature: `ClaimTeamTokens{amount:int257,cenderadd:address,senderadd:address}`
+TLB: `claim_team_tokens#b07b0498 index:int257 cenderadd:address senderadd:address = ClaimTeamTokens`
+Signature: `ClaimTeamTokens{index:int257,cenderadd:address,senderadd:address}`
 
 ## ClaimAdvisorTokens
-TLB: `claim_advisor_tokens#fc729521 amount:int257 cenderadd:address senderadd:address = ClaimAdvisorTokens`
-Signature: `ClaimAdvisorTokens{amount:int257,cenderadd:address,senderadd:address}`
+TLB: `claim_advisor_tokens#082a491c index:int257 cenderadd:address senderadd:address = ClaimAdvisorTokens`
+Signature: `ClaimAdvisorTokens{index:int257,cenderadd:address,senderadd:address}`
 
 ## ClaimTreasuryTokens
-TLB: `claim_treasury_tokens#1f73bf94 amount:int257 cenderadd:address senderadd:address = ClaimTreasuryTokens`
-Signature: `ClaimTreasuryTokens{amount:int257,cenderadd:address,senderadd:address}`
+TLB: `claim_treasury_tokens#2b0d7ffd index:int257 cenderadd:address senderadd:address = ClaimTreasuryTokens`
+Signature: `ClaimTreasuryTokens{index:int257,cenderadd:address,senderadd:address}`
 
 # Get Methods
 Total Get Methods: 12

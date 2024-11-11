@@ -393,6 +393,10 @@ tuple $RefferData$_load_opt(cell cl) inline {
     return (vvv'refferalAddress, vvv'amount, vvv'claim);
 }
 
+((slice, int, int)) $RefferData$_constructor_refferalAddress_amount_claim(slice refferalAddress, int amount, int claim) inline {
+    return (refferalAddress, amount, claim);
+}
+
 ;;
 ;; Type: RefferDetails
 ;; TLB: _ reffer:dict<int, ^RefferData{refferalAddress:address,amount:int257,claim:bool}> size:int257 = RefferDetails
@@ -428,10 +432,24 @@ tuple $RefferDetails$_load_opt(cell cl) inline {
     return $RefferDetails$_as_optional(sc~$RefferDetails$_load());
 }
 
+_ $RefferDetails$_get_reffer((cell, int) v) inline {
+    var (v'reffer, v'size) = v;
+    return v'reffer;
+}
+
+_ $RefferDetails$_get_size((cell, int) v) inline {
+    var (v'reffer, v'size) = v;
+    return v'size;
+}
+
 ((cell, int)) $RefferDetails$_not_null(tuple v) inline {
     throw_if(128, null?(v));
     var (cell vvv'reffer, int vvv'size) = __tact_tuple_destroy_2(v);
     return (vvv'reffer, vvv'size);
+}
+
+((cell, int)) $RefferDetails$_constructor_reffer_size(cell reffer, int size) inline {
+    return (reffer, size);
 }
 
 ;;
@@ -766,72 +784,72 @@ tuple $TreasuryArrayData$_load_opt(cell cl) inline {
 
 ;;
 ;; Type: ClaimPrivateSaleTokens
-;; Header: 0xe05cba04
-;; TLB: claim_private_sale_tokens#e05cba04 amount:int257 cenderadd:address senderadd:address = ClaimPrivateSaleTokens
+;; Header: 0x107d24eb
+;; TLB: claim_private_sale_tokens#107d24eb index:int257 cenderadd:address senderadd:address = ClaimPrivateSaleTokens
 ;;
 
 (slice, ((int, slice, slice))) $ClaimPrivateSaleTokens$_load(slice sc_0) inline {
-    throw_unless(129, sc_0~load_uint(32) == 3764173316);
-    var v'amount = sc_0~load_int(257);
+    throw_unless(129, sc_0~load_uint(32) == 276636907);
+    var v'index = sc_0~load_int(257);
     var v'cenderadd = sc_0~__tact_load_address();
     var v'senderadd = sc_0~__tact_load_address();
-    return (sc_0, (v'amount, v'cenderadd, v'senderadd));
+    return (sc_0, (v'index, v'cenderadd, v'senderadd));
 }
 
 ;;
 ;; Type: ClaimMarketingeTokens
-;; Header: 0xe06accbb
-;; TLB: claim_marketinge_tokens#e06accbb amount:int257 cenderadd:address senderadd:address = ClaimMarketingeTokens
+;; Header: 0x1dec6ced
+;; TLB: claim_marketinge_tokens#1dec6ced index:int257 cenderadd:address senderadd:address = ClaimMarketingeTokens
 ;;
 
 (slice, ((int, slice, slice))) $ClaimMarketingeTokens$_load(slice sc_0) inline {
-    throw_unless(129, sc_0~load_uint(32) == 3765095611);
-    var v'amount = sc_0~load_int(257);
+    throw_unless(129, sc_0~load_uint(32) == 502033645);
+    var v'index = sc_0~load_int(257);
     var v'cenderadd = sc_0~__tact_load_address();
     var v'senderadd = sc_0~__tact_load_address();
-    return (sc_0, (v'amount, v'cenderadd, v'senderadd));
+    return (sc_0, (v'index, v'cenderadd, v'senderadd));
 }
 
 ;;
 ;; Type: ClaimTeamTokens
-;; Header: 0xc8e628b9
-;; TLB: claim_team_tokens#c8e628b9 amount:int257 cenderadd:address senderadd:address = ClaimTeamTokens
+;; Header: 0xb07b0498
+;; TLB: claim_team_tokens#b07b0498 index:int257 cenderadd:address senderadd:address = ClaimTeamTokens
 ;;
 
 (slice, ((int, slice, slice))) $ClaimTeamTokens$_load(slice sc_0) inline {
-    throw_unless(129, sc_0~load_uint(32) == 3370526905);
-    var v'amount = sc_0~load_int(257);
+    throw_unless(129, sc_0~load_uint(32) == 2960852120);
+    var v'index = sc_0~load_int(257);
     var v'cenderadd = sc_0~__tact_load_address();
     var v'senderadd = sc_0~__tact_load_address();
-    return (sc_0, (v'amount, v'cenderadd, v'senderadd));
+    return (sc_0, (v'index, v'cenderadd, v'senderadd));
 }
 
 ;;
 ;; Type: ClaimAdvisorTokens
-;; Header: 0xfc729521
-;; TLB: claim_advisor_tokens#fc729521 amount:int257 cenderadd:address senderadd:address = ClaimAdvisorTokens
+;; Header: 0x082a491c
+;; TLB: claim_advisor_tokens#082a491c index:int257 cenderadd:address senderadd:address = ClaimAdvisorTokens
 ;;
 
 (slice, ((int, slice, slice))) $ClaimAdvisorTokens$_load(slice sc_0) inline {
-    throw_unless(129, sc_0~load_uint(32) == 4235367713);
-    var v'amount = sc_0~load_int(257);
+    throw_unless(129, sc_0~load_uint(32) == 136988956);
+    var v'index = sc_0~load_int(257);
     var v'cenderadd = sc_0~__tact_load_address();
     var v'senderadd = sc_0~__tact_load_address();
-    return (sc_0, (v'amount, v'cenderadd, v'senderadd));
+    return (sc_0, (v'index, v'cenderadd, v'senderadd));
 }
 
 ;;
 ;; Type: ClaimTreasuryTokens
-;; Header: 0x1f73bf94
-;; TLB: claim_treasury_tokens#1f73bf94 amount:int257 cenderadd:address senderadd:address = ClaimTreasuryTokens
+;; Header: 0x2b0d7ffd
+;; TLB: claim_treasury_tokens#2b0d7ffd index:int257 cenderadd:address senderadd:address = ClaimTreasuryTokens
 ;;
 
 (slice, ((int, slice, slice))) $ClaimTreasuryTokens$_load(slice sc_0) inline {
-    throw_unless(129, sc_0~load_uint(32) == 527679380);
-    var v'amount = sc_0~load_int(257);
+    throw_unless(129, sc_0~load_uint(32) == 722305021);
+    var v'index = sc_0~load_int(257);
     var v'cenderadd = sc_0~__tact_load_address();
     var v'senderadd = sc_0~__tact_load_address();
-    return (sc_0, (v'amount, v'cenderadd, v'senderadd));
+    return (sc_0, (v'index, v'cenderadd, v'senderadd));
 }
 
 ;;

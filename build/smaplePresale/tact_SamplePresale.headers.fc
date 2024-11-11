@@ -48,6 +48,9 @@ cell __tact_dict_get_int_cell(cell d, int kl, int k) inline;
 ;; __tact_dict_get_slice_cell
 cell __tact_dict_get_slice_cell(cell d, int kl, slice k) inline;
 
+;; __tact_dict_set_slice_slice
+(cell, ()) __tact_dict_set_slice_slice(cell d, int kl, slice k, slice v) inline;
+
 ;; __tact_dict_get_slice_slice
 slice __tact_dict_get_slice_slice(cell d, int kl, slice k) inline;
 
@@ -312,6 +315,12 @@ tuple $UserData$_to_opt_external(tuple v) inline;
 ;; $RefferData$_not_null
 ((slice, int, int)) $RefferData$_not_null(tuple v) inline;
 
+;; $RefferDetails$_get_reffer
+_ $RefferDetails$_get_reffer((cell, int) v) inline;
+
+;; $RefferDetails$_get_size
+_ $RefferDetails$_get_size((cell, int) v) inline;
+
 ;; $RefferDetails$_not_null
 ((cell, int)) $RefferDetails$_not_null(tuple v) inline;
 
@@ -347,6 +356,15 @@ tuple $UserData$_to_opt_external(tuple v) inline;
 
 ;; $Int$_fun_toCoinsString
 slice $Int$_fun_toCoinsString(int $self) impure inline;
+
+;; $RefferData$_constructor_refferalAddress_amount_claim
+((slice, int, int)) $RefferData$_constructor_refferalAddress_amount_claim(slice refferalAddress, int amount, int claim) inline;
+
+;; $RefferDetails$_constructor_reffer_size
+((cell, int)) $RefferDetails$_constructor_reffer_size(cell reffer, int size) inline;
+
+;; $SamplePresale$_fun_AddReferAddress
+((int, slice, int, cell, cell, cell, cell, cell, cell, cell, cell, cell), ()) $SamplePresale$_fun_AddReferAddress((int, slice, int, cell, cell, cell, cell, cell, cell, cell, cell, cell) $self, slice $referrer, int $amount) impure inline_ref;
 
 ;; $SamplePresale$_fun_getData
 ((int, slice, int, cell, cell, cell, cell, cell, cell, cell, cell, cell), tuple) $SamplePresale$_fun_getData((int, slice, int, cell, cell, cell, cell, cell, cell, cell, cell, cell) $self, slice $addr, int $num) impure inline_ref;
