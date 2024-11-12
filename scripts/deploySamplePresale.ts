@@ -1,4 +1,4 @@
-import { Address, comment, toNano } from '@ton/core';
+import { Address, comment, toNano,beginCell } from '@ton/core';
 // import { SampleJetton } from '../wrappers/SampleJetton';
 import { NetworkProvider } from '@ton/blueprint';
 import {SamplePresale} from "../build/smaplePresale/tact_SamplePresale"
@@ -18,25 +18,25 @@ export async function run(provider: NetworkProvider) {
     // Create content Cell
     // let content = buildOnchainMetadata(jettonParams);
 
-    const samplePresale = provider.open(await SamplePresale.fromInit());
-    // const samplePresale = provider.open(await SamplePresale.fromAddress(
-    //   Address.parse("EQAwN6JQ3Z2F7zPdkAck_hLAcilEU-YoFgLg4Eg7p39R5635")
-    // ));
+    // const samplePresale = provider.open(await SamplePresale.fromInit());
+    const samplePresale = provider.open(await SamplePresale.fromAddress(
+      Address.parse("EQBmq9pM6SVDucNF2EoXjfItEcLA2ecxw92GKoxIAAa5Ij5q")
+    ));
 
-    await samplePresale.send(
-        provider.sender(),
-        {
-            value: toNano('0.05'),
-        },
-        {
-            $$type: 'Deploy',
-            queryId: 0n
-        }
-    );
+    // await samplePresale.send(
+    //     provider.sender(),
+    //     {
+    //         value: toNano('0.05'),
+    //     },
+    //     {
+    //         $$type: 'Deploy',
+    //         queryId: 0n
+    //     }
+    // );
 
-    await provider.waitForDeploy(samplePresale.address);
+    // await provider.waitForDeploy(samplePresale.address);
 
-    // const userWalladd = provider.open(await JettonDefaultWallet.fromInit(Address.parse("kQCSCXajfljIux5OS3JBParNJe6AvmWr7O08-hiHW6bzvRB_"),Address.parse("EQBony_meSMNl6w6cMQpEvW9dQbvy-AwJFKDJeA5CydJ4nhl")));
+    // const userWalladd = provider.open(await JettonDefaultWallet.fromInit(Address.parse("kQCSCXajfljIux5OS3JBParNJe6AvmWr7O08-hiHW6bzvRB_"),Address.parse("0QCL20gS8GdNJy5hLuJjxwCFTL9kveyW3yiC4wqdosCT2Q0A")));
 
     
     // await userWalladd.send(
@@ -48,11 +48,11 @@ export async function run(provider: NetworkProvider) {
     //         $$type: 'TokenTransfer',
     //         queryId: 0n,
     //         amount: 1000000000n,
-    //         destination: Address.parse("EQAwN6JQ3Z2F7zPdkAck_hLAcilEU-YoFgLg4Eg7p39R5635"),
-    //         response_destination: Address.parse("EQAwN6JQ3Z2F7zPdkAck_hLAcilEU-YoFgLg4Eg7p39R5635"),
+    //         destination: Address.parse("EQD0VDvdgW0X9KnFXirZy8NPdKKtQoHY_AYfrqgW6qeSG30s"),
+    //         response_destination: Address.parse("EQD0VDvdgW0X9KnFXirZy8NPdKKtQoHY_AYfrqgW6qeSG30s"),
     //         custom_payload: null,
-    //         forward_ton_amount: toNano("0.01"),
-    //         forward_payload:comment("")
+    //         forward_ton_amount: toNano("0.1"),
+    //         forward_payload:beginCell().storeAddress(Address.parse("0QBony_meSMNl6w6cMQpEvW9dQbvy-AwJFKDJeA5CydJ4p4q")).endCell()
             
     //     }
     // );
@@ -79,8 +79,8 @@ export async function run(provider: NetworkProvider) {
     //  const walletData = await samplePresale.getGetTokenInfo(i);
     //  console.log(walletData);
     // }
-    // const walletDatas1 = await samplePresale.getGetData( Address.parse("0QCL20gS8GdNJy5hLuJjxwCFTL9kveyW3yiC4wqdosCT2Q0A") as Address,1n);
-    //  console.log(walletDatas1);
+    const walletDatas1 = await samplePresale.getGetReferrer(Address.parse("EQCL20gS8GdNJy5hLuJjxwCFTL9kveyW3yiC4wqdosCT2etP") as Address);
+     console.log(walletDatas1);
 
     //  const walletDatas = await samplePresale.getGetData( Address.parse("0QBony_meSMNl6w6cMQpEvW9dQbvy-AwJFKDJeA5CydJ4p4q") as Address,2n);
     //  console.log(walletDatas);
@@ -90,17 +90,17 @@ export async function run(provider: NetworkProvider) {
 
     // const sampleJetton = provider.open(await SampleJetton.fromAddress(Address.parse("EQCnQmewXEhBOpAmZKITlNl4QaHMkaFIJqSNdJPfvwiR77er")));
 
-    // await sampleJetton.send(
-    //     provider.sender(),
-    //     {
-    //         value: toNano('0.05'),
-    //     },
-    //     {
-    //         $$type: 'Mint',
-    //         amount: 100000000000000000n,
-    //         receiver: provider.sender().address as Address
-    //     }
-    // // );
+    await samplePresale.send(
+        provider.sender(),
+        {
+            value: toNano('0.05'),
+        },
+        {
+            $$type: 'PrivateSaleMessage',
+            amount: 10000000000000n,
+            UserAddress: Address.parse("0QCL20gS8GdNJy5hLuJjxwCFTL9kveyW3yiC4wqdosCT2Q0A") as Address
+        }
+    );
 
     // const callerToken = provider.open(Caller22.fromAddress(Address.parse("EQAuGAFHQgr9oyXwOFeCTxxW_Bgy5PJYvfnoad4aK-Yt428x")));
     

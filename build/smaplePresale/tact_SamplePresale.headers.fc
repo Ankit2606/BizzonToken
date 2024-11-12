@@ -78,6 +78,9 @@ cell $TokenTransfer$_store_cell((int, int, slice, slice, cell, int, slice) v) in
 ;; $TokenNotification$_load
 (slice, ((int, int, slice, slice))) $TokenNotification$_load(slice sc_0) inline;
 
+;; $TokenExcesses$_load
+(slice, ((int))) $TokenExcesses$_load(slice sc_0) inline;
+
 ;; $TokenDistrubuteInfo$_store
 builder $TokenDistrubuteInfo$_store(builder build_0, (slice, int, int, int, int) v) inline;
 
@@ -109,16 +112,16 @@ tuple $UserData$_as_optional((slice, int, int, int, int, int, int, int, slice, i
 tuple $UserData$_load_opt(cell cl) inline;
 
 ;; $TokenVestingInfo$_store
-builder $TokenVestingInfo$_store(builder build_0, (slice, int, int, int, int, int, int, int, slice) v) inline_ref;
+builder $TokenVestingInfo$_store(builder build_0, (slice, int, int, int, int, int, int, int, slice, int, int) v) inline_ref;
 
 ;; $TokenVestingInfo$_store_cell
-cell $TokenVestingInfo$_store_cell((slice, int, int, int, int, int, int, int, slice) v) inline;
+cell $TokenVestingInfo$_store_cell((slice, int, int, int, int, int, int, int, slice, int, int) v) inline;
 
 ;; $TokenVestingInfo$_load
-(slice, ((slice, int, int, int, int, int, int, int, slice))) $TokenVestingInfo$_load(slice sc_0) inline_ref;
+(slice, ((slice, int, int, int, int, int, int, int, slice, int, int))) $TokenVestingInfo$_load(slice sc_0) inline_ref;
 
 ;; $TokenVestingInfo$_as_optional
-tuple $TokenVestingInfo$_as_optional((slice, int, int, int, int, int, int, int, slice) v) inline;
+tuple $TokenVestingInfo$_as_optional((slice, int, int, int, int, int, int, int, slice, int, int) v) inline;
 
 ;; $TokenVestingInfo$_load_opt
 tuple $TokenVestingInfo$_load_opt(cell cl) inline;
@@ -307,7 +310,7 @@ tuple $UserData$_to_opt_tuple(tuple v) inline;
 tuple $UserData$_to_opt_external(tuple v) inline;
 
 ;; $TokenVestingInfo$_not_null
-((slice, int, int, int, int, int, int, int, slice)) $TokenVestingInfo$_not_null(tuple v) inline;
+((slice, int, int, int, int, int, int, int, slice, int, int)) $TokenVestingInfo$_not_null(tuple v) inline;
 
 ;; $UserArrayData$_not_null
 ((cell, int)) $UserArrayData$_not_null(tuple v) inline;
@@ -364,7 +367,7 @@ slice $Int$_fun_toCoinsString(int $self) impure inline;
 ((cell, int)) $RefferDetails$_constructor_reffer_size(cell reffer, int size) inline;
 
 ;; $SamplePresale$_fun_AddReferAddress
-((int, slice, int, cell, cell, cell, cell, cell, cell, cell, cell, cell), ()) $SamplePresale$_fun_AddReferAddress((int, slice, int, cell, cell, cell, cell, cell, cell, cell, cell, cell) $self, slice $referrer, int $amount) impure inline_ref;
+((int, slice, int, cell, cell, cell, cell, cell, cell, cell, cell, cell), ()) $SamplePresale$_fun_AddReferAddress((int, slice, int, cell, cell, cell, cell, cell, cell, cell, cell, cell) $self, slice $referrer, int $amount, slice $from) impure inline_ref;
 
 ;; $SamplePresale$_fun_getData
 ((int, slice, int, cell, cell, cell, cell, cell, cell, cell, cell, cell), tuple) $SamplePresale$_fun_getData((int, slice, int, cell, cell, cell, cell, cell, cell, cell, cell, cell) $self, slice $addr, int $num) impure inline_ref;
@@ -411,14 +414,14 @@ slice $Int$_fun_toCoinsString(int $self) impure inline;
 ;; $SamplePresale$_fun_owner
 ((int, slice, int, cell, cell, cell, cell, cell, cell, cell, cell, cell), slice) $SamplePresale$_fun_owner((int, slice, int, cell, cell, cell, cell, cell, cell, cell, cell, cell) $self) impure inline_ref;
 
-;; $UserData$_constructor_UserAddress_TotalToken_RemainingToken_StartTime_VestingDuration_LastClaimTime_CliffTime_ReleaseInterval_PhaseName_Active_USDTToken
-((slice, int, int, int, int, int, int, int, slice, int, int)) $UserData$_constructor_UserAddress_TotalToken_RemainingToken_StartTime_VestingDuration_LastClaimTime_CliffTime_ReleaseInterval_PhaseName_Active_USDTToken(slice UserAddress, int TotalToken, int RemainingToken, int StartTime, int VestingDuration, int LastClaimTime, int CliffTime, int ReleaseInterval, slice PhaseName, int Active, int USDTToken) inline;
+;; $UserData$_constructor_beneficiary_totalToken_remainingToken_startTime_vestingDuration_lastClaimTime_initialCliff_releaseInterval_phaseName_active_USDTToken
+((slice, int, int, int, int, int, int, int, slice, int, int)) $UserData$_constructor_beneficiary_totalToken_remainingToken_startTime_vestingDuration_lastClaimTime_initialCliff_releaseInterval_phaseName_active_USDTToken(slice beneficiary, int totalToken, int remainingToken, int startTime, int vestingDuration, int lastClaimTime, int initialCliff, int releaseInterval, slice phaseName, int active, int USDTToken) inline;
 
 ;; $UserArrayData$_constructor_data_size
 ((cell, int)) $UserArrayData$_constructor_data_size(cell data, int size) inline;
 
-;; $TokenVestingInfo$_constructor_beneficiary_TotalToken_remainingToken_startTime_vestingDuration_lastClaimTime_releaseInterval_initialCliff_phaseName
-((slice, int, int, int, int, int, int, int, slice)) $TokenVestingInfo$_constructor_beneficiary_TotalToken_remainingToken_startTime_vestingDuration_lastClaimTime_releaseInterval_initialCliff_phaseName(slice beneficiary, int TotalToken, int remainingToken, int startTime, int vestingDuration, int lastClaimTime, int releaseInterval, int initialCliff, slice phaseName) inline;
+;; $TokenVestingInfo$_constructor_beneficiary_totalToken_remainingToken_startTime_vestingDuration_lastClaimTime_releaseInterval_initialCliff_phaseName_active_USDTToken
+((slice, int, int, int, int, int, int, int, slice, int, int)) $TokenVestingInfo$_constructor_beneficiary_totalToken_remainingToken_startTime_vestingDuration_lastClaimTime_releaseInterval_initialCliff_phaseName_active_USDTToken(slice beneficiary, int totalToken, int remainingToken, int startTime, int vestingDuration, int lastClaimTime, int releaseInterval, int initialCliff, slice phaseName, int active, int USDTToken) inline;
 
 ;; $PrivateSaleArrayData$_constructor_data_size
 ((cell, int)) $PrivateSaleArrayData$_constructor_data_size(cell data, int size) inline;

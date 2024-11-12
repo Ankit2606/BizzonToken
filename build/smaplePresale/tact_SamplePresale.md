@@ -1,6 +1,6 @@
 # TACT Compilation Report
 Contract: SamplePresale
-BOC Size: 11374 bytes
+BOC Size: 11293 bytes
 
 # Types
 Total Types: 41
@@ -74,16 +74,16 @@ TLB: `_ name:^string tokenDistrubutedPercentage:int257 totalPhaseToken:coins per
 Signature: `TokenDistrubuteInfo{name:^string,tokenDistrubutedPercentage:int257,totalPhaseToken:coins,percentage:int257,totalSuppliedToken:coins}`
 
 ## UserData
-TLB: `_ UserAddress:address TotalToken:coins RemainingToken:coins StartTime:int257 VestingDuration:int257 LastClaimTime:int257 CliffTime:int257 ReleaseInterval:int257 PhaseName:^string Active:bool USDTToken:coins = UserData`
-Signature: `UserData{UserAddress:address,TotalToken:coins,RemainingToken:coins,StartTime:int257,VestingDuration:int257,LastClaimTime:int257,CliffTime:int257,ReleaseInterval:int257,PhaseName:^string,Active:bool,USDTToken:coins}`
+TLB: `_ beneficiary:address totalToken:coins remainingToken:coins startTime:int257 vestingDuration:int257 lastClaimTime:int257 initialCliff:int257 releaseInterval:int257 phaseName:^string active:bool USDTToken:coins = UserData`
+Signature: `UserData{beneficiary:address,totalToken:coins,remainingToken:coins,startTime:int257,vestingDuration:int257,lastClaimTime:int257,initialCliff:int257,releaseInterval:int257,phaseName:^string,active:bool,USDTToken:coins}`
 
 ## TokenVestingInfo
-TLB: `_ beneficiary:address TotalToken:coins remainingToken:coins startTime:int257 vestingDuration:int257 lastClaimTime:int257 releaseInterval:int257 initialCliff:int257 phaseName:^string = TokenVestingInfo`
-Signature: `TokenVestingInfo{beneficiary:address,TotalToken:coins,remainingToken:coins,startTime:int257,vestingDuration:int257,lastClaimTime:int257,releaseInterval:int257,initialCliff:int257,phaseName:^string}`
+TLB: `_ beneficiary:address totalToken:coins remainingToken:coins startTime:int257 vestingDuration:int257 lastClaimTime:int257 releaseInterval:int257 initialCliff:int257 phaseName:^string active:bool USDTToken:coins = TokenVestingInfo`
+Signature: `TokenVestingInfo{beneficiary:address,totalToken:coins,remainingToken:coins,startTime:int257,vestingDuration:int257,lastClaimTime:int257,releaseInterval:int257,initialCliff:int257,phaseName:^string,active:bool,USDTToken:coins}`
 
 ## UserArrayData
-TLB: `_ data:dict<int, ^UserData{UserAddress:address,TotalToken:coins,RemainingToken:coins,StartTime:int257,VestingDuration:int257,LastClaimTime:int257,CliffTime:int257,ReleaseInterval:int257,PhaseName:^string,Active:bool,USDTToken:coins}> size:int257 = UserArrayData`
-Signature: `UserArrayData{data:dict<int, ^UserData{UserAddress:address,TotalToken:coins,RemainingToken:coins,StartTime:int257,VestingDuration:int257,LastClaimTime:int257,CliffTime:int257,ReleaseInterval:int257,PhaseName:^string,Active:bool,USDTToken:coins}>,size:int257}`
+TLB: `_ data:dict<int, ^UserData{beneficiary:address,totalToken:coins,remainingToken:coins,startTime:int257,vestingDuration:int257,lastClaimTime:int257,initialCliff:int257,releaseInterval:int257,phaseName:^string,active:bool,USDTToken:coins}> size:int257 = UserArrayData`
+Signature: `UserArrayData{data:dict<int, ^UserData{beneficiary:address,totalToken:coins,remainingToken:coins,startTime:int257,vestingDuration:int257,lastClaimTime:int257,initialCliff:int257,releaseInterval:int257,phaseName:^string,active:bool,USDTToken:coins}>,size:int257}`
 
 ## RefferData
 TLB: `_ refferalAddress:address amount:int257 claim:bool = RefferData`
@@ -94,24 +94,24 @@ TLB: `_ reffer:dict<int, ^RefferData{refferalAddress:address,amount:int257,claim
 Signature: `RefferDetails{reffer:dict<int, ^RefferData{refferalAddress:address,amount:int257,claim:bool}>,size:int257}`
 
 ## PrivateSaleArrayData
-TLB: `_ data:dict<int, ^TokenVestingInfo{beneficiary:address,TotalToken:coins,remainingToken:coins,startTime:int257,vestingDuration:int257,lastClaimTime:int257,releaseInterval:int257,initialCliff:int257,phaseName:^string}> size:int257 = PrivateSaleArrayData`
-Signature: `PrivateSaleArrayData{data:dict<int, ^TokenVestingInfo{beneficiary:address,TotalToken:coins,remainingToken:coins,startTime:int257,vestingDuration:int257,lastClaimTime:int257,releaseInterval:int257,initialCliff:int257,phaseName:^string}>,size:int257}`
+TLB: `_ data:dict<int, ^TokenVestingInfo{beneficiary:address,totalToken:coins,remainingToken:coins,startTime:int257,vestingDuration:int257,lastClaimTime:int257,releaseInterval:int257,initialCliff:int257,phaseName:^string,active:bool,USDTToken:coins}> size:int257 = PrivateSaleArrayData`
+Signature: `PrivateSaleArrayData{data:dict<int, ^TokenVestingInfo{beneficiary:address,totalToken:coins,remainingToken:coins,startTime:int257,vestingDuration:int257,lastClaimTime:int257,releaseInterval:int257,initialCliff:int257,phaseName:^string,active:bool,USDTToken:coins}>,size:int257}`
 
 ## MarketingArrayData
-TLB: `_ data:dict<int, ^TokenVestingInfo{beneficiary:address,TotalToken:coins,remainingToken:coins,startTime:int257,vestingDuration:int257,lastClaimTime:int257,releaseInterval:int257,initialCliff:int257,phaseName:^string}> size:int257 = MarketingArrayData`
-Signature: `MarketingArrayData{data:dict<int, ^TokenVestingInfo{beneficiary:address,TotalToken:coins,remainingToken:coins,startTime:int257,vestingDuration:int257,lastClaimTime:int257,releaseInterval:int257,initialCliff:int257,phaseName:^string}>,size:int257}`
+TLB: `_ data:dict<int, ^TokenVestingInfo{beneficiary:address,totalToken:coins,remainingToken:coins,startTime:int257,vestingDuration:int257,lastClaimTime:int257,releaseInterval:int257,initialCliff:int257,phaseName:^string,active:bool,USDTToken:coins}> size:int257 = MarketingArrayData`
+Signature: `MarketingArrayData{data:dict<int, ^TokenVestingInfo{beneficiary:address,totalToken:coins,remainingToken:coins,startTime:int257,vestingDuration:int257,lastClaimTime:int257,releaseInterval:int257,initialCliff:int257,phaseName:^string,active:bool,USDTToken:coins}>,size:int257}`
 
 ## TeamArrayData
-TLB: `_ data:dict<int, ^TokenVestingInfo{beneficiary:address,TotalToken:coins,remainingToken:coins,startTime:int257,vestingDuration:int257,lastClaimTime:int257,releaseInterval:int257,initialCliff:int257,phaseName:^string}> size:int257 = TeamArrayData`
-Signature: `TeamArrayData{data:dict<int, ^TokenVestingInfo{beneficiary:address,TotalToken:coins,remainingToken:coins,startTime:int257,vestingDuration:int257,lastClaimTime:int257,releaseInterval:int257,initialCliff:int257,phaseName:^string}>,size:int257}`
+TLB: `_ data:dict<int, ^TokenVestingInfo{beneficiary:address,totalToken:coins,remainingToken:coins,startTime:int257,vestingDuration:int257,lastClaimTime:int257,releaseInterval:int257,initialCliff:int257,phaseName:^string,active:bool,USDTToken:coins}> size:int257 = TeamArrayData`
+Signature: `TeamArrayData{data:dict<int, ^TokenVestingInfo{beneficiary:address,totalToken:coins,remainingToken:coins,startTime:int257,vestingDuration:int257,lastClaimTime:int257,releaseInterval:int257,initialCliff:int257,phaseName:^string,active:bool,USDTToken:coins}>,size:int257}`
 
 ## AdvisorArrayData
-TLB: `_ data:dict<int, ^TokenVestingInfo{beneficiary:address,TotalToken:coins,remainingToken:coins,startTime:int257,vestingDuration:int257,lastClaimTime:int257,releaseInterval:int257,initialCliff:int257,phaseName:^string}> size:int257 = AdvisorArrayData`
-Signature: `AdvisorArrayData{data:dict<int, ^TokenVestingInfo{beneficiary:address,TotalToken:coins,remainingToken:coins,startTime:int257,vestingDuration:int257,lastClaimTime:int257,releaseInterval:int257,initialCliff:int257,phaseName:^string}>,size:int257}`
+TLB: `_ data:dict<int, ^TokenVestingInfo{beneficiary:address,totalToken:coins,remainingToken:coins,startTime:int257,vestingDuration:int257,lastClaimTime:int257,releaseInterval:int257,initialCliff:int257,phaseName:^string,active:bool,USDTToken:coins}> size:int257 = AdvisorArrayData`
+Signature: `AdvisorArrayData{data:dict<int, ^TokenVestingInfo{beneficiary:address,totalToken:coins,remainingToken:coins,startTime:int257,vestingDuration:int257,lastClaimTime:int257,releaseInterval:int257,initialCliff:int257,phaseName:^string,active:bool,USDTToken:coins}>,size:int257}`
 
 ## TreasuryArrayData
-TLB: `_ data:dict<int, ^TokenVestingInfo{beneficiary:address,TotalToken:coins,remainingToken:coins,startTime:int257,vestingDuration:int257,lastClaimTime:int257,releaseInterval:int257,initialCliff:int257,phaseName:^string}> size:int257 = TreasuryArrayData`
-Signature: `TreasuryArrayData{data:dict<int, ^TokenVestingInfo{beneficiary:address,TotalToken:coins,remainingToken:coins,startTime:int257,vestingDuration:int257,lastClaimTime:int257,releaseInterval:int257,initialCliff:int257,phaseName:^string}>,size:int257}`
+TLB: `_ data:dict<int, ^TokenVestingInfo{beneficiary:address,totalToken:coins,remainingToken:coins,startTime:int257,vestingDuration:int257,lastClaimTime:int257,releaseInterval:int257,initialCliff:int257,phaseName:^string,active:bool,USDTToken:coins}> size:int257 = TreasuryArrayData`
+Signature: `TreasuryArrayData{data:dict<int, ^TokenVestingInfo{beneficiary:address,totalToken:coins,remainingToken:coins,startTime:int257,vestingDuration:int257,lastClaimTime:int257,releaseInterval:int257,initialCliff:int257,phaseName:^string,active:bool,USDTToken:coins}>,size:int257}`
 
 ## BuyTokens
 TLB: `buy_tokens#5abfc0c2 referrer:address usdt:coins = BuyTokens`
@@ -234,9 +234,7 @@ Argument: userAddress
 15509: Only deployer is allowed to withdraw
 30183: NO_REFERRAL_TOKENS_AVAILABLE
 35441: Seed Token Supply is completed
-38859: INVALID_ADDRESS
 43297: Index not found!
 44418: You have not sufficient Token
 46387: not have any refferals
 60511: ALREADY_ADDED_REFERRER
-61906: REFERRER_CANNOT_BE_A_REFERRAL

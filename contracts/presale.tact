@@ -11,22 +11,22 @@ struct TokenDistrubuteInfo {
 }
 
 struct UserData{
-  UserAddress : Address;
-  TotalToken : Int as coins;
-  RemainingToken : Int as coins;
-  StartTime: Int;
-  VestingDuration: Int;
-  LastClaimTime: Int;
-  CliffTime: Int;
-  ReleaseInterval: Int;
-  PhaseName: String;
-  Active: Bool;
+  beneficiary : Address;
+  totalToken : Int as coins;
+  remainingToken : Int as coins;
+  startTime: Int;
+  vestingDuration: Int;
+  lastClaimTime: Int;
+  initialCliff: Int;
+  releaseInterval: Int;
+  phaseName: String;
+  active: Bool;
   USDTToken : Int as coins;
 }
 
 struct TokenVestingInfo {
   beneficiary : Address;
-  TotalToken : Int as coins ;
+  totalToken : Int as coins ;
   remainingToken : Int as coins ;
   startTime : Int ;
   vestingDuration : Int ;
@@ -34,6 +34,8 @@ struct TokenVestingInfo {
   releaseInterval : Int ;
   initialCliff : Int ;
   phaseName : String ;
+  active: Bool;
+  USDTToken : Int as coins;
 }
 
 struct UserArrayData{
@@ -155,7 +157,6 @@ message ClaimTreasuryTokens {
 }
 
 contract SamplePresale with Ownable, Deployable {
-
   const MinTonForStorage: Int = ton("0.1");
   const REFERRAL_VALUE : Int = 1;
   TonVal : Int = 4;
@@ -277,9 +278,7 @@ contract SamplePresale with Ownable, Deployable {
   }
 
   receive(msg: TokenNotification){
-    // let ctx:Context = context();
-    // let fee:Int  = ctx.readForwardFee();
-    let referrer : Address = msg.forward_payload.loadAddress();
+    
     let TokenAmount : Int = msg.amount  * self.TonVal;
     let gotButUnsure: UserArrayData? = self.SeedData.get(msg.from);
     let seedData : TokenDistrubuteInfo = self.TokenData.get(0)!!;
@@ -287,16 +286,16 @@ contract SamplePresale with Ownable, Deployable {
     if (gotButUnsure != null) {
     let gotButsure: UserArrayData = self.SeedData.get(msg.from)!!;
     let userInfo : UserData = UserData{
-        UserAddress : msg.from,
-        TotalToken : TokenAmount,
-        RemainingToken : TokenAmount,
-        StartTime: now(),
-        VestingDuration: now() + 630,
-        LastClaimTime: now() + 90,
-        CliffTime: 90,
-        ReleaseInterval: 30,
-        PhaseName: seedData.name,
-        Active : true,
+        beneficiary : msg.from,
+        totalToken : TokenAmount,
+        remainingToken : TokenAmount,
+        startTime: now(),
+        vestingDuration: now() + 630,
+        lastClaimTime: now() + 90,
+        initialCliff: 90,
+        releaseInterval: 30,
+        phaseName: seedData.name,
+        active : true,
         USDTToken : msg.amount,
     };
     
@@ -305,22 +304,23 @@ contract SamplePresale with Ownable, Deployable {
     self.SeedData.set(msg.from,gotButsure);
     } else {
       let newadd : Address = newAddress(0,0);
-      if(referrer != newadd){
-        self.AddReferAddress(referrer, msg.amount);
+      let reffrel : Address = msg.forward_payload.loadAddress();
+      if(reffrel != newadd){
+        self.AddReferAddress(reffrel, msg.amount,msg.from);
       }
       let getData: UserArrayData? = self.SeedData.get(msg.from);
       let x : map<Int,UserData> = emptyMap();
       let userInfo : UserData = UserData{
-       UserAddress : msg.from,
-        TotalToken : TokenAmount,
-        RemainingToken : TokenAmount,
-        StartTime: now(),
-        VestingDuration: now() + 630,
-        LastClaimTime: now() + 90,
-        CliffTime: 90,
-        ReleaseInterval:  30,
-        PhaseName: seedData.name,
-        Active : true,
+       beneficiary : msg.from,
+        totalToken : TokenAmount,
+        remainingToken : TokenAmount,
+        startTime: now(),
+        vestingDuration: now() + 630,
+        lastClaimTime: now() + 90,
+        initialCliff: 90,
+        releaseInterval:  30,
+        phaseName: seedData.name,
+        active : true,
         USDTToken : msg.amount,
     };
     x.set(1,userInfo);
@@ -334,6 +334,8 @@ contract SamplePresale with Ownable, Deployable {
     self.TokenData.set(0,seedData);
   }
 
+   receive(msg: TokenExcesses){
+  }
   receive(msg : PrivateSaleMessage){
     let ctx:Context = context();
     let gotButUnsure: PrivateSaleArrayData? = self.PrivateSaleData.get(sender());
@@ -343,7 +345,7 @@ contract SamplePresale with Ownable, Deployable {
       let gotButsure: PrivateSaleArrayData = self.PrivateSaleData.get(sender())!!;
       let userInfo : TokenVestingInfo = TokenVestingInfo{
         beneficiary : msg.UserAddress,
-        TotalToken : msg.amount ,
+        totalToken : msg.amount ,
         remainingToken : msg.amount,
         startTime : now() ,
         vestingDuration : now() + 750 ,
@@ -351,6 +353,8 @@ contract SamplePresale with Ownable, Deployable {
         releaseInterval : 30,
         initialCliff : 90 ,
         phaseName : seedData.name,
+        active: true,
+        USDTToken : 0
     };
     gotButsure.data.set(gotButsure.size + 1,userInfo);
     gotButsure.size = gotButsure.size + 1;
@@ -360,7 +364,7 @@ contract SamplePresale with Ownable, Deployable {
       let x : map<Int,TokenVestingInfo> = emptyMap();
       let userInfo : TokenVestingInfo = TokenVestingInfo{
         beneficiary : msg.UserAddress,
-        TotalToken : msg.amount ,
+        totalToken : msg.amount ,
         remainingToken : msg.amount,
         startTime : now() ,
         vestingDuration : now() + 750 ,
@@ -368,6 +372,8 @@ contract SamplePresale with Ownable, Deployable {
         releaseInterval : 30,
         initialCliff : 90 ,
         phaseName : seedData.name,
+        active: true,
+        USDTToken : 0
     };
     x.set(1,userInfo);
     let storeData : PrivateSaleArrayData  = PrivateSaleArrayData {
@@ -389,7 +395,7 @@ contract SamplePresale with Ownable, Deployable {
       let gotButsure: MarketingArrayData = self.MarketingData.get(sender())!!;
       let userInfo : TokenVestingInfo = TokenVestingInfo{
         beneficiary : msg.UserAddress,
-        TotalToken : msg.amount ,
+        totalToken : msg.amount ,
         remainingToken : msg.amount,
         startTime : now() ,
         vestingDuration : now() + 570 ,
@@ -397,6 +403,8 @@ contract SamplePresale with Ownable, Deployable {
         releaseInterval : 30,
         initialCliff : 30 ,
         phaseName : seedData.name,
+        active: true,
+        USDTToken : 0
     };
     gotButsure.data.set(gotButsure.size + 1,userInfo);
     gotButsure.size = gotButsure.size + 1;
@@ -406,7 +414,7 @@ contract SamplePresale with Ownable, Deployable {
       let x : map<Int,TokenVestingInfo> = emptyMap();
       let userInfo : TokenVestingInfo = TokenVestingInfo{
         beneficiary : msg.UserAddress,
-        TotalToken : msg.amount ,
+        totalToken : msg.amount ,
         remainingToken : msg.amount,
         startTime : now() ,
         vestingDuration : now() + 570 ,
@@ -414,6 +422,8 @@ contract SamplePresale with Ownable, Deployable {
         releaseInterval : 30,
         initialCliff : 30 ,
         phaseName : seedData.name,
+        active: true,
+        USDTToken : 0
     };
     x.set(1,userInfo);
     let storeData : MarketingArrayData  = MarketingArrayData {
@@ -435,7 +445,7 @@ contract SamplePresale with Ownable, Deployable {
       let gotButsure: TeamArrayData = self.TeamData.get(sender())!!;
       let userInfo : TokenVestingInfo = TokenVestingInfo{
         beneficiary : msg.UserAddress,
-        TotalToken : msg.amount ,
+        totalToken : msg.amount ,
         remainingToken : msg.amount,
         startTime : now() ,
         vestingDuration : now() + 1200 ,
@@ -443,6 +453,8 @@ contract SamplePresale with Ownable, Deployable {
         releaseInterval : 30,
         initialCliff : 120 ,
         phaseName : seedData.name,
+        active: true,
+        USDTToken : 0
     };
     gotButsure.data.set(gotButsure.size + 1,userInfo);
     gotButsure.size = gotButsure.size + 1;
@@ -452,7 +464,7 @@ contract SamplePresale with Ownable, Deployable {
       let x : map<Int,TokenVestingInfo> = emptyMap();
       let userInfo : TokenVestingInfo = TokenVestingInfo{
         beneficiary : msg.UserAddress,
-        TotalToken : msg.amount ,
+        totalToken : msg.amount ,
         remainingToken : msg.amount,
         startTime : now() ,
         vestingDuration : now() + 1200 ,
@@ -460,6 +472,8 @@ contract SamplePresale with Ownable, Deployable {
         releaseInterval : 30,
         initialCliff : 120 ,
         phaseName : seedData.name,
+        active: true,
+        USDTToken : 0
     };
     x.set(1,userInfo);
     let storeData : TeamArrayData  = TeamArrayData {
@@ -481,7 +495,7 @@ contract SamplePresale with Ownable, Deployable {
       let gotButsure: AdvisorArrayData = self.AdvisorData.get(sender())!!;
       let userInfo : TokenVestingInfo = TokenVestingInfo{
         beneficiary : msg.UserAddress,
-        TotalToken : msg.amount ,
+        totalToken : msg.amount ,
         remainingToken : msg.amount,
         startTime : now() ,
         vestingDuration : now() + 840 ,
@@ -489,6 +503,8 @@ contract SamplePresale with Ownable, Deployable {
         releaseInterval : 30,
         initialCliff : 120 ,
         phaseName : seedData.name,
+        active: true,
+        USDTToken : 0
     };
     gotButsure.data.set(gotButsure.size + 1,userInfo);
     gotButsure.size = gotButsure.size + 1;
@@ -498,7 +514,7 @@ contract SamplePresale with Ownable, Deployable {
       let x : map<Int,TokenVestingInfo> = emptyMap();
       let userInfo : TokenVestingInfo = TokenVestingInfo{
         beneficiary : msg.UserAddress,
-        TotalToken : msg.amount ,
+        totalToken : msg.amount ,
         remainingToken : msg.amount,
         startTime : now() ,
         vestingDuration : now() + 840 ,
@@ -506,6 +522,8 @@ contract SamplePresale with Ownable, Deployable {
         releaseInterval : 30,
         initialCliff : 120 ,
         phaseName : seedData.name,
+        active: true,
+        USDTToken : 0
     };
     x.set(1,userInfo);
     let storeData : AdvisorArrayData  = AdvisorArrayData {
@@ -527,7 +545,7 @@ contract SamplePresale with Ownable, Deployable {
       let gotButsure: TreasuryArrayData = self.TreasuryData.get(sender())!!;
       let userInfo : TokenVestingInfo = TokenVestingInfo{
         beneficiary : msg.UserAddress,
-        TotalToken : msg.amount ,
+        totalToken : msg.amount ,
         remainingToken : msg.amount,
         startTime : now() ,
         vestingDuration : now() + 810 ,
@@ -535,6 +553,8 @@ contract SamplePresale with Ownable, Deployable {
         releaseInterval : 30,
         initialCliff : 90 ,
         phaseName : seedData.name,
+        active: true,
+        USDTToken : 0
     };
     gotButsure.data.set(gotButsure.size + 1,userInfo);
     gotButsure.size = gotButsure.size + 1;
@@ -544,7 +564,7 @@ contract SamplePresale with Ownable, Deployable {
       let x : map<Int,TokenVestingInfo> = emptyMap();
       let userInfo : TokenVestingInfo = TokenVestingInfo{
         beneficiary : msg.UserAddress,
-        TotalToken : msg.amount ,
+        totalToken : msg.amount ,
         remainingToken : msg.amount,
         startTime : now() ,
         vestingDuration : now() + 810 ,
@@ -552,6 +572,8 @@ contract SamplePresale with Ownable, Deployable {
         releaseInterval : 30,
         initialCliff : 90 ,
         phaseName : seedData.name,
+        active: true,
+        USDTToken : 0
     };
     x.set(1,userInfo);
     let storeData : TreasuryArrayData  = TreasuryArrayData {
@@ -580,11 +602,11 @@ contract SamplePresale with Ownable, Deployable {
       let x:map<Int,UserData> =  presaleData.data;
       let amount: Int = 0;
       foreach(key, value in x){
-          if (now() >= value.VestingDuration) {
-            amount += value.RemainingToken;
-            value.Active = false;
-            value.LastClaimTime = value.VestingDuration;
-            value.RemainingToken = 0;
+          if (now() >= value.vestingDuration) {
+            amount += value.remainingToken;
+            value.active = false;
+            value.lastClaimTime = value.vestingDuration;
+            value.remainingToken = 0;
             x.set(key,value);
             let newStruct: UserArrayData = UserArrayData{
               data:x,
@@ -592,13 +614,13 @@ contract SamplePresale with Ownable, Deployable {
             };
             self.SeedData.set(sender(),newStruct);
         }else {
-            let totalClaim : Int = (now() - value.LastClaimTime) /
-                value.ReleaseInterval;
+            let totalClaim : Int = (now() - value.lastClaimTime) /
+                value.releaseInterval;
             let seedData: TokenDistrubuteInfo = self.TokenData.get(0)!!;
-            let tokenClaimed : Int = ((value.TotalToken / 10000) * seedData.percentage) * totalClaim;
+            let tokenClaimed : Int = ((value.totalToken / 10000) * seedData.percentage) * totalClaim;
             amount += tokenClaimed;
-            value.LastClaimTime += totalClaim * value.ReleaseInterval;
-            value.RemainingToken -= tokenClaimed;
+            value.lastClaimTime += totalClaim * value.releaseInterval;
+            value.remainingToken -= tokenClaimed;
             x.set(key,value);
              let newStruct: UserArrayData = UserArrayData{
               data:x,
@@ -635,11 +657,11 @@ contract SamplePresale with Ownable, Deployable {
       
       let amount: Int = 0;
       
-      if (now() >= value.VestingDuration) {
-          amount += value.RemainingToken;
-          value.Active = false;
-          value.LastClaimTime = value.VestingDuration;
-          value.RemainingToken = 0;
+      if (now() >= value.vestingDuration) {
+          amount += value.remainingToken;
+          value.active = false;
+          value.lastClaimTime = value.vestingDuration;
+          value.remainingToken = 0;
           x.set(msg.index,value);
           let newStruct: UserArrayData = UserArrayData{
             data:x,
@@ -647,13 +669,13 @@ contract SamplePresale with Ownable, Deployable {
           };
           self.SeedData.set(sender(),newStruct);
       }else {
-          let totalClaim : Int = (now() - value.LastClaimTime) /
-              value.ReleaseInterval;
+          let totalClaim : Int = (now() - value.lastClaimTime) /
+              value.releaseInterval;
           let seedData: TokenDistrubuteInfo = self.TokenData.get(0)!!;
-          let tokenClaimed : Int = ((value.TotalToken / 10000) * seedData.percentage) * totalClaim;
+          let tokenClaimed : Int = ((value.totalToken / 10000) * seedData.percentage) * totalClaim;
           amount += tokenClaimed;
-          value.LastClaimTime += totalClaim * value.ReleaseInterval;
-          value.RemainingToken -= tokenClaimed;
+          value.lastClaimTime += totalClaim * value.releaseInterval;
+          value.remainingToken -= tokenClaimed;
           x.set(msg.index,value);
            let newStruct: UserArrayData = UserArrayData{
             data:x,
@@ -680,56 +702,6 @@ contract SamplePresale with Ownable, Deployable {
       });
   } 
 
-  // receive(msg : ClaimPrivateSaleTokens) {
-  //   let privatesaleData : PrivateSaleArrayData = self.PrivateSaleData.get(sender())!!;
-  //   let size:Int =privatesaleData.size;
-  //   let x:map<Int,TokenVestingInfo> =  privatesaleData.data;
-  //   let amount: Int = 0;
-  //   foreach(key, value in x){
-  //       if (now() >= value.vestingDuration) {
-  //           amount += value.remainingToken;
-  //           value.lastClaimTime = value.vestingDuration;
-  //           value.remainingToken = 0;
-  //           x.set(key,value);
-  //           let newStruct: PrivateSaleArrayData = PrivateSaleArrayData{
-  //             data:x,
-  //             size:size,
-  //           };
-  //           self.PrivateSaleData.set(sender(),newStruct);
-  //       }else {
-  //           let totalClaim : Int = (now() - value.lastClaimTime) /
-  //               value.releaseInterval;
-  //           let seedData: TokenDistrubuteInfo = self.TokenData.get(1)!!;
-  //           let tokenClaimed : Int = ((value.TotalToken / 10000) * seedData.percentage) * totalClaim;
-  //           amount += tokenClaimed;
-  //           value.lastClaimTime += totalClaim * value.releaseInterval;
-  //           value.remainingToken -= tokenClaimed;
-  //           x.set(key,value);
-  //            let newStruct: PrivateSaleArrayData = PrivateSaleArrayData{
-  //             data:x,
-  //             size:size,
-  //           };
-  //           self.PrivateSaleData.set(sender(),newStruct);
-  //       }
-  //       require(amount == 0,"You have not sufficient Token");
-  //     }
-  //        send(SendParameters{
-  //               to: msg.cenderadd,
-  //               value: 0,
-  //               mode:  SendRemainingBalance,
-  //               bounce: true,
-  //               body: TokenTransfer{
-  //                   queryId:0,
-  //                   amount: amount,
-  //                   destination: msg.senderadd,
-  //                   response_destination: msg.senderadd,
-  //                   custom_payload: null,
-  //                   forward_ton_amount: 1,
-  //                   forward_payload: "".asComment().beginParse(),
-  //               }.toCell()
-  //           });
-  // }
-
   receive(msg:ClaimPrivateSaleTokens){
       let privateSaleData : PrivateSaleArrayData  = self.PrivateSaleData.get(sender())!!;
       let size : Int =privateSaleData.size;
@@ -754,7 +726,7 @@ contract SamplePresale with Ownable, Deployable {
           let totalClaim : Int = (now() - value.lastClaimTime) /
               value.releaseInterval;
           let seedData: TokenDistrubuteInfo = self.TokenData.get(0)!!;
-          let tokenClaimed : Int = ((value.TotalToken / 10000) * seedData.percentage) * totalClaim;
+          let tokenClaimed : Int = ((value.totalToken / 10000) * seedData.percentage) * totalClaim;
           amount += tokenClaimed;
           value.lastClaimTime += totalClaim * value.releaseInterval;
           value.remainingToken -= tokenClaimed;
@@ -784,56 +756,6 @@ contract SamplePresale with Ownable, Deployable {
       });
   } 
 
-  // receive(msg : ClaimMarketingeTokens) {
-  //   let marketingData : MarketingArrayData = self.MarketingData.get(sender())!!;
-  //   let size:Int = marketingData.size;
-  //   let x:map<Int,TokenVestingInfo> =  marketingData.data;
-  //   let amount: Int = 0;
-  //   foreach(key, value in x){
-  //       if (now() >= value.vestingDuration) {
-  //           amount += value.remainingToken;
-  //           value.lastClaimTime = value.vestingDuration;
-  //           value.remainingToken = 0;
-  //           x.set(key,value);
-  //           let newStruct: MarketingArrayData = MarketingArrayData{
-  //             data:x,
-  //             size:size,
-  //           };
-  //           self.MarketingData.set(sender(),newStruct);
-  //       }else {
-  //           let totalClaim : Int = (now() - value.lastClaimTime) /
-  //               value.releaseInterval;
-  //           let seedData: TokenDistrubuteInfo = self.TokenData.get(9)!!;
-  //           let tokenClaimed : Int = ((value.TotalToken / 10000) * seedData.percentage) * totalClaim;
-  //           amount += tokenClaimed;
-  //           value.lastClaimTime += totalClaim * value.releaseInterval;
-  //           value.remainingToken -= tokenClaimed;
-  //           x.set(key,value);
-  //            let newStruct: MarketingArrayData = MarketingArrayData{
-  //             data:x,
-  //             size:size,
-  //           };
-  //           self.MarketingData.set(sender(),newStruct);
-  //       }
-  //       require(amount == 0,"You have not sufficient Token");
-  //     }
-  //        send(SendParameters{
-  //               to: msg.cenderadd,
-  //               value: 0,
-  //               mode:  SendRemainingBalance,
-  //               bounce: true,
-  //               body: TokenTransfer{
-  //                   queryId:0,
-  //                   amount: amount,
-  //                   destination: msg.senderadd,
-  //                   response_destination: msg.senderadd,
-  //                   custom_payload: null,
-  //                   forward_ton_amount: 1,
-  //                   forward_payload: "".asComment().beginParse(),
-  //               }.toCell()
-  //           });
-  // }
-
   receive(msg:ClaimMarketingeTokens){
       let marketingSaleData : MarketingArrayData  = self.MarketingData.get(sender())!!;
       let size : Int =marketingSaleData.size;
@@ -858,7 +780,7 @@ contract SamplePresale with Ownable, Deployable {
           let totalClaim : Int = (now() - value.lastClaimTime) /
               value.releaseInterval;
           let seedData: TokenDistrubuteInfo = self.TokenData.get(0)!!;
-          let tokenClaimed : Int = ((value.TotalToken / 10000) * seedData.percentage) * totalClaim;
+          let tokenClaimed : Int = ((value.totalToken / 10000) * seedData.percentage) * totalClaim;
           amount += tokenClaimed;
           value.lastClaimTime += totalClaim * value.releaseInterval;
           value.remainingToken -= tokenClaimed;
@@ -888,56 +810,6 @@ contract SamplePresale with Ownable, Deployable {
       });
   }
 
-  // receive(msg : ClaimTeamTokens) {
-  //   let teamDataInfo : TeamArrayData = self.TeamData.get(sender())!!;
-  //   let size:Int = teamDataInfo.size;
-  //   let x:map<Int,TokenVestingInfo> =  teamDataInfo.data;
-  //   let amount: Int = 0;
-  //   foreach(key, value in x){
-  //       if (now() >= value.vestingDuration) {
-  //           amount += value.remainingToken;
-  //           value.lastClaimTime = value.vestingDuration;
-  //           value.remainingToken = 0;
-  //           x.set(key,value);
-  //           let newStruct: TeamArrayData = TeamArrayData{
-  //             data:x,
-  //             size:size,
-  //           };
-  //           self.TeamData.set(sender(),newStruct);
-  //       }else {
-  //           let totalClaim : Int = (now() - value.lastClaimTime) /
-  //               value.releaseInterval;
-  //           let seedData: TokenDistrubuteInfo = self.TokenData.get(4)!!;
-  //           let tokenClaimed : Int = ((value.TotalToken / 10000) * seedData.percentage) * totalClaim;
-  //           amount += tokenClaimed;
-  //           value.lastClaimTime += totalClaim * value.releaseInterval;
-  //           value.remainingToken -= tokenClaimed;
-  //           x.set(key,value);
-  //            let newStruct: TeamArrayData = TeamArrayData{
-  //             data:x,
-  //             size:size,
-  //           };
-  //           self.TeamData.set(sender(),newStruct);
-  //       }
-  //       require(amount == 0,"You have not sufficient Token");
-  //     }
-  //        send(SendParameters{
-  //               to: msg.cenderadd,
-  //               value: 0,
-  //               mode:  SendRemainingBalance,
-  //               bounce: true,
-  //               body: TokenTransfer{
-  //                   queryId:0,
-  //                   amount: amount,
-  //                   destination: msg.senderadd,
-  //                   response_destination: msg.senderadd,
-  //                   custom_payload: null,
-  //                   forward_ton_amount: 1,
-  //                   forward_payload: "".asComment().beginParse(),
-  //               }.toCell()
-  //           });
-  // }
-
   receive(msg: ClaimTeamTokens){
       let teamSaleData : TeamArrayData  = self.TeamData.get(sender())!!;
       let size : Int =teamSaleData.size;
@@ -962,7 +834,7 @@ contract SamplePresale with Ownable, Deployable {
           let totalClaim : Int = (now() - value.lastClaimTime) /
               value.releaseInterval;
           let seedData: TokenDistrubuteInfo = self.TokenData.get(0)!!;
-          let tokenClaimed : Int = ((value.TotalToken / 10000) * seedData.percentage) * totalClaim;
+          let tokenClaimed : Int = ((value.totalToken / 10000) * seedData.percentage) * totalClaim;
           amount += tokenClaimed;
           value.lastClaimTime += totalClaim * value.releaseInterval;
           value.remainingToken -= tokenClaimed;
@@ -992,56 +864,6 @@ contract SamplePresale with Ownable, Deployable {
       });
   }
 
-  // receive(msg : ClaimAdvisorTokens) {
-  //   let teamDataInfo : AdvisorArrayData = self.AdvisorData.get(sender())!!;
-  //   let size:Int = teamDataInfo.size;
-  //   let x:map<Int,TokenVestingInfo> =  teamDataInfo.data;
-  //   let amount: Int = 0;
-  //   foreach(key, value in x){
-  //       if (now() >= value.vestingDuration) {
-  //           amount += value.remainingToken;
-  //           value.lastClaimTime = value.vestingDuration;
-  //           value.remainingToken = 0;
-  //           x.set(key,value);
-  //           let newStruct: AdvisorArrayData = AdvisorArrayData{
-  //             data:x,
-  //             size:size,
-  //           };
-  //           self.AdvisorData.set(sender(),newStruct);
-  //       }else {
-  //           let totalClaim : Int = (now() - value.lastClaimTime) /
-  //               value.releaseInterval;
-  //           let seedData: TokenDistrubuteInfo = self.TokenData.get(5)!!;
-  //           let tokenClaimed : Int = ((value.TotalToken / 10000) * seedData.percentage) * totalClaim;
-  //           amount += tokenClaimed;
-  //           value.lastClaimTime += totalClaim * value.releaseInterval;
-  //           value.remainingToken -= tokenClaimed;
-  //           x.set(key,value);
-  //            let newStruct: AdvisorArrayData = AdvisorArrayData{
-  //             data:x,
-  //             size:size,
-  //           };
-  //           self.AdvisorData.set(sender(),newStruct);
-  //       }
-  //       require(amount == 0,"You have not sufficient Token");
-  //     }
-  //       send(SendParameters{
-  //               to: msg.cenderadd,
-  //               value: 0,
-  //               mode:  SendRemainingBalance,
-  //               bounce: true,
-  //               body: TokenTransfer{
-  //                   queryId:0,
-  //                   amount: amount,
-  //                   destination: msg.senderadd,
-  //                   response_destination: msg.senderadd,
-  //                   custom_payload: null,
-  //                   forward_ton_amount: 1,
-  //                   forward_payload: "".asComment().beginParse(),
-  //               }.toCell()
-  //       });
-  // }
-
   receive(msg: ClaimAdvisorTokens){
       let advisorSaleData : AdvisorArrayData  = self.AdvisorData.get(sender())!!;
       let size : Int =advisorSaleData.size;
@@ -1066,7 +888,7 @@ contract SamplePresale with Ownable, Deployable {
           let totalClaim : Int = (now() - value.lastClaimTime) /
               value.releaseInterval;
           let seedData: TokenDistrubuteInfo = self.TokenData.get(0)!!;
-          let tokenClaimed : Int = ((value.TotalToken / 10000) * seedData.percentage) * totalClaim;
+          let tokenClaimed : Int = ((value.totalToken / 10000) * seedData.percentage) * totalClaim;
           amount += tokenClaimed;
           value.lastClaimTime += totalClaim * value.releaseInterval;
           value.remainingToken -= tokenClaimed;
@@ -1096,56 +918,6 @@ contract SamplePresale with Ownable, Deployable {
       });
   }
 
-  // receive(msg : ClaimTreasuryTokens) {
-  //   let teamDataInfo : TreasuryArrayData = self.TreasuryData.get(sender())!!;
-  //   let size:Int = teamDataInfo.size;
-  //   let x:map<Int,TokenVestingInfo> =  teamDataInfo.data;
-  //   let amount: Int = 0;
-  //   foreach(key, value in x){
-  //       if (now() >= value.vestingDuration) {
-  //           amount += value.remainingToken;
-  //           value.lastClaimTime = value.vestingDuration;
-  //           value.remainingToken = 0;
-  //           x.set(key,value);
-  //           let newStruct: TreasuryArrayData = TreasuryArrayData{
-  //             data:x,
-  //             size:size,
-  //           };
-  //           self.TreasuryData.set(sender(),newStruct);
-  //       }else {
-  //           let totalClaim : Int = (now() - value.lastClaimTime) /
-  //               value.releaseInterval;
-  //           let seedData: TokenDistrubuteInfo = self.TokenData.get(10)!!;
-  //           let tokenClaimed : Int = ((value.TotalToken / 10000) * seedData.percentage) * totalClaim;
-  //           amount += tokenClaimed;
-  //           value.lastClaimTime += totalClaim * value.releaseInterval;
-  //           value.remainingToken -= tokenClaimed;
-  //           x.set(key,value);
-  //            let newStruct: TreasuryArrayData = TreasuryArrayData{
-  //             data:x,
-  //             size:size,
-  //           };
-  //           self.TreasuryData.set(sender(),newStruct);
-  //       }
-  //       require(amount == 0,"You have not sufficient Token");
-  //     }
-  //       send(SendParameters{
-  //               to: msg.cenderadd,
-  //               value: 0,
-  //               mode:  SendRemainingBalance,
-  //               bounce: true,
-  //               body: TokenTransfer{
-  //                   queryId:0,
-  //                   amount: amount,
-  //                   destination: msg.senderadd,
-  //                   response_destination: msg.senderadd,
-  //                   custom_payload: null,
-  //                   forward_ton_amount: 1,
-  //                   forward_payload: "".asComment().beginParse(),
-  //               }.toCell()
-  //       });
-  // }
-
   receive(msg: ClaimTreasuryTokens){
       let tresurySaleData : TreasuryArrayData  = self.TreasuryData.get(sender())!!;
       let size : Int =tresurySaleData.size;
@@ -1170,7 +942,7 @@ contract SamplePresale with Ownable, Deployable {
           let totalClaim : Int = (now() - value.lastClaimTime) /
               value.releaseInterval;
           let seedData: TokenDistrubuteInfo = self.TokenData.get(0)!!;
-          let tokenClaimed : Int = ((value.TotalToken / 10000) * seedData.percentage) * totalClaim;
+          let tokenClaimed : Int = ((value.totalToken / 10000) * seedData.percentage) * totalClaim;
           amount += tokenClaimed;
           value.lastClaimTime += totalClaim * value.releaseInterval;
           value.remainingToken -= tokenClaimed;
@@ -1200,17 +972,14 @@ contract SamplePresale with Ownable, Deployable {
       });
   }
 
-  fun AddReferAddress(referrer: Address, amount: Int) 
+  fun AddReferAddress(referrer: Address, amount: Int,from : Address) 
   {
-      let ne: Address = newAddress(0,0);
       let amt:Int = (amount * 5) / 100;
-      require(referrer != ne, "INVALID_ADDRESS");
-      require(sender() != referrer, "REFERRER_CANNOT_BE_A_REFERRAL");
-      require(self.checkReferrers.get(sender()) == null, "ALREADY_ADDED_REFERRER");
-      self.checkReferrers.set(sender(),referrer); 
+      require(self.checkReferrers.get(from) == null, "ALREADY_ADDED_REFERRER");
+      self.checkReferrers.set(from,referrer); 
 
       let newData: RefferData = RefferData{
-        refferalAddress: sender(),
+        refferalAddress: from,
         amount: amt,
         claim: false,
       };
@@ -1375,5 +1144,4 @@ contract SamplePresale with Ownable, Deployable {
     }
     
   }
-
 }
