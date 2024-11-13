@@ -159,6 +159,8 @@ message ClaimTreasuryTokens {
 contract SamplePresale with Ownable, Deployable {
   const MinTonForStorage: Int = ton("0.1");
   const REFERRAL_VALUE : Int = 1;
+  seedRoundTime : Int = 0;
+  startPresale : Bool = false;
   TonVal : Int = 4;
   owner: Address;
   TonBalance : Int as coins;
@@ -277,8 +279,14 @@ contract SamplePresale with Ownable, Deployable {
     );
   }
 
+  receive("start Presale"){
+    self.seedRoundTime = now() + (30*24*60*60);
+    self.startPresale = true;
+  }
+
   receive(msg: TokenNotification){
-    
+    require(now() < self.seedRoundTime, "Presale is over");
+    require(self.startPresale, "Presale is not start yet");
     let TokenAmount : Int = msg.amount  * self.TonVal;
     let gotButUnsure: UserArrayData? = self.SeedData.get(msg.from);
     let seedData : TokenDistrubuteInfo = self.TokenData.get(0)!!;
@@ -1089,7 +1097,7 @@ contract SamplePresale with Ownable, Deployable {
   }
 
   get fun getAllTeamTokenData(addr:Address): map<Int,TokenVestingInfo>{
-    if(self.MarketingData.get(addr) != null){
+    if(self.TeamData.get(addr) != null){
       let data: TeamArrayData = self.TeamData.get(addr)!!;
       return data.data;
     }
@@ -1100,7 +1108,7 @@ contract SamplePresale with Ownable, Deployable {
   }
 
   get fun getAllAdvisorTokenData(addr:Address): map<Int,TokenVestingInfo>{
-    if(self.MarketingData.get(addr) != null){
+    if(self.AdvisorData.get(addr) != null){
       let data: AdvisorArrayData = self.AdvisorData.get(addr)!!;
       return data.data;
     }
@@ -1111,7 +1119,7 @@ contract SamplePresale with Ownable, Deployable {
   }
 
   get fun getAllTreasuryTokenData(addr:Address): map<Int,TokenVestingInfo>{
-    if(self.MarketingData.get(addr) != null){
+    if(self.TreasuryData.get(addr) != null){
       let data: TreasuryArrayData = self.TreasuryData.get(addr)!!;
       return data.data;
     }
@@ -1125,11 +1133,19 @@ contract SamplePresale with Ownable, Deployable {
     return self.TokenData;
   }
 
-  
-  get fun getAllReferralDetails(referrerAddress: Address):  map<Int,RefferData> 
-  {
-    let data: RefferDetails = self.refferInfo.get(referrerAddress)!!;
+  get fun getSeedRoundTime():Int{
+    return self.seedRoundTime;
+  }
+
+  get fun getAllReferralDetails(referrerAddress: Address):  map<Int,RefferData> {
+    if(self.refferInfo.get(referrerAddress) != null){
+      let data: RefferDetails = self.refferInfo.get(referrerAddress)!!;
     return data.reffer;
+    }
+    else{
+      return emptyMap();
+    }
+    
   }
 
   get fun getReferrer(userAddress: Address):Address

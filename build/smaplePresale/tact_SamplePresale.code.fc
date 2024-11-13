@@ -94,7 +94,7 @@
 
 ((int, slice, int, cell, cell, cell, cell, cell, cell, cell, cell, cell), cell) $SamplePresale$_fun_getAllTeamTokenData((int, slice, int, cell, cell, cell, cell, cell, cell, cell, cell, cell) $self, slice $addr) impure inline_ref {
     var (($self'TonVal, $self'owner, $self'TonBalance, $self'TokenData, $self'SeedData, $self'PrivateSaleData, $self'MarketingData, $self'TeamData, $self'AdvisorData, $self'TreasuryData, $self'checkReferrers, $self'refferInfo)) = $self;
-    if ((~ null?($MarketingArrayData$_load_opt(__tact_dict_get_slice_cell($self'MarketingData, 267, $addr))))) {
+    if ((~ null?($TeamArrayData$_load_opt(__tact_dict_get_slice_cell($self'TeamData, 267, $addr))))) {
         var ($data'data, $data'size) = $TeamArrayData$_not_null($TeamArrayData$_load_opt(__tact_dict_get_slice_cell($self'TeamData, 267, $addr)));
         return (($self'TonVal, $self'owner, $self'TonBalance, $self'TokenData, $self'SeedData, $self'PrivateSaleData, $self'MarketingData, $self'TeamData, $self'AdvisorData, $self'TreasuryData, $self'checkReferrers, $self'refferInfo), $data'data);
     } else {
@@ -104,7 +104,7 @@
 
 ((int, slice, int, cell, cell, cell, cell, cell, cell, cell, cell, cell), cell) $SamplePresale$_fun_getAllAdvisorTokenData((int, slice, int, cell, cell, cell, cell, cell, cell, cell, cell, cell) $self, slice $addr) impure inline_ref {
     var (($self'TonVal, $self'owner, $self'TonBalance, $self'TokenData, $self'SeedData, $self'PrivateSaleData, $self'MarketingData, $self'TeamData, $self'AdvisorData, $self'TreasuryData, $self'checkReferrers, $self'refferInfo)) = $self;
-    if ((~ null?($MarketingArrayData$_load_opt(__tact_dict_get_slice_cell($self'MarketingData, 267, $addr))))) {
+    if ((~ null?($AdvisorArrayData$_load_opt(__tact_dict_get_slice_cell($self'AdvisorData, 267, $addr))))) {
         var ($data'data, $data'size) = $AdvisorArrayData$_not_null($AdvisorArrayData$_load_opt(__tact_dict_get_slice_cell($self'AdvisorData, 267, $addr)));
         return (($self'TonVal, $self'owner, $self'TonBalance, $self'TokenData, $self'SeedData, $self'PrivateSaleData, $self'MarketingData, $self'TeamData, $self'AdvisorData, $self'TreasuryData, $self'checkReferrers, $self'refferInfo), $data'data);
     } else {
@@ -114,7 +114,7 @@
 
 ((int, slice, int, cell, cell, cell, cell, cell, cell, cell, cell, cell), cell) $SamplePresale$_fun_getAllTreasuryTokenData((int, slice, int, cell, cell, cell, cell, cell, cell, cell, cell, cell) $self, slice $addr) impure inline_ref {
     var (($self'TonVal, $self'owner, $self'TonBalance, $self'TokenData, $self'SeedData, $self'PrivateSaleData, $self'MarketingData, $self'TeamData, $self'AdvisorData, $self'TreasuryData, $self'checkReferrers, $self'refferInfo)) = $self;
-    if ((~ null?($MarketingArrayData$_load_opt(__tact_dict_get_slice_cell($self'MarketingData, 267, $addr))))) {
+    if ((~ null?($TreasuryArrayData$_load_opt(__tact_dict_get_slice_cell($self'TreasuryData, 267, $addr))))) {
         var ($data'data, $data'size) = $TreasuryArrayData$_not_null($TreasuryArrayData$_load_opt(__tact_dict_get_slice_cell($self'TreasuryData, 267, $addr)));
         return (($self'TonVal, $self'owner, $self'TonBalance, $self'TokenData, $self'SeedData, $self'PrivateSaleData, $self'MarketingData, $self'TeamData, $self'AdvisorData, $self'TreasuryData, $self'checkReferrers, $self'refferInfo), $data'data);
     } else {
@@ -129,8 +129,12 @@
 
 ((int, slice, int, cell, cell, cell, cell, cell, cell, cell, cell, cell), cell) $SamplePresale$_fun_getAllReferralDetails((int, slice, int, cell, cell, cell, cell, cell, cell, cell, cell, cell) $self, slice $referrerAddress) impure inline_ref {
     var (($self'TonVal, $self'owner, $self'TonBalance, $self'TokenData, $self'SeedData, $self'PrivateSaleData, $self'MarketingData, $self'TeamData, $self'AdvisorData, $self'TreasuryData, $self'checkReferrers, $self'refferInfo)) = $self;
-    var ($data'reffer, $data'size) = $RefferDetails$_not_null($RefferDetails$_load_opt(__tact_dict_get_slice_cell($self'refferInfo, 267, $referrerAddress)));
-    return (($self'TonVal, $self'owner, $self'TonBalance, $self'TokenData, $self'SeedData, $self'PrivateSaleData, $self'MarketingData, $self'TeamData, $self'AdvisorData, $self'TreasuryData, $self'checkReferrers, $self'refferInfo), $data'reffer);
+    if ((~ null?($RefferDetails$_load_opt(__tact_dict_get_slice_cell($self'refferInfo, 267, $referrerAddress))))) {
+        var ($data'reffer, $data'size) = $RefferDetails$_not_null($RefferDetails$_load_opt(__tact_dict_get_slice_cell($self'refferInfo, 267, $referrerAddress)));
+        return (($self'TonVal, $self'owner, $self'TonBalance, $self'TokenData, $self'SeedData, $self'PrivateSaleData, $self'MarketingData, $self'TeamData, $self'AdvisorData, $self'TreasuryData, $self'checkReferrers, $self'refferInfo), $data'reffer);
+    } else {
+        return (($self'TonVal, $self'owner, $self'TonBalance, $self'TokenData, $self'SeedData, $self'PrivateSaleData, $self'MarketingData, $self'TeamData, $self'AdvisorData, $self'TreasuryData, $self'checkReferrers, $self'refferInfo), null());
+    }
 }
 
 ((int, slice, int, cell, cell, cell, cell, cell, cell, cell, cell, cell), slice) $SamplePresale$_fun_getReferrer((int, slice, int, cell, cell, cell, cell, cell, cell, cell, cell, cell) $self, slice $userAddress) impure inline_ref {

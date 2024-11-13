@@ -18,23 +18,23 @@ export async function run(provider: NetworkProvider) {
     // Create content Cell
     // let content = buildOnchainMetadata(jettonParams);
 
-    // const samplePresale = provider.open(await SamplePresale.fromInit());
-    const samplePresale = provider.open(await SamplePresale.fromAddress(
-      Address.parse("EQBmq9pM6SVDucNF2EoXjfItEcLA2ecxw92GKoxIAAa5Ij5q")
-    ));
+    const samplePresale = provider.open(await SamplePresale.fromInit());
+    // const samplePresale = provider.open(await SamplePresale.fromAddress(
+    //   Address.parse("EQBmq9pM6SVDucNF2EoXjfItEcLA2ecxw92GKoxIAAa5Ij5q")
+    // ));
 
-    // await samplePresale.send(
-    //     provider.sender(),
-    //     {
-    //         value: toNano('0.05'),
-    //     },
-    //     {
-    //         $$type: 'Deploy',
-    //         queryId: 0n
-    //     }
-    // );
+    await samplePresale.send(
+        provider.sender(),
+        {
+            value: toNano('0.05'),
+        },
+        {
+            $$type: 'Deploy',
+            queryId: 0n
+        }
+    );
 
-    // await provider.waitForDeploy(samplePresale.address);
+    await provider.waitForDeploy(samplePresale.address);
 
     // const userWalladd = provider.open(await JettonDefaultWallet.fromInit(Address.parse("kQCSCXajfljIux5OS3JBParNJe6AvmWr7O08-hiHW6bzvRB_"),Address.parse("0QCL20gS8GdNJy5hLuJjxwCFTL9kveyW3yiC4wqdosCT2Q0A")));
 

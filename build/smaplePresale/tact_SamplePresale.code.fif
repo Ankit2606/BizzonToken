@@ -1785,11 +1785,11 @@ PROGRAM{
     PUSHNULL
   }>
   $SamplePresale$_fun_getAllTeamTokenData PROCREF:<{
-    s6 PUSH
+    s5 PUSH
     267 PUSHINT
     s2 PUSH
     __tact_dict_get_slice_cell INLINECALLDICT
-    $MarketingArrayData$_load_opt INLINECALLDICT
+    $TeamArrayData$_load_opt INLINECALLDICT
     ISNULL
     NOT
     IFJMP:<{
@@ -1805,11 +1805,11 @@ PROGRAM{
     PUSHNULL
   }>
   $SamplePresale$_fun_getAllAdvisorTokenData PROCREF:<{
-    s6 PUSH
+    s4 PUSH
     267 PUSHINT
     s2 PUSH
     __tact_dict_get_slice_cell INLINECALLDICT
-    $MarketingArrayData$_load_opt INLINECALLDICT
+    $AdvisorArrayData$_load_opt INLINECALLDICT
     ISNULL
     NOT
     IFJMP:<{
@@ -1825,11 +1825,11 @@ PROGRAM{
     PUSHNULL
   }>
   $SamplePresale$_fun_getAllTreasuryTokenData PROCREF:<{
-    s6 PUSH
+    s3 PUSH
     267 PUSHINT
     s2 PUSH
     __tact_dict_get_slice_cell INLINECALLDICT
-    $MarketingArrayData$_load_opt INLINECALLDICT
+    $TreasuryArrayData$_load_opt INLINECALLDICT
     ISNULL
     NOT
     IFJMP:<{
@@ -1848,13 +1848,24 @@ PROGRAM{
     s8 PUSH
   }>
   $SamplePresale$_fun_getAllReferralDetails PROCREF:<{
+    OVER
     267 PUSHINT
     s2 PUSH
-    s0 s2 XCHG
     __tact_dict_get_slice_cell INLINECALLDICT
     $RefferDetails$_load_opt INLINECALLDICT
-    $RefferDetails$_not_null INLINECALLDICT
+    ISNULL
+    NOT
+    IFJMP:<{
+      267 PUSHINT
+      s2 PUSH
+      s0 s2 XCHG
+      __tact_dict_get_slice_cell INLINECALLDICT
+      $RefferDetails$_load_opt INLINECALLDICT
+      $RefferDetails$_not_null INLINECALLDICT
+      DROP
+    }>
     DROP
+    PUSHNULL
   }>
   $SamplePresale$_fun_getReferrer PROCREF:<{
     s2 PUSH
