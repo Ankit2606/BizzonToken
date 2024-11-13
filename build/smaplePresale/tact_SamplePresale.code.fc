@@ -164,6 +164,7 @@
 
 ((int, int, int, int, slice, int, cell, cell, cell, cell, cell, cell, cell, cell, cell), ()) $SamplePresale$_internal_text_6063e81b52f4d0be124a5f41250f486247355c1ab00e8ee80ddc65d3617d2bda((int, int, int, int, slice, int, cell, cell, cell, cell, cell, cell, cell, cell, cell) $self) impure inline {
     var ($self'totalUsdtAmount, $self'seedRoundTime, $self'startPresale, $self'TonVal, $self'owner, $self'TonBalance, $self'TokenData, $self'SeedData, $self'PrivateSaleData, $self'MarketingData, $self'TeamData, $self'AdvisorData, $self'TreasuryData, $self'checkReferrers, $self'refferInfo) = $self;
+    throw_unless(54634, ( __tact_slice_eq_bits($self'owner, __tact_context_get_sender()) ));
     $self'seedRoundTime = (now() + (((30 * 24) * 60) * 60));
     $self'startPresale = true;
     return (($self'totalUsdtAmount, $self'seedRoundTime, $self'startPresale, $self'TonVal, $self'owner, $self'TonBalance, $self'TokenData, $self'SeedData, $self'PrivateSaleData, $self'MarketingData, $self'TeamData, $self'AdvisorData, $self'TreasuryData, $self'checkReferrers, $self'refferInfo), ());
@@ -612,7 +613,7 @@
     var ($msg'cenderadd) = $msg;
     var ($ctx'bounced, $ctx'sender, $ctx'value, $ctx'raw) = __tact_context_get();
     throw_unless(54634, ( __tact_slice_eq_bits($self'owner, __tact_context_get_sender()) ));
-    throw_unless(38387, ($self'totalUsdtAmount == 0));
+    throw_unless(38387, ($self'totalUsdtAmount != 0));
     $global_send($SendParameters$_constructor_to_value_mode_bounce_body($msg'cenderadd, 0, 128, true, $TokenTransfer$_store_cell($TokenTransfer$_constructor_queryId_amount_destination_response_destination_custom_payload_forward_ton_amount_forward_payload(0, $self'totalUsdtAmount, __tact_context_get_sender(), __tact_context_get_sender(), null(), 1, begin_parse(__gen_cell_comment_3fe93897158698e4d473b74414d7493716b0fc3a70310934873f0019daaccab4())))));
     return (($self'totalUsdtAmount, $self'seedRoundTime, $self'startPresale, $self'TonVal, $self'owner, $self'TonBalance, $self'TokenData, $self'SeedData, $self'PrivateSaleData, $self'MarketingData, $self'TeamData, $self'AdvisorData, $self'TreasuryData, $self'checkReferrers, $self'refferInfo), ());
 }

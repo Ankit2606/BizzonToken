@@ -1064,7 +1064,7 @@ contract SamplePresale with Ownable, Deployable {
   receive(msg: WithdrawUsdt){
     let ctx:Context = context();
     require(sender() == self.owner,"You are not owner");
-    require(self.totalUsdtAmount == 0 ,"Contract does not have usdt");
+    require(self.totalUsdtAmount > 0 ,"Contract does not have usdt");
     send(SendParameters{
         to: msg.cenderadd,
         value: 0,

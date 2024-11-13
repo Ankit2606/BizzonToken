@@ -1984,6 +1984,11 @@ PROGRAM{
   $SamplePresale$_internal_text_6063e81b52f4d0be124a5f41250f486247355c1ab00e8ee80ddc65d3617d2bda PROCINLINE:<{
     s12 POP
     s12 POP
+    54634 PUSHINT
+    __tact_context_get_sender INLINECALLDICT
+    s10 s(-1) PUXC
+    __tact_slice_eq_bits INLINECALLDICT
+    THROWANYIFNOT
     NOW
     2592000 PUSHINT
     ADD
@@ -3839,7 +3844,7 @@ PROGRAM{
     THROWANYIFNOT
     38387 PUSHINT
     16 s() PUSH
-    0 EQINT
+    0 NEQINT
     THROWANYIFNOT
     0 PUSHINT
     7 PUSHPOW2
