@@ -79,8 +79,8 @@ export async function run(provider: NetworkProvider) {
     //  const walletData = await samplePresale.getGetTokenInfo(i);
     //  console.log(walletData);
     // }
-    const walletDatas1 = await samplePresale.getGetReferrer(Address.parse("EQCL20gS8GdNJy5hLuJjxwCFTL9kveyW3yiC4wqdosCT2etP") as Address);
-     console.log(walletDatas1);
+    // const walletDatas1 = await samplePresale.getGetReferrer(Address.parse("EQCL20gS8GdNJy5hLuJjxwCFTL9kveyW3yiC4wqdosCT2etP") as Address);
+    //  console.log(walletDatas1);
 
     //  const walletDatas = await samplePresale.getGetData( Address.parse("0QBony_meSMNl6w6cMQpEvW9dQbvy-AwJFKDJeA5CydJ4p4q") as Address,2n);
     //  console.log(walletDatas);
@@ -90,17 +90,17 @@ export async function run(provider: NetworkProvider) {
 
     // const sampleJetton = provider.open(await SampleJetton.fromAddress(Address.parse("EQCnQmewXEhBOpAmZKITlNl4QaHMkaFIJqSNdJPfvwiR77er")));
 
-    await samplePresale.send(
-        provider.sender(),
-        {
-            value: toNano('0.05'),
-        },
-        {
-            $$type: 'PrivateSaleMessage',
-            amount: 10000000000000n,
-            UserAddress: Address.parse("0QCL20gS8GdNJy5hLuJjxwCFTL9kveyW3yiC4wqdosCT2Q0A") as Address
-        }
-    );
+    // await samplePresale.send(
+    //     provider.sender(),
+    //     {
+    //         value: toNano('0.05'),
+    //     },
+    //     {
+    //         $$type: 'PrivateSaleMessage',
+    //         amount: 10000000000000n,
+    //         UserAddress: Address.parse("0QCL20gS8GdNJy5hLuJjxwCFTL9kveyW3yiC4wqdosCT2Q0A") as Address
+    //     }
+    // );
 
     // const callerToken = provider.open(Caller22.fromAddress(Address.parse("EQAuGAFHQgr9oyXwOFeCTxxW_Bgy5PJYvfnoad4aK-Yt428x")));
     

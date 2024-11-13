@@ -869,25 +869,40 @@ tuple $TreasuryArrayData$_load_opt(cell cl) inline {
 }
 
 ;;
+;; Type: WithdrawUsdt
+;; Header: 0xd69f6004
+;; TLB: withdraw_usdt#d69f6004 cenderadd:address = WithdrawUsdt
+;;
+
+(slice, ((slice))) $WithdrawUsdt$_load(slice sc_0) inline {
+    throw_unless(129, sc_0~load_uint(32) == 3600769028);
+    var v'cenderadd = sc_0~__tact_load_address();
+    return (sc_0, (v'cenderadd));
+}
+
+;;
 ;; Type: SamplePresale
 ;;
 
-builder $SamplePresale$_store(builder build_0, (int, slice, int, cell, cell, cell, cell, cell, cell, cell, cell, cell) v) inline {
-    var (v'TonVal, v'owner, v'TonBalance, v'TokenData, v'SeedData, v'PrivateSaleData, v'MarketingData, v'TeamData, v'AdvisorData, v'TreasuryData, v'checkReferrers, v'refferInfo) = v;
+builder $SamplePresale$_store(builder build_0, (int, int, int, int, slice, int, cell, cell, cell, cell, cell, cell, cell, cell, cell) v) inline {
+    var (v'totalUsdtAmount, v'seedRoundTime, v'startPresale, v'TonVal, v'owner, v'TonBalance, v'TokenData, v'SeedData, v'PrivateSaleData, v'MarketingData, v'TeamData, v'AdvisorData, v'TreasuryData, v'checkReferrers, v'refferInfo) = v;
+    build_0 = build_0.store_int(v'totalUsdtAmount, 257);
+    build_0 = build_0.store_int(v'seedRoundTime, 257);
+    build_0 = build_0.store_int(v'startPresale, 1);
     build_0 = build_0.store_int(v'TonVal, 257);
-    build_0 = __tact_store_address(build_0, v'owner);
-    build_0 = build_0.store_coins(v'TonBalance);
-    build_0 = build_0.store_dict(v'TokenData);
-    build_0 = build_0.store_dict(v'SeedData);
     var build_1 = begin_cell();
+    build_1 = __tact_store_address(build_1, v'owner);
+    build_1 = build_1.store_coins(v'TonBalance);
+    build_1 = build_1.store_dict(v'TokenData);
+    build_1 = build_1.store_dict(v'SeedData);
     build_1 = build_1.store_dict(v'PrivateSaleData);
-    build_1 = build_1.store_dict(v'MarketingData);
-    build_1 = build_1.store_dict(v'TeamData);
     var build_2 = begin_cell();
+    build_2 = build_2.store_dict(v'MarketingData);
+    build_2 = build_2.store_dict(v'TeamData);
     build_2 = build_2.store_dict(v'AdvisorData);
-    build_2 = build_2.store_dict(v'TreasuryData);
-    build_2 = build_2.store_dict(v'checkReferrers);
     var build_3 = begin_cell();
+    build_3 = build_3.store_dict(v'TreasuryData);
+    build_3 = build_3.store_dict(v'checkReferrers);
     build_3 = build_3.store_dict(v'refferInfo);
     build_2 = store_ref(build_2, build_3.end_cell());
     build_1 = store_ref(build_1, build_2.end_cell());
@@ -895,26 +910,29 @@ builder $SamplePresale$_store(builder build_0, (int, slice, int, cell, cell, cel
     return build_0;
 }
 
-(slice, ((int, slice, int, cell, cell, cell, cell, cell, cell, cell, cell, cell))) $SamplePresale$_load(slice sc_0) inline {
+(slice, ((int, int, int, int, slice, int, cell, cell, cell, cell, cell, cell, cell, cell, cell))) $SamplePresale$_load(slice sc_0) inline {
+    var v'totalUsdtAmount = sc_0~load_int(257);
+    var v'seedRoundTime = sc_0~load_int(257);
+    var v'startPresale = sc_0~load_int(1);
     var v'TonVal = sc_0~load_int(257);
-    var v'owner = sc_0~__tact_load_address();
-    var v'TonBalance = sc_0~load_coins();
-    var v'TokenData = sc_0~load_dict();
-    var v'SeedData = sc_0~load_dict();
     slice sc_1 = sc_0~load_ref().begin_parse();
+    var v'owner = sc_1~__tact_load_address();
+    var v'TonBalance = sc_1~load_coins();
+    var v'TokenData = sc_1~load_dict();
+    var v'SeedData = sc_1~load_dict();
     var v'PrivateSaleData = sc_1~load_dict();
-    var v'MarketingData = sc_1~load_dict();
-    var v'TeamData = sc_1~load_dict();
     slice sc_2 = sc_1~load_ref().begin_parse();
+    var v'MarketingData = sc_2~load_dict();
+    var v'TeamData = sc_2~load_dict();
     var v'AdvisorData = sc_2~load_dict();
-    var v'TreasuryData = sc_2~load_dict();
-    var v'checkReferrers = sc_2~load_dict();
     slice sc_3 = sc_2~load_ref().begin_parse();
+    var v'TreasuryData = sc_3~load_dict();
+    var v'checkReferrers = sc_3~load_dict();
     var v'refferInfo = sc_3~load_dict();
-    return (sc_0, (v'TonVal, v'owner, v'TonBalance, v'TokenData, v'SeedData, v'PrivateSaleData, v'MarketingData, v'TeamData, v'AdvisorData, v'TreasuryData, v'checkReferrers, v'refferInfo));
+    return (sc_0, (v'totalUsdtAmount, v'seedRoundTime, v'startPresale, v'TonVal, v'owner, v'TonBalance, v'TokenData, v'SeedData, v'PrivateSaleData, v'MarketingData, v'TeamData, v'AdvisorData, v'TreasuryData, v'checkReferrers, v'refferInfo));
 }
 
-(int, slice, int, cell, cell, cell, cell, cell, cell, cell, cell, cell) $SamplePresale$_contract_load() impure inline_ref {
+(int, int, int, int, slice, int, cell, cell, cell, cell, cell, cell, cell, cell, cell) $SamplePresale$_contract_load() impure inline_ref {
     slice $sc = get_data().begin_parse();
     __tact_context_sys = $sc~load_ref();
     int $loaded = $sc~load_int(1);
@@ -927,7 +945,7 @@ builder $SamplePresale$_store(builder build_0, (int, slice, int, cell, cell, cel
     }
 }
 
-() $SamplePresale$_contract_store((int, slice, int, cell, cell, cell, cell, cell, cell, cell, cell, cell) v) impure inline {
+() $SamplePresale$_contract_store((int, int, int, int, slice, int, cell, cell, cell, cell, cell, cell, cell, cell, cell) v) impure inline {
     builder b = begin_cell();
     b = b.store_ref(__tact_context_sys);
     b = b.store_int(true, 1);

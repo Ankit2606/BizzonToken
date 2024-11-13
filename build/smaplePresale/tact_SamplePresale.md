@@ -1,9 +1,9 @@
 # TACT Compilation Report
 Contract: SamplePresale
-BOC Size: 11334 bytes
+BOC Size: 11611 bytes
 
 # Types
-Total Types: 41
+Total Types: 42
 
 ## StateInit
 TLB: `_ code:^cell data:^cell = StateInit`
@@ -169,8 +169,12 @@ Signature: `ClaimAdvisorTokens{index:int257,cenderadd:address,senderadd:address}
 TLB: `claim_treasury_tokens#2b0d7ffd index:int257 cenderadd:address senderadd:address = ClaimTreasuryTokens`
 Signature: `ClaimTreasuryTokens{index:int257,cenderadd:address,senderadd:address}`
 
+## WithdrawUsdt
+TLB: `withdraw_usdt#d69f6004 cenderadd:address = WithdrawUsdt`
+Signature: `WithdrawUsdt{cenderadd:address}`
+
 # Get Methods
-Total Get Methods: 12
+Total Get Methods: 13
 
 ## getData
 Argument: addr
@@ -197,6 +201,8 @@ Argument: addr
 Argument: addr
 
 ## getTokonomicsData
+
+## getSeedRoundTime
 
 ## getAllReferralDetails
 Argument: referrerAddress
@@ -231,10 +237,14 @@ Argument: userAddress
 135: Code of a contract was not found
 136: Invalid address
 137: Masterchain support is not enabled for this contract
+1275: Presale is not start yet
 15509: Only deployer is allowed to withdraw
 30183: NO_REFERRAL_TOKENS_AVAILABLE
+32633: Presale is over
 35441: Seed Token Supply is completed
+38387: Contract does not have usdt
 43297: Index not found!
 44418: You have not sufficient Token
 46387: not have any refferals
+54634: You are not owner
 60511: ALREADY_ADDED_REFERRER

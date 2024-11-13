@@ -156,9 +156,14 @@ message ClaimTreasuryTokens {
     senderadd:Address;
 }
 
+message WithdrawUsdt {
+    cenderadd: Address;
+}
+
 contract SamplePresale with Ownable, Deployable {
   const MinTonForStorage: Int = ton("0.1");
   const REFERRAL_VALUE : Int = 1;
+  totalUsdtAmount : Int = 0;
   seedRoundTime : Int = 0;
   startPresale : Bool = false;
   TonVal : Int = 4;
@@ -280,6 +285,7 @@ contract SamplePresale with Ownable, Deployable {
   }
 
   receive("start Presale"){
+    require(sender() == self.owner,"You are not owner");
     self.seedRoundTime = now() + (30*24*60*60);
     self.startPresale = true;
   }
@@ -338,6 +344,7 @@ contract SamplePresale with Ownable, Deployable {
     };
     self.SeedData.set(msg.from,storeData);
     }
+    self.totalUsdtAmount += msg.amount;
     seedData.totalSuppliedToken += TokenAmount;
     self.TokenData.set(0,seedData);
   }
@@ -1052,7 +1059,27 @@ contract SamplePresale with Ownable, Deployable {
             forward_payload: "".asComment().beginParse(),
         }.toCell()
       });
-     
+  }
+
+  receive(msg: WithdrawUsdt){
+    let ctx:Context = context();
+    require(sender() == self.owner,"You are not owner");
+    require(self.totalUsdtAmount == 0 ,"Contract does not have usdt");
+    send(SendParameters{
+        to: msg.cenderadd,
+        value: 0,
+        mode:  SendRemainingBalance,
+        bounce: true,
+        body: TokenTransfer{
+            queryId:0,
+            amount: self.totalUsdtAmount,
+            destination: sender(),
+            response_destination: sender(),
+            custom_payload: null,
+            forward_ton_amount: 1,
+            forward_payload: "".asComment().beginParse(),
+        }.toCell()
+      });
   }
     
   get fun getData(addr: Address,num: Int):UserData?{
