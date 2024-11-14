@@ -165,7 +165,7 @@ contract SamplePresale with Ownable, Deployable {
   const REFERRAL_VALUE : Int = 1;
   totalUsdtAmount : Int = 0;
   seedRoundTime : Int = 0;
-  startPresale : Bool = false;
+  presaleStatus : Bool = false;
   TonVal : Int = 4;
   owner: Address;
   TonBalance : Int as coins;
@@ -287,12 +287,12 @@ contract SamplePresale with Ownable, Deployable {
   receive("start Presale"){
     require(sender() == self.owner,"You are not owner");
     self.seedRoundTime = now() + (30*24*60*60);
-    self.startPresale = true;
+    self.presaleStatus = true;
   }
 
   receive(msg: TokenNotification){
     require(now() < self.seedRoundTime, "Presale is over");
-    require(self.startPresale, "Presale is not start yet");
+    require(self.presaleStatus, "Presale is not start yet");
     let TokenAmount : Int = msg.amount  * self.TonVal;
     let gotButUnsure: UserArrayData? = self.SeedData.get(msg.from);
     let seedData : TokenDistrubuteInfo = self.TokenData.get(0)!!;
@@ -351,13 +351,15 @@ contract SamplePresale with Ownable, Deployable {
 
    receive(msg: TokenExcesses){
   }
+
   receive(msg : PrivateSaleMessage){
+    require(sender() == self.owner,"You are not owner");
     let ctx:Context = context();
-    let gotButUnsure: PrivateSaleArrayData? = self.PrivateSaleData.get(sender());
+    let gotButUnsure: PrivateSaleArrayData? = self.PrivateSaleData.get(msg.UserAddress);
     let seedData : TokenDistrubuteInfo = self.TokenData.get(1)!!;
     require(seedData.totalPhaseToken >= seedData.totalSuppliedToken + msg.amount,"Seed Token Supply is completed");
     if (gotButUnsure != null) {
-      let gotButsure: PrivateSaleArrayData = self.PrivateSaleData.get(sender())!!;
+      let gotButsure: PrivateSaleArrayData = self.PrivateSaleData.get(msg.UserAddress)!!;
       let userInfo : TokenVestingInfo = TokenVestingInfo{
         beneficiary : msg.UserAddress,
         totalToken : msg.amount ,
@@ -373,9 +375,9 @@ contract SamplePresale with Ownable, Deployable {
     };
     gotButsure.data.set(gotButsure.size + 1,userInfo);
     gotButsure.size = gotButsure.size + 1;
-    self.PrivateSaleData.set(sender(),gotButsure);
+    self.PrivateSaleData.set(msg.UserAddress,gotButsure);
     } else {
-      let getData: PrivateSaleArrayData? = self.PrivateSaleData.get(sender());
+      let getData: PrivateSaleArrayData? = self.PrivateSaleData.get(msg.UserAddress);
       let x : map<Int,TokenVestingInfo> = emptyMap();
       let userInfo : TokenVestingInfo = TokenVestingInfo{
         beneficiary : msg.UserAddress,
@@ -395,19 +397,20 @@ contract SamplePresale with Ownable, Deployable {
       data : x,
       size:1,
     };
-    self.PrivateSaleData.set(sender(),storeData);
+    self.PrivateSaleData.set(msg.UserAddress,storeData);
     }
     seedData.totalSuppliedToken += msg.amount;
     self.TokenData.set(1,seedData);
   }
 
   receive(msg : MarketingMessage){
+    require(sender() == self.owner,"You are not owner");
     let ctx:Context = context();
-    let gotButUnsure: MarketingArrayData? = self.MarketingData.get(sender());
+    let gotButUnsure: MarketingArrayData? = self.MarketingData.get(msg.UserAddress);
     let seedData : TokenDistrubuteInfo = self.TokenData.get(9)!!;
     require(seedData.totalPhaseToken >= seedData.totalSuppliedToken + msg.amount,"Seed Token Supply is completed");
     if (gotButUnsure != null) {
-      let gotButsure: MarketingArrayData = self.MarketingData.get(sender())!!;
+      let gotButsure: MarketingArrayData = self.MarketingData.get(msg.UserAddress)!!;
       let userInfo : TokenVestingInfo = TokenVestingInfo{
         beneficiary : msg.UserAddress,
         totalToken : msg.amount ,
@@ -423,9 +426,9 @@ contract SamplePresale with Ownable, Deployable {
     };
     gotButsure.data.set(gotButsure.size + 1,userInfo);
     gotButsure.size = gotButsure.size + 1;
-    self.MarketingData.set(sender(),gotButsure);
+    self.MarketingData.set(msg.UserAddress,gotButsure);
     } else {
-      let getData: MarketingArrayData? = self.MarketingData.get(sender());
+      let getData: MarketingArrayData? = self.MarketingData.get(msg.UserAddress);
       let x : map<Int,TokenVestingInfo> = emptyMap();
       let userInfo : TokenVestingInfo = TokenVestingInfo{
         beneficiary : msg.UserAddress,
@@ -445,19 +448,20 @@ contract SamplePresale with Ownable, Deployable {
       data : x,
       size:1,
     };
-    self.MarketingData.set(sender(),storeData);
+    self.MarketingData.set(msg.UserAddress,storeData);
     }
     seedData.totalSuppliedToken += msg.amount;
     self.TokenData.set(9,seedData);
   }
 
   receive(msg : TeamMessage){
+    require(sender() == self.owner,"You are not owner");
     let ctx:Context = context();
-    let gotButUnsure: TeamArrayData? = self.TeamData.get(sender());
+    let gotButUnsure: TeamArrayData? = self.TeamData.get(msg.UserAddress);
     let seedData : TokenDistrubuteInfo = self.TokenData.get(4)!!;
     require(seedData.totalPhaseToken >= seedData.totalSuppliedToken + msg.amount,"Seed Token Supply is completed");
     if (gotButUnsure != null) {
-      let gotButsure: TeamArrayData = self.TeamData.get(sender())!!;
+      let gotButsure: TeamArrayData = self.TeamData.get(msg.UserAddress)!!;
       let userInfo : TokenVestingInfo = TokenVestingInfo{
         beneficiary : msg.UserAddress,
         totalToken : msg.amount ,
@@ -473,9 +477,9 @@ contract SamplePresale with Ownable, Deployable {
     };
     gotButsure.data.set(gotButsure.size + 1,userInfo);
     gotButsure.size = gotButsure.size + 1;
-    self.TeamData.set(sender(),gotButsure);
+    self.TeamData.set(msg.UserAddress,gotButsure);
     } else {
-      let getData: TeamArrayData? = self.TeamData.get(sender());
+      let getData: TeamArrayData? = self.TeamData.get(msg.UserAddress);
       let x : map<Int,TokenVestingInfo> = emptyMap();
       let userInfo : TokenVestingInfo = TokenVestingInfo{
         beneficiary : msg.UserAddress,
@@ -495,19 +499,20 @@ contract SamplePresale with Ownable, Deployable {
       data : x,
       size:1,
     };
-    self.TeamData.set(sender(),storeData);
+    self.TeamData.set(msg.UserAddress,storeData);
     }
     seedData.totalSuppliedToken += msg.amount;
     self.TokenData.set(4,seedData);
   }
 
   receive(msg : AdvisorMessage){
+    require(sender() == self.owner,"You are not owner");
     let ctx:Context = context();
-    let gotButUnsure: AdvisorArrayData? = self.AdvisorData.get(sender());
+    let gotButUnsure: AdvisorArrayData? = self.AdvisorData.get(msg.UserAddress);
     let seedData : TokenDistrubuteInfo = self.TokenData.get(5)!!;
     require(seedData.totalPhaseToken >= seedData.totalSuppliedToken + msg.amount,"Seed Token Supply is completed");
     if (gotButUnsure != null) {
-      let gotButsure: AdvisorArrayData = self.AdvisorData.get(sender())!!;
+      let gotButsure: AdvisorArrayData = self.AdvisorData.get(msg.UserAddress)!!;
       let userInfo : TokenVestingInfo = TokenVestingInfo{
         beneficiary : msg.UserAddress,
         totalToken : msg.amount ,
@@ -523,9 +528,9 @@ contract SamplePresale with Ownable, Deployable {
     };
     gotButsure.data.set(gotButsure.size + 1,userInfo);
     gotButsure.size = gotButsure.size + 1;
-    self.AdvisorData.set(sender(),gotButsure);
+    self.AdvisorData.set(msg.UserAddress,gotButsure);
     } else {
-      let getData: AdvisorArrayData? = self.AdvisorData.get(sender());
+      let getData: AdvisorArrayData? = self.AdvisorData.get(msg.UserAddress);
       let x : map<Int,TokenVestingInfo> = emptyMap();
       let userInfo : TokenVestingInfo = TokenVestingInfo{
         beneficiary : msg.UserAddress,
@@ -545,19 +550,20 @@ contract SamplePresale with Ownable, Deployable {
       data : x,
       size:1,
     };
-    self.AdvisorData.set(sender(),storeData);
+    self.AdvisorData.set(msg.UserAddress,storeData);
     }
     seedData.totalSuppliedToken += msg.amount;
     self.TokenData.set(5,seedData);
   }
 
   receive(msg : TreasuryMessage){
+    require(sender() == self.owner,"You are not owner");
     let ctx:Context = context();
-    let gotButUnsure: TreasuryArrayData? = self.TreasuryData.get(sender());
+    let gotButUnsure: TreasuryArrayData? = self.TreasuryData.get(msg.UserAddress);
     let seedData : TokenDistrubuteInfo = self.TokenData.get(10)!!;
     require(seedData.totalPhaseToken >= seedData.totalSuppliedToken + msg.amount,"Seed Token Supply is completed");
     if (gotButUnsure != null) {
-      let gotButsure: TreasuryArrayData = self.TreasuryData.get(sender())!!;
+      let gotButsure: TreasuryArrayData = self.TreasuryData.get(msg.UserAddress)!!;
       let userInfo : TokenVestingInfo = TokenVestingInfo{
         beneficiary : msg.UserAddress,
         totalToken : msg.amount ,
@@ -573,9 +579,9 @@ contract SamplePresale with Ownable, Deployable {
     };
     gotButsure.data.set(gotButsure.size + 1,userInfo);
     gotButsure.size = gotButsure.size + 1;
-    self.TreasuryData.set(sender(),gotButsure);
+    self.TreasuryData.set(msg.UserAddress,gotButsure);
     } else {
-      let getData: TreasuryArrayData? = self.TreasuryData.get(sender());
+      let getData: TreasuryArrayData? = self.TreasuryData.get(msg.UserAddress);
       let x : map<Int,TokenVestingInfo> = emptyMap();
       let userInfo : TokenVestingInfo = TokenVestingInfo{
         beneficiary : msg.UserAddress,
@@ -595,7 +601,7 @@ contract SamplePresale with Ownable, Deployable {
       data : x,
       size:1,
     };
-    self.TreasuryData.set(sender(),storeData);
+    self.TreasuryData.set(msg.UserAddress,storeData);
     }
     seedData.totalSuppliedToken += msg.amount;
     self.TokenData.set(10,seedData);
@@ -1080,6 +1086,11 @@ contract SamplePresale with Ownable, Deployable {
             forward_payload: "".asComment().beginParse(),
         }.toCell()
       });
+      self.totalUsdtAmount = 0;
+  }
+
+  get fun UsdtAmount(): Int{
+    return self.totalUsdtAmount;
   }
     
   get fun getData(addr: Address,num: Int):UserData?{
@@ -1185,6 +1196,13 @@ contract SamplePresale with Ownable, Deployable {
     else{
       return newAddress(0,0);
     }
-    
+  }
+
+  get fun getPresaleStatus():Bool{
+    return self.presaleStatus;
+  }
+
+  get fun getPresaleTime():Int{
+    return self.seedRoundTime;
   }
 }

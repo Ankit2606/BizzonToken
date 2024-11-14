@@ -372,6 +372,9 @@ slice $Int$_fun_toCoinsString(int $self) impure inline;
 ;; $SamplePresale$_fun_AddReferAddress
 ((int, int, int, int, slice, int, cell, cell, cell, cell, cell, cell, cell, cell, cell), ()) $SamplePresale$_fun_AddReferAddress((int, int, int, int, slice, int, cell, cell, cell, cell, cell, cell, cell, cell, cell) $self, slice $referrer, int $amount, slice $from) impure inline_ref;
 
+;; $SamplePresale$_fun_UsdtAmount
+((int, int, int, int, slice, int, cell, cell, cell, cell, cell, cell, cell, cell, cell), int) $SamplePresale$_fun_UsdtAmount((int, int, int, int, slice, int, cell, cell, cell, cell, cell, cell, cell, cell, cell) $self) impure inline_ref;
+
 ;; $SamplePresale$_fun_getData
 ((int, int, int, int, slice, int, cell, cell, cell, cell, cell, cell, cell, cell, cell), tuple) $SamplePresale$_fun_getData((int, int, int, int, slice, int, cell, cell, cell, cell, cell, cell, cell, cell, cell) $self, slice $addr, int $num) impure inline_ref;
 
@@ -407,6 +410,12 @@ slice $Int$_fun_toCoinsString(int $self) impure inline;
 
 ;; $SamplePresale$_fun_getReferrer
 ((int, int, int, int, slice, int, cell, cell, cell, cell, cell, cell, cell, cell, cell), slice) $SamplePresale$_fun_getReferrer((int, int, int, int, slice, int, cell, cell, cell, cell, cell, cell, cell, cell, cell) $self, slice $userAddress) impure inline_ref;
+
+;; $SamplePresale$_fun_getPresaleStatus
+((int, int, int, int, slice, int, cell, cell, cell, cell, cell, cell, cell, cell, cell), int) $SamplePresale$_fun_getPresaleStatus((int, int, int, int, slice, int, cell, cell, cell, cell, cell, cell, cell, cell, cell) $self) impure inline_ref;
+
+;; $SamplePresale$_fun_getPresaleTime
+((int, int, int, int, slice, int, cell, cell, cell, cell, cell, cell, cell, cell, cell), int) $SamplePresale$_fun_getPresaleTime((int, int, int, int, slice, int, cell, cell, cell, cell, cell, cell, cell, cell, cell) $self) impure inline_ref;
 
 ;; $SendParameters$_constructor_bounce_to_value_mode_body_code_data
 ((int, slice, int, int, cell, cell, cell)) $SendParameters$_constructor_bounce_to_value_mode_body_code_data(int bounce, slice to, int value, int mode, cell body, cell code, cell data) inline;

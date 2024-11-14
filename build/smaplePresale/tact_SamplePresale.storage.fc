@@ -885,10 +885,10 @@ tuple $TreasuryArrayData$_load_opt(cell cl) inline {
 ;;
 
 builder $SamplePresale$_store(builder build_0, (int, int, int, int, slice, int, cell, cell, cell, cell, cell, cell, cell, cell, cell) v) inline {
-    var (v'totalUsdtAmount, v'seedRoundTime, v'startPresale, v'TonVal, v'owner, v'TonBalance, v'TokenData, v'SeedData, v'PrivateSaleData, v'MarketingData, v'TeamData, v'AdvisorData, v'TreasuryData, v'checkReferrers, v'refferInfo) = v;
+    var (v'totalUsdtAmount, v'seedRoundTime, v'presaleStatus, v'TonVal, v'owner, v'TonBalance, v'TokenData, v'SeedData, v'PrivateSaleData, v'MarketingData, v'TeamData, v'AdvisorData, v'TreasuryData, v'checkReferrers, v'refferInfo) = v;
     build_0 = build_0.store_int(v'totalUsdtAmount, 257);
     build_0 = build_0.store_int(v'seedRoundTime, 257);
-    build_0 = build_0.store_int(v'startPresale, 1);
+    build_0 = build_0.store_int(v'presaleStatus, 1);
     build_0 = build_0.store_int(v'TonVal, 257);
     var build_1 = begin_cell();
     build_1 = __tact_store_address(build_1, v'owner);
@@ -913,7 +913,7 @@ builder $SamplePresale$_store(builder build_0, (int, int, int, int, slice, int, 
 (slice, ((int, int, int, int, slice, int, cell, cell, cell, cell, cell, cell, cell, cell, cell))) $SamplePresale$_load(slice sc_0) inline {
     var v'totalUsdtAmount = sc_0~load_int(257);
     var v'seedRoundTime = sc_0~load_int(257);
-    var v'startPresale = sc_0~load_int(1);
+    var v'presaleStatus = sc_0~load_int(1);
     var v'TonVal = sc_0~load_int(257);
     slice sc_1 = sc_0~load_ref().begin_parse();
     var v'owner = sc_1~__tact_load_address();
@@ -929,7 +929,7 @@ builder $SamplePresale$_store(builder build_0, (int, int, int, int, slice, int, 
     var v'TreasuryData = sc_3~load_dict();
     var v'checkReferrers = sc_3~load_dict();
     var v'refferInfo = sc_3~load_dict();
-    return (sc_0, (v'totalUsdtAmount, v'seedRoundTime, v'startPresale, v'TonVal, v'owner, v'TonBalance, v'TokenData, v'SeedData, v'PrivateSaleData, v'MarketingData, v'TeamData, v'AdvisorData, v'TreasuryData, v'checkReferrers, v'refferInfo));
+    return (sc_0, (v'totalUsdtAmount, v'seedRoundTime, v'presaleStatus, v'TonVal, v'owner, v'TonBalance, v'TokenData, v'SeedData, v'PrivateSaleData, v'MarketingData, v'TeamData, v'AdvisorData, v'TreasuryData, v'checkReferrers, v'refferInfo));
 }
 
 (int, int, int, int, slice, int, cell, cell, cell, cell, cell, cell, cell, cell, cell) $SamplePresale$_contract_load() impure inline_ref {

@@ -1,6 +1,6 @@
 # TACT Compilation Report
 Contract: SamplePresale
-BOC Size: 11623 bytes
+BOC Size: 11722 bytes
 
 # Types
 Total Types: 42
@@ -174,7 +174,9 @@ TLB: `withdraw_usdt#d69f6004 cenderadd:address = WithdrawUsdt`
 Signature: `WithdrawUsdt{cenderadd:address}`
 
 # Get Methods
-Total Get Methods: 13
+Total Get Methods: 16
+
+## UsdtAmount
 
 ## getData
 Argument: addr
@@ -209,6 +211,10 @@ Argument: referrerAddress
 
 ## getReferrer
 Argument: userAddress
+
+## getPresaleStatus
+
+## getPresaleTime
 
 ## owner
 

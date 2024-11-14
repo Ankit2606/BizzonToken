@@ -20,7 +20,7 @@ export async function run(provider: NetworkProvider) {
 
     const samplePresale = provider.open(await SamplePresale.fromInit());
     // const samplePresale = provider.open(await SamplePresale.fromAddress(
-    //   Address.parse("EQBmq9pM6SVDucNF2EoXjfItEcLA2ecxw92GKoxIAAa5Ij5q")
+    //   Address.parse("EQBhVXaOWedwl7G2wAyieQeHnd5AoPnxHUJn9v27v0uZiour")
     // ));
 
     await samplePresale.send(
@@ -79,7 +79,7 @@ export async function run(provider: NetworkProvider) {
     //  const walletData = await samplePresale.getGetTokenInfo(i);
     //  console.log(walletData);
     // }
-    // const walletDatas1 = await samplePresale.getGetReferrer(Address.parse("EQCL20gS8GdNJy5hLuJjxwCFTL9kveyW3yiC4wqdosCT2etP") as Address);
+    // const walletDatas1 = await samplePresale.getUsdtAmount();
     //  console.log(walletDatas1);
 
     //  const walletDatas = await samplePresale.getGetData( Address.parse("0QBony_meSMNl6w6cMQpEvW9dQbvy-AwJFKDJeA5CydJ4p4q") as Address,2n);
