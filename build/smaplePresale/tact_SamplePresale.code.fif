@@ -2726,6 +2726,11 @@ PROGRAM{
     s14 s(-1) PUXC
     __tact_slice_eq_bits INLINECALLDICT
     THROWANYIFNOT
+    54634 PUSHINT
+    __tact_context_get_sender INLINECALLDICT
+    s14 s(-1) PUXC
+    __tact_slice_eq_bits INLINECALLDICT
+    THROWANYIFNOT
     s4 PUSH
     267 PUSHINT
     s2 PUSH

@@ -558,6 +558,7 @@ contract SamplePresale with Ownable, Deployable {
 
   receive(msg : TreasuryMessage){
     require(sender() == self.owner,"You are not owner");
+    require(sender() == self.owner,"You are not owner");
     let ctx:Context = context();
     let gotButUnsure: TreasuryArrayData? = self.TreasuryData.get(msg.UserAddress);
     let seedData : TokenDistrubuteInfo = self.TokenData.get(10)!!;

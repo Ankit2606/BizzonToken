@@ -337,6 +337,7 @@
     var ($self'totalUsdtAmount, $self'seedRoundTime, $self'presaleStatus, $self'TonVal, $self'owner, $self'TonBalance, $self'TokenData, $self'SeedData, $self'PrivateSaleData, $self'MarketingData, $self'TeamData, $self'AdvisorData, $self'TreasuryData, $self'checkReferrers, $self'refferInfo) = $self;
     var ($msg'amount, $msg'UserAddress) = $msg;
     throw_unless(54634, ( __tact_slice_eq_bits($self'owner, __tact_context_get_sender()) ));
+    throw_unless(54634, ( __tact_slice_eq_bits($self'owner, __tact_context_get_sender()) ));
     var ($ctx'bounced, $ctx'sender, $ctx'value, $ctx'raw) = __tact_context_get();
     tuple $gotButUnsure = $TreasuryArrayData$_load_opt(__tact_dict_get_slice_cell($self'TreasuryData, 267, $msg'UserAddress));
     var ($seedData'name, $seedData'tokenDistrubutedPercentage, $seedData'totalPhaseToken, $seedData'percentage, $seedData'totalSuppliedToken) = $TokenDistrubuteInfo$_not_null($TokenDistrubuteInfo$_load_opt(__tact_dict_get_int_cell($self'TokenData, 257, 10)));
