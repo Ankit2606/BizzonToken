@@ -246,6 +246,9 @@ tuple $TreasuryArrayData$_as_optional((cell, int) v) inline;
 ;; $TreasuryArrayData$_load_opt
 tuple $TreasuryArrayData$_load_opt(cell cl) inline;
 
+;; $BuyTokens$_load
+(slice, ((slice, int, int))) $BuyTokens$_load(slice sc_0) inline;
+
 ;; $ClaimReferralTokens$_load
 (slice, ((slice))) $ClaimReferralTokens$_load(slice sc_0) inline;
 

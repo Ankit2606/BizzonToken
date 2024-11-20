@@ -694,6 +694,20 @@ tuple $TreasuryArrayData$_load_opt(cell cl) inline {
 }
 
 ;;
+;; Type: BuyTokens
+;; Header: 0x9ab69a78
+;; TLB: buy_tokens#9ab69a78 referrer:address tonAmount:coins usdtAmount:coins = BuyTokens
+;;
+
+(slice, ((slice, int, int))) $BuyTokens$_load(slice sc_0) inline {
+    throw_unless(129, sc_0~load_uint(32) == 2595658360);
+    var v'referrer = sc_0~__tact_load_address();
+    var v'tonAmount = sc_0~load_coins();
+    var v'usdtAmount = sc_0~load_coins();
+    return (sc_0, (v'referrer, v'tonAmount, v'usdtAmount));
+}
+
+;;
 ;; Type: ClaimReferralTokens
 ;; Header: 0x76a9753f
 ;; TLB: claim_referral_tokens#76a9753f cenderadd:address = ClaimReferralTokens

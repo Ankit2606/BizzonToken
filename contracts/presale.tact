@@ -82,7 +82,8 @@ struct TreasuryArrayData{
 
 message BuyTokens{
   referrer: Address;
-  usdt: Int as coins;
+  tonAmount: Int as coins;
+  usdtAmount: Int as coins;
 }
 
 message ClaimReferralTokens{
@@ -348,6 +349,65 @@ contract SamplePresale with Ownable, Deployable {
     seedData.totalSuppliedToken += TokenAmount;
     self.TokenData.set(0,seedData);
   }
+
+
+  receive(msg: BuyTokens){
+    let ctx:Context = context();
+    require(now() < self.seedRoundTime, "Presale is over");
+    require(self.presaleStatus, "Presale is not start yet");
+    let TokenAmount : Int = msg.usdtAmount * self.TonVal;
+   let gotButUnsure: UserArrayData? = self.SeedData.get(sender());
+   let seedData : TokenDistrubuteInfo = self.TokenData.get(0)!!;
+   require(seedData.totalPhaseToken >= seedData.totalSuppliedToken + TokenAmount,"Seed Token Supply is completed");
+   if (gotButUnsure != null) {
+   let gotButsure: UserArrayData = self.SeedData.get(sender())!!;
+   let userInfo : UserData = UserData{
+       beneficiary : sender(),
+       totalToken : TokenAmount,
+       remainingToken : TokenAmount,
+       startTime: now(),
+       vestingDuration: now() + 630,
+       lastClaimTime: now() + 90,
+       initialCliff: 90,
+       releaseInterval: 30,
+       phaseName: seedData.name,
+       active : true,
+       USDTToken : msg.usdtAmount,
+   };
+   
+   gotButsure.data.set(gotButsure.size + 1,userInfo);
+    gotButsure.size = gotButsure.size + 1;
+    self.SeedData.set(sender(),gotButsure);
+    } else {
+      let newadd : Address = newAddress(0,0);
+      if(msg.referrer != newadd){
+        self.AddReferAddress(msg.referrer, msg.tonAmount,sender());
+      }
+      let getData: UserArrayData? = self.SeedData.get(sender());
+      let x : map<Int,UserData> = emptyMap();
+      let userInfo : UserData = UserData{
+      beneficiary : sender(),
+       totalToken : TokenAmount,
+       remainingToken : TokenAmount,
+       startTime: now(),
+       vestingDuration: now() + 630,
+       lastClaimTime: now() + 90,
+       initialCliff: 90,
+       releaseInterval:  30,
+       phaseName: seedData.name,
+       active : true,
+       USDTToken : msg.usdtAmount,
+   };
+   x.set(1,userInfo);
+   let storeData : UserArrayData  = UserArrayData {
+     data : x,
+     size:1,
+   };
+   self.SeedData.set(sender(),storeData);
+   }
+   seedData.totalSuppliedToken += TokenAmount;
+   self.TokenData.set(0,seedData);
+ }
 
    receive(msg: TokenExcesses){
   }

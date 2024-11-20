@@ -1,6 +1,6 @@
 # TACT Compilation Report
 Contract: SamplePresale
-BOC Size: 11736 bytes
+BOC Size: 12452 bytes
 
 # Types
 Total Types: 42
@@ -114,8 +114,8 @@ TLB: `_ data:dict<int, ^TokenVestingInfo{beneficiary:address,totalToken:coins,re
 Signature: `TreasuryArrayData{data:dict<int, ^TokenVestingInfo{beneficiary:address,totalToken:coins,remainingToken:coins,startTime:int257,vestingDuration:int257,lastClaimTime:int257,releaseInterval:int257,initialCliff:int257,phaseName:^string,active:bool,USDTToken:coins}>,size:int257}`
 
 ## BuyTokens
-TLB: `buy_tokens#5abfc0c2 referrer:address usdt:coins = BuyTokens`
-Signature: `BuyTokens{referrer:address,usdt:coins}`
+TLB: `buy_tokens#9ab69a78 referrer:address tonAmount:coins usdtAmount:coins = BuyTokens`
+Signature: `BuyTokens{referrer:address,tonAmount:coins,usdtAmount:coins}`
 
 ## ClaimReferralTokens
 TLB: `claim_referral_tokens#76a9753f cenderadd:address = ClaimReferralTokens`

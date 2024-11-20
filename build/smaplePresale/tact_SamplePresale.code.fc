@@ -219,6 +219,39 @@
     return (($self'totalUsdtAmount, $self'seedRoundTime, $self'presaleStatus, $self'TonVal, $self'owner, $self'TonBalance, $self'TokenData, $self'SeedData, $self'PrivateSaleData, $self'MarketingData, $self'TeamData, $self'AdvisorData, $self'TreasuryData, $self'checkReferrers, $self'refferInfo), ());
 }
 
+(((int, int, int, int, slice, int, cell, cell, cell, cell, cell, cell, cell, cell, cell)), ()) $SamplePresale$_internal_binary_BuyTokens((int, int, int, int, slice, int, cell, cell, cell, cell, cell, cell, cell, cell, cell) $self, (slice, int, int) $msg) impure inline {
+    var ($self'totalUsdtAmount, $self'seedRoundTime, $self'presaleStatus, $self'TonVal, $self'owner, $self'TonBalance, $self'TokenData, $self'SeedData, $self'PrivateSaleData, $self'MarketingData, $self'TeamData, $self'AdvisorData, $self'TreasuryData, $self'checkReferrers, $self'refferInfo) = $self;
+    var ($msg'referrer, $msg'tonAmount, $msg'usdtAmount) = $msg;
+    var ($ctx'bounced, $ctx'sender, $ctx'value, $ctx'raw) = __tact_context_get();
+    throw_unless(32633, (now() < $self'seedRoundTime));
+    throw_unless(1275, $self'presaleStatus);
+    int $TokenAmount = ($msg'usdtAmount * $self'TonVal);
+    tuple $gotButUnsure = $UserArrayData$_load_opt(__tact_dict_get_slice_cell($self'SeedData, 267, __tact_context_get_sender()));
+    var ($seedData'name, $seedData'tokenDistrubutedPercentage, $seedData'totalPhaseToken, $seedData'percentage, $seedData'totalSuppliedToken) = $TokenDistrubuteInfo$_not_null($TokenDistrubuteInfo$_load_opt(__tact_dict_get_int_cell($self'TokenData, 257, 0)));
+    throw_unless(35441, ($seedData'totalPhaseToken >= ($seedData'totalSuppliedToken + $TokenAmount)));
+    if ((~ null?($gotButUnsure))) {
+        var ($gotButsure'data, $gotButsure'size) = $UserArrayData$_not_null($UserArrayData$_load_opt(__tact_dict_get_slice_cell($self'SeedData, 267, __tact_context_get_sender())));
+        var ($userInfo'beneficiary, $userInfo'totalToken, $userInfo'remainingToken, $userInfo'startTime, $userInfo'vestingDuration, $userInfo'lastClaimTime, $userInfo'initialCliff, $userInfo'releaseInterval, $userInfo'phaseName, $userInfo'active, $userInfo'USDTToken) = $UserData$_constructor_beneficiary_totalToken_remainingToken_startTime_vestingDuration_lastClaimTime_initialCliff_releaseInterval_phaseName_active_USDTToken(__tact_context_get_sender(), $TokenAmount, $TokenAmount, now(), (now() + 630), (now() + 90), 90, 30, $seedData'name, true, $msg'usdtAmount);
+        $gotButsure'data~__tact_dict_set_int_cell(257, ($gotButsure'size + 1), $UserData$_store_cell(($userInfo'beneficiary, $userInfo'totalToken, $userInfo'remainingToken, $userInfo'startTime, $userInfo'vestingDuration, $userInfo'lastClaimTime, $userInfo'initialCliff, $userInfo'releaseInterval, $userInfo'phaseName, $userInfo'active, $userInfo'USDTToken)));
+        $gotButsure'size = ($gotButsure'size + 1);
+        $self'SeedData~__tact_dict_set_slice_cell(267, __tact_context_get_sender(), $UserArrayData$_store_cell(($gotButsure'data, $gotButsure'size)));
+    } else {
+        slice $newadd = __tact_create_address(0, 0);
+        if (( ~ __tact_slice_eq_bits($newadd, $msg'referrer) )) {
+            ($self'totalUsdtAmount, $self'seedRoundTime, $self'presaleStatus, $self'TonVal, $self'owner, $self'TonBalance, $self'TokenData, $self'SeedData, $self'PrivateSaleData, $self'MarketingData, $self'TeamData, $self'AdvisorData, $self'TreasuryData, $self'checkReferrers, $self'refferInfo)~$SamplePresale$_fun_AddReferAddress($msg'referrer, $msg'tonAmount, __tact_context_get_sender());
+        }
+        tuple $getData = $UserArrayData$_load_opt(__tact_dict_get_slice_cell($self'SeedData, 267, __tact_context_get_sender()));
+        cell $x = null();
+        var ($userInfo'beneficiary, $userInfo'totalToken, $userInfo'remainingToken, $userInfo'startTime, $userInfo'vestingDuration, $userInfo'lastClaimTime, $userInfo'initialCliff, $userInfo'releaseInterval, $userInfo'phaseName, $userInfo'active, $userInfo'USDTToken) = $UserData$_constructor_beneficiary_totalToken_remainingToken_startTime_vestingDuration_lastClaimTime_initialCliff_releaseInterval_phaseName_active_USDTToken(__tact_context_get_sender(), $TokenAmount, $TokenAmount, now(), (now() + 630), (now() + 90), 90, 30, $seedData'name, true, $msg'usdtAmount);
+        $x~__tact_dict_set_int_cell(257, 1, $UserData$_store_cell(($userInfo'beneficiary, $userInfo'totalToken, $userInfo'remainingToken, $userInfo'startTime, $userInfo'vestingDuration, $userInfo'lastClaimTime, $userInfo'initialCliff, $userInfo'releaseInterval, $userInfo'phaseName, $userInfo'active, $userInfo'USDTToken)));
+        var ($storeData'data, $storeData'size) = $UserArrayData$_constructor_data_size($x, 1);
+        $self'SeedData~__tact_dict_set_slice_cell(267, __tact_context_get_sender(), $UserArrayData$_store_cell(($storeData'data, $storeData'size)));
+    }
+    $seedData'totalSuppliedToken = $seedData'totalSuppliedToken + $TokenAmount;
+    $self'TokenData~__tact_dict_set_int_cell(257, 0, $TokenDistrubuteInfo$_store_cell(($seedData'name, $seedData'tokenDistrubutedPercentage, $seedData'totalPhaseToken, $seedData'percentage, $seedData'totalSuppliedToken)));
+    return (($self'totalUsdtAmount, $self'seedRoundTime, $self'presaleStatus, $self'TonVal, $self'owner, $self'TonBalance, $self'TokenData, $self'SeedData, $self'PrivateSaleData, $self'MarketingData, $self'TeamData, $self'AdvisorData, $self'TreasuryData, $self'checkReferrers, $self'refferInfo), ());
+}
+
 (((int, int, int, int, slice, int, cell, cell, cell, cell, cell, cell, cell, cell, cell)), ()) $SamplePresale$_internal_binary_TokenExcesses((int, int, int, int, slice, int, cell, cell, cell, cell, cell, cell, cell, cell, cell) $self, (int) $msg) impure inline {
     var ($self'totalUsdtAmount, $self'seedRoundTime, $self'presaleStatus, $self'TonVal, $self'owner, $self'TonBalance, $self'TokenData, $self'SeedData, $self'PrivateSaleData, $self'MarketingData, $self'TeamData, $self'AdvisorData, $self'TreasuryData, $self'checkReferrers, $self'refferInfo) = $self;
     var ($msg'queryId) = $msg;
@@ -768,7 +801,7 @@ _ supported_interfaces() method_id {
 }
 
 _ get_abi_ipfs() method_id {
-    return "ipfs://QmNsqqNgz3U2R5atNHSGyyQwfWTArMZG64D6CJtxQpGuPj";
+    return "ipfs://QmefWgzJHwLvjUV2cYesnwWEvvUYU6dkG4Q7fRX3GwLyxh";
 }
 
 _ lazy_deployment_completed() method_id {
@@ -796,6 +829,13 @@ _ lazy_deployment_completed() method_id {
     if (op == 1935855772) {
         var msg = in_msg~$TokenNotification$_load();
         self~$SamplePresale$_internal_binary_TokenNotification(msg);
+        return (self, true);
+    }
+    
+    ;; Receive BuyTokens message
+    if (op == 2595658360) {
+        var msg = in_msg~$BuyTokens$_load();
+        self~$SamplePresale$_internal_binary_BuyTokens(msg);
         return (self, true);
     }
     
