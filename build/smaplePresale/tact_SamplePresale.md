@@ -1,9 +1,9 @@
 # TACT Compilation Report
 Contract: SamplePresale
-BOC Size: 12452 bytes
+BOC Size: 12747 bytes
 
 # Types
-Total Types: 42
+Total Types: 47
 
 ## StateInit
 TLB: `_ code:^cell data:^cell = StateInit`
@@ -86,12 +86,12 @@ TLB: `_ data:dict<int, ^UserData{beneficiary:address,totalToken:coins,remainingT
 Signature: `UserArrayData{data:dict<int, ^UserData{beneficiary:address,totalToken:coins,remainingToken:coins,startTime:int257,vestingDuration:int257,lastClaimTime:int257,initialCliff:int257,releaseInterval:int257,phaseName:^string,active:bool,USDTToken:coins}>,size:int257}`
 
 ## RefferData
-TLB: `_ refferalAddress:address amount:int257 claim:bool = RefferData`
-Signature: `RefferData{refferalAddress:address,amount:int257,claim:bool}`
+TLB: `_ refferalAddress:address amount:int257 date:int257 claim:bool = RefferData`
+Signature: `RefferData{refferalAddress:address,amount:int257,date:int257,claim:bool}`
 
 ## RefferDetails
-TLB: `_ reffer:dict<int, ^RefferData{refferalAddress:address,amount:int257,claim:bool}> size:int257 = RefferDetails`
-Signature: `RefferDetails{reffer:dict<int, ^RefferData{refferalAddress:address,amount:int257,claim:bool}>,size:int257}`
+TLB: `_ reffer:dict<int, ^RefferData{refferalAddress:address,amount:int257,date:int257,claim:bool}> size:int257 = RefferDetails`
+Signature: `RefferDetails{reffer:dict<int, ^RefferData{refferalAddress:address,amount:int257,date:int257,claim:bool}>,size:int257}`
 
 ## PrivateSaleArrayData
 TLB: `_ data:dict<int, ^TokenVestingInfo{beneficiary:address,totalToken:coins,remainingToken:coins,startTime:int257,vestingDuration:int257,lastClaimTime:int257,releaseInterval:int257,initialCliff:int257,phaseName:^string,active:bool,USDTToken:coins}> size:int257 = PrivateSaleArrayData`
@@ -141,10 +141,6 @@ Signature: `AdvisorMessage{amount:int257,UserAddress:address}`
 TLB: `treasury_message#fa93f8ed amount:int257 UserAddress:address = TreasuryMessage`
 Signature: `TreasuryMessage{amount:int257,UserAddress:address}`
 
-## ClaimTokens
-TLB: `claim_tokens#052de464 amount:int257 cenderadd:address senderadd:address = ClaimTokens`
-Signature: `ClaimTokens{amount:int257,cenderadd:address,senderadd:address}`
-
 ## ClaimSingleToken
 TLB: `claim_single_token#9d9fc853 index:int257 cenderadd:address senderadd:address = ClaimSingleToken`
 Signature: `ClaimSingleToken{index:int257,cenderadd:address,senderadd:address}`
@@ -173,8 +169,32 @@ Signature: `ClaimTreasuryTokens{index:int257,cenderadd:address,senderadd:address
 TLB: `withdraw_usdt#d69f6004 cenderadd:address = WithdrawUsdt`
 Signature: `WithdrawUsdt{cenderadd:address}`
 
+## WithdrawBZZN
+TLB: `withdraw_bzzn#82ed1338 cenderadd:address amount:int257 = WithdrawBZZN`
+Signature: `WithdrawBZZN{cenderadd:address,amount:int257}`
+
+## ChangeTokenPrice
+TLB: `change_token_price#85337528 price:int257 = ChangeTokenPrice`
+Signature: `ChangeTokenPrice{price:int257}`
+
+## ChangeSeedRoundTimeMessage
+TLB: `change_seed_round_time_message#a8f8cbf9 time:int257 = ChangeSeedRoundTimeMessage`
+Signature: `ChangeSeedRoundTimeMessage{time:int257}`
+
+## ChangeReferralPercentageMessage
+TLB: `change_referral_percentage_message#f5256101 percentage:int257 = ChangeReferralPercentageMessage`
+Signature: `ChangeReferralPercentageMessage{percentage:int257}`
+
+## MaximumUsdtAmountMessage
+TLB: `maximum_usdt_amount_message#bb004af8 amount:int257 = MaximumUsdtAmountMessage`
+Signature: `MaximumUsdtAmountMessage{amount:int257}`
+
+## MinimumUsdtAmountMessage
+TLB: `minimum_usdt_amount_message#5c420d4c amount:int257 = MinimumUsdtAmountMessage`
+Signature: `MinimumUsdtAmountMessage{amount:int257}`
+
 # Get Methods
-Total Get Methods: 16
+Total Get Methods: 19
 
 ## UsdtAmount
 
@@ -204,8 +224,6 @@ Argument: addr
 
 ## getTokonomicsData
 
-## getSeedRoundTime
-
 ## getAllReferralDetails
 Argument: referrerAddress
 
@@ -215,6 +233,14 @@ Argument: userAddress
 ## getPresaleStatus
 
 ## getPresaleTime
+
+## BZZNPriceInUSD
+
+## getReferralPercentage
+
+## getMinimumUsdtAmount
+
+## getMaximumUsdtAmount
 
 ## owner
 
@@ -244,7 +270,7 @@ Argument: userAddress
 136: Invalid address
 137: Masterchain support is not enabled for this contract
 1275: Presale is not start yet
-15509: Only deployer is allowed to withdraw
+27921: Only owner is allowed to withdraw
 30183: NO_REFERRAL_TOKENS_AVAILABLE
 32633: Presale is over
 35441: Seed Token Supply is completed
@@ -252,5 +278,7 @@ Argument: userAddress
 43297: Index not found!
 44418: You have not sufficient Token
 46387: not have any refferals
+48332: Invalid USDT Amount
+49708: PRIVATESALE_PERIOD_INCOMPLETE
 54634: You are not owner
 60511: ALREADY_ADDED_REFERRER

@@ -47,6 +47,7 @@ struct UserArrayData{
 struct RefferData {
   refferalAddress: Address;
   amount: Int;
+  date: Int;
   claim: Bool;
 }
 
@@ -115,12 +116,6 @@ message TreasuryMessage{
   UserAddress : Address;
 }
 
-message ClaimTokens {
-    amount:Int;
-    cenderadd:Address;
-    senderadd:Address;
-}
-
 message ClaimSingleToken {
     index:Int;
     cenderadd:Address;
@@ -161,15 +156,41 @@ message WithdrawUsdt {
     cenderadd: Address;
 }
 
+message WithdrawBZZN {
+    cenderadd: Address;
+    amount: Int;
+}
+
+message ChangeTokenPrice {
+    price: Int;
+}
+
+message ChangeSeedRoundTimeMessage {
+    time: Int;
+}
+
+message ChangeReferralPercentageMessage {
+    percentage: Int;
+}
+
+message MaximumUsdtAmountMessage {
+    amount: Int;
+}
+
+message MinimumUsdtAmountMessage {
+    amount: Int;
+}
+
 contract SamplePresale with Ownable, Deployable {
-  const MinTonForStorage: Int = ton("0.1");
-  const REFERRAL_VALUE : Int = 1;
+  const MinTonForStorage: Int = ton("0.5");
   totalUsdtAmount : Int = 0;
   seedRoundTime : Int = 0;
   presaleStatus : Bool = false;
-  TonVal : Int = 4;
+  BZZNPrice : Int = 250;
+  referralPercentage : Int = 50;
+  minimumUSDTAmount : Int = 1000000000;
+  maximumUSDTAmount : Int = 100000000000;
   owner: Address;
-  TonBalance : Int as coins;
   TokenData: map<Int, TokenDistrubuteInfo>;
   SeedData: map<Address, UserArrayData>;
   PrivateSaleData: map<Address, PrivateSaleArrayData>;
@@ -182,7 +203,6 @@ contract SamplePresale with Ownable, Deployable {
 
   init(){
     self.owner = sender();
-    self.TonBalance = 0;
 
     self.TokenData.set(0,
       TokenDistrubuteInfo{
@@ -291,10 +311,16 @@ contract SamplePresale with Ownable, Deployable {
     self.presaleStatus = true;
   }
 
+  receive("close Presale"){
+    require(sender() == self.owner,"You are not owner");
+    self.presaleStatus = false;
+  }
+
   receive(msg: TokenNotification){
     require(now() < self.seedRoundTime, "Presale is over");
     require(self.presaleStatus, "Presale is not start yet");
-    let TokenAmount : Int = msg.amount  * self.TonVal;
+    require( self.minimumUSDTAmount < msg.amount && msg.amount < self.maximumUSDTAmount, "Invalid USDT Amount");
+    let TokenAmount : Int = (msg.amount  *1000) / self.BZZNPrice;
     let gotButUnsure: UserArrayData? = self.SeedData.get(msg.from);
     let seedData : TokenDistrubuteInfo = self.TokenData.get(0)!!;
     require(seedData.totalPhaseToken >= seedData.totalSuppliedToken + TokenAmount,"Seed Token Supply is completed");
@@ -321,7 +347,7 @@ contract SamplePresale with Ownable, Deployable {
       let newadd : Address = newAddress(0,0);
       let reffrel : Address = msg.forward_payload.loadAddress();
       if(reffrel != newadd){
-        self.AddReferAddress(reffrel, msg.amount,msg.from);
+        self.AddReferAddress(reffrel, TokenAmount,msg.from);
       }
       let getData: UserArrayData? = self.SeedData.get(msg.from);
       let x : map<Int,UserData> = emptyMap();
@@ -355,7 +381,7 @@ contract SamplePresale with Ownable, Deployable {
     let ctx:Context = context();
     require(now() < self.seedRoundTime, "Presale is over");
     require(self.presaleStatus, "Presale is not start yet");
-    let TokenAmount : Int = msg.usdtAmount * self.TonVal;
+    let TokenAmount : Int = (msg.usdtAmount *1000) /self.BZZNPrice;
    let gotButUnsure: UserArrayData? = self.SeedData.get(sender());
    let seedData : TokenDistrubuteInfo = self.TokenData.get(0)!!;
    require(seedData.totalPhaseToken >= seedData.totalSuppliedToken + TokenAmount,"Seed Token Supply is completed");
@@ -381,7 +407,7 @@ contract SamplePresale with Ownable, Deployable {
     } else {
       let newadd : Address = newAddress(0,0);
       if(msg.referrer != newadd){
-        self.AddReferAddress(msg.referrer, msg.tonAmount,sender());
+        self.AddReferAddress(msg.referrer, TokenAmount,sender());
       }
       let getData: UserArrayData? = self.SeedData.get(sender());
       let x : map<Int,UserData> = emptyMap();
@@ -408,7 +434,6 @@ contract SamplePresale with Ownable, Deployable {
    seedData.totalSuppliedToken += TokenAmount;
    self.TokenData.set(0,seedData);
  }
-
    receive(msg: TokenExcesses){
   }
 
@@ -669,7 +694,7 @@ contract SamplePresale with Ownable, Deployable {
   }
 
   receive("withdraw safe") {
-        require(sender() == self.owner, "Only deployer is allowed to withdraw");
+        require(sender() == self.owner, "Only owner is allowed to withdraw");
         send(SendParameters{
             to: sender(),
             bounce: true,
@@ -677,57 +702,6 @@ contract SamplePresale with Ownable, Deployable {
             mode: SendRemainingValue + SendIgnoreErrors
         });
   }
-
-  receive(msg:ClaimTokens){
-      let presaleData : UserArrayData = self.SeedData.get(sender())!!;
-      let size:Int =presaleData.size;
-      let x:map<Int,UserData> =  presaleData.data;
-      let amount: Int = 0;
-      foreach(key, value in x){
-          if (now() >= value.vestingDuration) {
-            amount += value.remainingToken;
-            value.active = false;
-            value.lastClaimTime = value.vestingDuration;
-            value.remainingToken = 0;
-            x.set(key,value);
-            let newStruct: UserArrayData = UserArrayData{
-              data:x,
-              size:size,
-            };
-            self.SeedData.set(sender(),newStruct);
-        }else {
-            let totalClaim : Int = (now() - value.lastClaimTime) /
-                value.releaseInterval;
-            let seedData: TokenDistrubuteInfo = self.TokenData.get(0)!!;
-            let tokenClaimed : Int = ((value.totalToken / 10000) * seedData.percentage) * totalClaim;
-            amount += tokenClaimed;
-            value.lastClaimTime += totalClaim * value.releaseInterval;
-            value.remainingToken -= tokenClaimed;
-            x.set(key,value);
-             let newStruct: UserArrayData = UserArrayData{
-              data:x,
-              size:size,
-            };
-            self.SeedData.set(sender(),newStruct);
-        }
-      }
-        require(amount != 0,"You have not sufficient Token");
-         send(SendParameters{
-                to: msg.cenderadd,
-                value: 0,
-                mode:  SendRemainingBalance,
-                bounce: true,
-                body: TokenTransfer{
-                    queryId:0,
-                    amount: amount,
-                    destination: msg.senderadd,
-                    response_destination: msg.senderadd,
-                    custom_payload: null,
-                    forward_ton_amount: ton("0.01"),
-                    forward_payload: "".asComment().beginParse(),
-                }.toCell()
-            });
-  } 
 
   receive(msg:ClaimSingleToken){
       let presaleData : UserArrayData = self.SeedData.get(sender())!!;
@@ -1056,13 +1030,14 @@ contract SamplePresale with Ownable, Deployable {
 
   fun AddReferAddress(referrer: Address, amount: Int,from : Address) 
   {
-      let amt:Int = (amount * 5) / 100;
+      let amt:Int = (amount * self.referralPercentage) / 1000;
       require(self.checkReferrers.get(from) == null, "ALREADY_ADDED_REFERRER");
       self.checkReferrers.set(from,referrer); 
 
       let newData: RefferData = RefferData{
         refferalAddress: from,
         amount: amt,
+        date: now(),
         claim: false,
       };
 
@@ -1090,10 +1065,10 @@ contract SamplePresale with Ownable, Deployable {
   }
 
   receive(msg: ClaimReferralTokens){
-      // require(
-      //     new() > _privateSalePhaseTime[2],
-      //     "PRIVATESALE_PERIOD_INCOMPLETE"
-      // );
+      require(
+          now() > self.seedRoundTime,
+          "PRIVATESALE_PERIOD_INCOMPLETE"
+      );
       let usercopy: RefferDetails? = self.refferInfo.get(sender());
       require(usercopy != null,"not have any refferals");
       let user: RefferDetails = self.refferInfo.get(sender())!!;
@@ -1148,6 +1123,52 @@ contract SamplePresale with Ownable, Deployable {
         }.toCell()
       });
       self.totalUsdtAmount = 0;
+  }
+
+  receive(msg: WithdrawBZZN){
+    let ctx:Context = context();
+    require(sender() == self.owner,"You are not owner");
+    send(SendParameters{
+        to: msg.cenderadd,
+        value: 0,
+        mode:  SendRemainingBalance,
+        bounce: true,
+        body: TokenTransfer{
+            queryId:0,
+            amount: msg.amount,
+            destination: sender(),
+            response_destination: sender(),
+            custom_payload: null,
+            forward_ton_amount: 1,
+            forward_payload: "".asComment().beginParse(),
+        }.toCell()
+      });
+      self.totalUsdtAmount = 0;
+  }
+
+  receive(msg : ChangeTokenPrice){
+    require(sender() == self.owner,"You are not owner");
+    self.BZZNPrice = msg.price;
+  }
+
+  receive(msg : ChangeSeedRoundTimeMessage){
+    require(sender() == self.owner,"You are not owner");
+    self.seedRoundTime = msg.time;
+  }
+
+  receive(msg : ChangeReferralPercentageMessage){
+    require(sender() == self.owner,"You are not owner");
+    self.referralPercentage = msg.percentage;
+  }
+
+  receive(msg : MinimumUsdtAmountMessage){
+    require(sender() == self.owner,"You are not owner");
+    self.minimumUSDTAmount = msg.amount;
+  }
+
+  receive(msg : MaximumUsdtAmountMessage){
+    require(sender() == self.owner,"You are not owner");
+    self.maximumUSDTAmount = msg.amount;
   }
 
   get fun UsdtAmount(): Int{
@@ -1232,10 +1253,6 @@ contract SamplePresale with Ownable, Deployable {
     return self.TokenData;
   }
 
-  get fun getSeedRoundTime():Int{
-    return self.seedRoundTime;
-  }
-
   get fun getAllReferralDetails(referrerAddress: Address):  map<Int,RefferData> {
     if(self.refferInfo.get(referrerAddress) != null){
       let data: RefferDetails = self.refferInfo.get(referrerAddress)!!;
@@ -1266,4 +1283,21 @@ contract SamplePresale with Ownable, Deployable {
   get fun getPresaleTime():Int{
     return self.seedRoundTime;
   }
+
+  get fun BZZNPriceInUSD():Int{
+    return self.BZZNPrice;
+  }
+
+  get fun getReferralPercentage():Int{
+    return self.referralPercentage;
+  }
+
+  get fun getMinimumUsdtAmount():Int{
+    return self.minimumUSDTAmount;
+  }
+
+  get fun getMaximumUsdtAmount():Int{
+    return self.maximumUSDTAmount;
+  }
+  
 }

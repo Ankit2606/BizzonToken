@@ -87,7 +87,6 @@ PROGRAM{
   DECLPROC $TeamMessage$_load
   DECLPROC $AdvisorMessage$_load
   DECLPROC $TreasuryMessage$_load
-  DECLPROC $ClaimTokens$_load
   DECLPROC $ClaimSingleToken$_load
   DECLPROC $ClaimPrivateSaleTokens$_load
   DECLPROC $ClaimMarketingeTokens$_load
@@ -95,6 +94,12 @@ PROGRAM{
   DECLPROC $ClaimAdvisorTokens$_load
   DECLPROC $ClaimTreasuryTokens$_load
   DECLPROC $WithdrawUsdt$_load
+  DECLPROC $WithdrawBZZN$_load
+  DECLPROC $ChangeTokenPrice$_load
+  DECLPROC $ChangeSeedRoundTimeMessage$_load
+  DECLPROC $ChangeReferralPercentageMessage$_load
+  DECLPROC $MaximumUsdtAmountMessage$_load
+  DECLPROC $MinimumUsdtAmountMessage$_load
   DECLPROC $SamplePresale$_store
   DECLPROC $SamplePresale$_load
   DECLPROC $StateInit$_not_null
@@ -120,7 +125,7 @@ PROGRAM{
   DECLPROC $SamplePresale$_contract_store
   DECLPROC $global_send
   DECLPROC $Int$_fun_toCoinsString
-  DECLPROC $RefferData$_constructor_refferalAddress_amount_claim
+  DECLPROC $RefferData$_constructor_refferalAddress_amount_date_claim
   DECLPROC $RefferDetails$_constructor_reffer_size
   DECLPROC $SamplePresale$_fun_AddReferAddress
   DECLPROC $SamplePresale$_fun_UsdtAmount
@@ -133,11 +138,14 @@ PROGRAM{
   DECLPROC $SamplePresale$_fun_getAllAdvisorTokenData
   DECLPROC $SamplePresale$_fun_getAllTreasuryTokenData
   DECLPROC $SamplePresale$_fun_getTokonomicsData
-  DECLPROC $SamplePresale$_fun_getSeedRoundTime
   DECLPROC $SamplePresale$_fun_getAllReferralDetails
   DECLPROC $SamplePresale$_fun_getReferrer
   DECLPROC $SamplePresale$_fun_getPresaleStatus
   DECLPROC $SamplePresale$_fun_getPresaleTime
+  DECLPROC $SamplePresale$_fun_BZZNPriceInUSD
+  DECLPROC $SamplePresale$_fun_getReferralPercentage
+  DECLPROC $SamplePresale$_fun_getMinimumUsdtAmount
+  DECLPROC $SamplePresale$_fun_getMaximumUsdtAmount
   DECLPROC $SendParameters$_constructor_bounce_to_value_mode_body_code_data
   DECLPROC $SamplePresale$_fun_forward
   DECLPROC $SamplePresale$_fun_notify
@@ -155,6 +163,7 @@ PROGRAM{
   DECLPROC $TokenTransfer$_constructor_queryId_amount_destination_response_destination_custom_payload_forward_ton_amount_forward_payload
   DECLPROC $DeployOk$_constructor_queryId
   DECLPROC $SamplePresale$_internal_text_6063e81b52f4d0be124a5f41250f486247355c1ab00e8ee80ddc65d3617d2bda
+  DECLPROC $SamplePresale$_internal_text_5aaee922c746e8fb15115281d641d1eaaf6f3e4e051736d59af516b469ea4e6f
   DECLPROC $SamplePresale$_internal_binary_TokenNotification
   DECLPROC $SamplePresale$_internal_binary_BuyTokens
   DECLPROC $SamplePresale$_internal_binary_TokenExcesses
@@ -164,7 +173,6 @@ PROGRAM{
   DECLPROC $SamplePresale$_internal_binary_AdvisorMessage
   DECLPROC $SamplePresale$_internal_binary_TreasuryMessage
   DECLPROC $SamplePresale$_internal_text_beb2935a82089b154d32f99c4377aa960aa115366cc2c602755e36b97f505cec
-  DECLPROC $SamplePresale$_internal_binary_ClaimTokens
   DECLPROC $SamplePresale$_internal_binary_ClaimSingleToken
   DECLPROC $SamplePresale$_internal_binary_ClaimPrivateSaleTokens
   DECLPROC $SamplePresale$_internal_binary_ClaimMarketingeTokens
@@ -173,6 +181,12 @@ PROGRAM{
   DECLPROC $SamplePresale$_internal_binary_ClaimTreasuryTokens
   DECLPROC $SamplePresale$_internal_binary_ClaimReferralTokens
   DECLPROC $SamplePresale$_internal_binary_WithdrawUsdt
+  DECLPROC $SamplePresale$_internal_binary_WithdrawBZZN
+  DECLPROC $SamplePresale$_internal_binary_ChangeTokenPrice
+  DECLPROC $SamplePresale$_internal_binary_ChangeSeedRoundTimeMessage
+  DECLPROC $SamplePresale$_internal_binary_ChangeReferralPercentageMessage
+  DECLPROC $SamplePresale$_internal_binary_MinimumUsdtAmountMessage
+  DECLPROC $SamplePresale$_internal_binary_MaximumUsdtAmountMessage
   DECLPROC $SamplePresale$_internal_binary_Deploy
   121589 DECLMETHOD %UsdtAmount
   103147 DECLMETHOD %getData
@@ -184,11 +198,14 @@ PROGRAM{
   107979 DECLMETHOD %getAllAdvisorTokenData
   114184 DECLMETHOD %getAllTreasuryTokenData
   88851 DECLMETHOD %getTokonomicsData
-  115977 DECLMETHOD %getSeedRoundTime
   125421 DECLMETHOD %getAllReferralDetails
   109619 DECLMETHOD %getReferrer
   104373 DECLMETHOD %getPresaleStatus
   65881 DECLMETHOD %getPresaleTime
+  97398 DECLMETHOD %BZZNPriceInUSD
+  103881 DECLMETHOD %getReferralPercentage
+  118345 DECLMETHOD %getMinimumUsdtAmount
+  83757 DECLMETHOD %getMaximumUsdtAmount
   83229 DECLMETHOD %owner
   113617 DECLMETHOD supported_interfaces
   121275 DECLMETHOD get_abi_ipfs
@@ -807,8 +824,10 @@ PROGRAM{
     }>
   }>
   $RefferData$_store PROCINLINE:<{
-    2SWAP
+    s4 s3 XCHG2
     __tact_store_address INLINECALLDICT
+    257 PUSHINT
+    STIX
     s1 s2 XCHG
     257 PUSHINT
     STIX
@@ -816,7 +835,7 @@ PROGRAM{
   }>
   $RefferData$_store_cell PROCINLINE:<{
     NEWC
-    3 -ROLL
+    4 -ROLL
     $RefferData$_store INLINECALLDICT
     ENDC
   }>
@@ -825,11 +844,13 @@ PROGRAM{
     SWAP
     257 PUSHINT
     LDIX
+    257 PUSHINT
+    LDIX
     1 LDI
-    3 -ROLL
+    4 -ROLL
   }>
   $RefferData$_as_optional PROCINLINE:<{
-    3 TUPLE
+    4 TUPLE
   }>
   $RefferData$_load_opt PROCINLINE:<{
     DUP
@@ -840,7 +861,7 @@ PROGRAM{
     }>ELSE<{
       CTOS
       $RefferData$_load INLINECALLDICT
-      1 3 BLKDROP2
+      1 4 BLKDROP2
       $RefferData$_as_optional INLINECALLDICT
     }>
   }>
@@ -1123,19 +1144,6 @@ PROGRAM{
     __tact_load_address INLINECALLDICT
     s1 s2 XCHG
   }>
-  $ClaimTokens$_load PROCINLINE:<{
-    32 LDU
-    SWAP
-    86893668 PUSHINT
-    EQUAL
-    129 THROWIFNOT
-    257 PUSHINT
-    LDIX
-    __tact_load_address INLINECALLDICT
-    SWAP
-    __tact_load_address INLINECALLDICT
-    s3 s3 s0 XCHG3
-  }>
   $ClaimSingleToken$_load PROCINLINE:<{
     32 LDU
     SWAP
@@ -1222,46 +1230,121 @@ PROGRAM{
     129 THROWIFNOT
     __tact_load_address INLINECALLDICT
   }>
+  $WithdrawBZZN$_load PROCINLINE:<{
+    32 LDU
+    SWAP
+    2196575032 PUSHINT
+    EQUAL
+    129 THROWIFNOT
+    __tact_load_address INLINECALLDICT
+    SWAP
+    257 PUSHINT
+    LDIX
+    -ROT
+  }>
+  $ChangeTokenPrice$_load PROCINLINE:<{
+    32 LDU
+    SWAP
+    2234742056 PUSHINT
+    EQUAL
+    129 THROWIFNOT
+    257 PUSHINT
+    LDIX
+    SWAP
+  }>
+  $ChangeSeedRoundTimeMessage$_load PROCINLINE:<{
+    32 LDU
+    SWAP
+    2834877433 PUSHINT
+    EQUAL
+    129 THROWIFNOT
+    257 PUSHINT
+    LDIX
+    SWAP
+  }>
+  $ChangeReferralPercentageMessage$_load PROCINLINE:<{
+    32 LDU
+    SWAP
+    4112867585 PUSHINT
+    EQUAL
+    129 THROWIFNOT
+    257 PUSHINT
+    LDIX
+    SWAP
+  }>
+  $MaximumUsdtAmountMessage$_load PROCINLINE:<{
+    32 LDU
+    SWAP
+    3137358584 PUSHINT
+    EQUAL
+    129 THROWIFNOT
+    257 PUSHINT
+    LDIX
+    SWAP
+  }>
+  $MinimumUsdtAmountMessage$_load PROCINLINE:<{
+    32 LDU
+    SWAP
+    1547832652 PUSHINT
+    EQUAL
+    129 THROWIFNOT
+    257 PUSHINT
+    LDIX
+    SWAP
+  }>
   $SamplePresale$_store PROCINLINE:<{
-    s14 s15 XCHG2
+    s1 16 s() XCHG
+    s0 17 s() XCHG
+    257 PUSHINT
+    STIX
+    s1 s14 XCHG
     257 PUSHINT
     STIX
     s1 s12 XCHG
-    257 PUSHINT
-    STIX
-    s1 s10 XCHG
     1 STI
-    s1 s8 XCHG
+    s1 s10 XCHG
+    257 PUSHINT
+    STIX
+    s0 s8 XCHG
+    NEWC
+    257 PUSHINT
+    STIX
+    s1 s7 XCHG
+    257 PUSHINT
+    STIX
+    s1 s5 XCHG
     257 PUSHINT
     STIX
     NEWC
-    s0 s7 XCHG2
+    s0 s4 XCHG2
     __tact_store_address INLINECALLDICT
-    s0 s5 XCHG2
-    STGRAMS
-    s1 s3 XCHG
+    s1 s2 XCHG
     STDICT
     STDICT
+    s1 s2 XCHG
     STDICT
-    SWAP
-    NEWC
-    STDICT
-    s1 s3 XCHG
-    STDICT
-    s1 s3 XCHG
-    STDICT
-    s0 s3 XCHG
+    s0 s2 XCHG
     NEWC
     STDICT
     s1 s4 XCHG
     STDICT
     s1 s4 XCHG
     STDICT
+    s0 s4 XCHG
+    NEWC
+    STDICT
+    s1 s5 XCHG
+    STDICT
+    s1 s5 XCHG
+    STDICT
+    ENDC
+    ROT
+    STREF
     ENDC
     SWAP
     STREF
     ENDC
-    SWAP
+    ROT
     STREF
     ENDC
     SWAP
@@ -1278,9 +1361,17 @@ PROGRAM{
     LDREF
     SWAP
     CTOS
+    257 PUSHINT
+    LDIX
+    257 PUSHINT
+    LDIX
+    257 PUSHINT
+    LDIX
+    LDREF
+    DROP
+    CTOS
     __tact_load_address INLINECALLDICT
     SWAP
-    LDGRAMS
     LDDICT
     LDDICT
     LDDICT
@@ -1297,10 +1388,10 @@ PROGRAM{
     LDDICT
     LDDICT
     DROP
-    s11 s15 XCHG
-    s11 s14 XCHG
-    s11 s13 XCHG
-    s11 s12 XCHG
+    s13 17 s() XCHG
+    s13 16 s() XCHG
+    s13 s15 XCHG
+    s13 s14 XCHG
   }>
   $StateInit$_not_null PROCINLINE:<{
     DUP
@@ -1360,7 +1451,7 @@ PROGRAM{
     DUP
     ISNULL
     128 THROWIF
-    3 UNTUPLE
+    4 UNTUPLE
   }>
   $RefferDetails$_get_reffer PROCINLINE:<{
     DROP
@@ -1410,7 +1501,10 @@ PROGRAM{
     0 PUSHINT
     DUP
     FALSE
-    4 PUSHINT
+    250 PUSHINT
+    50 PUSHINT
+    1000000000 PUSHINT
+    100000000000 PUSHINT
     PUSHNULL
     PUSHNULL
     PUSHNULL
@@ -1421,9 +1515,8 @@ PROGRAM{
     PUSHNULL
     PUSHNULL
     __tact_context_get_sender INLINECALLDICT
-    s12 PUSH
     257 PUSHINT
-    OVER
+    16 s() PUSH
     B{b5ee9c724101010100160000285365656420526f756e642046696e616e63696e67b4c21fb2} B>boc <s PUSHSLICE
     3 PUSHINT
     2668500000000000 PUSHINT
@@ -1431,7 +1524,7 @@ PROGRAM{
     s4 PUSH
     $TokenDistrubuteInfo$_constructor_name_tokenDistrubutedPercentage_totalPhaseToken_percentage_totalSuppliedToken INLINECALLDICT
     $TokenDistrubuteInfo$_store_cell INLINECALLDICT
-    s3 s13 XCHG
+    s3 s12 XCHG
     __tact_dict_set_int_cell INLINECALLDICT
     257 PUSHINT
     1 PUSHINT
@@ -1439,7 +1532,7 @@ PROGRAM{
     11 PUSHINT
     9784500000000000 PUSHINT
     455 PUSHINT
-    16 s() PUSH
+    21 s() PUSH
     $TokenDistrubuteInfo$_constructor_name_tokenDistrubutedPercentage_totalPhaseToken_percentage_totalSuppliedToken INLINECALLDICT
     $TokenDistrubuteInfo$_store_cell INLINECALLDICT
     __tact_dict_set_int_cell INLINECALLDICT
@@ -1448,7 +1541,8 @@ PROGRAM{
     B{b5ee9c7241010101000d0000165075626c69632053616c65c2259047} B>boc <s PUSHSLICE
     3 PUSHINT
     2668500000000000 PUSHINT
-    s15 s15 PUSH2
+    20 s() PUSH
+    DUP
     $TokenDistrubuteInfo$_constructor_name_tokenDistrubutedPercentage_totalPhaseToken_percentage_totalSuppliedToken INLINECALLDICT
     $TokenDistrubuteInfo$_store_cell INLINECALLDICT
     __tact_dict_set_int_cell INLINECALLDICT
@@ -1457,17 +1551,18 @@ PROGRAM{
     B{b5ee9c7241010101001900002e45636f73797374656d20616e6420436f6d6d756e697479f977aa61} B>boc <s PUSHSLICE
     15 PUSHINT
     13342500000000000 PUSHINT
-    s15 s15 PUSH2
+    20 s() PUSH
+    DUP
     $TokenDistrubuteInfo$_constructor_name_tokenDistrubutedPercentage_totalPhaseToken_percentage_totalSuppliedToken INLINECALLDICT
     $TokenDistrubuteInfo$_store_cell INLINECALLDICT
     __tact_dict_set_int_cell INLINECALLDICT
     257 PUSHINT
-    s12 PUSH
+    4 PUSHINT
     B{b5ee9c7241010101000d0000165465616d20746f6b656e731cb754cb} B>boc <s PUSHSLICE
     21 PUSHINT
     18679500000000000 PUSHINT
     278 PUSHINT
-    16 s() PUSH
+    21 s() PUSH
     $TokenDistrubuteInfo$_constructor_name_tokenDistrubutedPercentage_totalPhaseToken_percentage_totalSuppliedToken INLINECALLDICT
     $TokenDistrubuteInfo$_store_cell INLINECALLDICT
     __tact_dict_set_int_cell INLINECALLDICT
@@ -1477,7 +1572,7 @@ PROGRAM{
     3 PUSHINT
     2668500000000000 PUSHINT
     417 PUSHINT
-    16 s() PUSH
+    21 s() PUSH
     $TokenDistrubuteInfo$_constructor_name_tokenDistrubutedPercentage_totalPhaseToken_percentage_totalSuppliedToken INLINECALLDICT
     $TokenDistrubuteInfo$_store_cell INLINECALLDICT
     __tact_dict_set_int_cell INLINECALLDICT
@@ -1486,7 +1581,8 @@ PROGRAM{
     B{b5ee9c7241010101001100001e5374616b696e672052657761726473ba0bdf3c} B>boc <s PUSHSLICE
     OVER
     5337000000000000 PUSHINT
-    s15 s15 PUSH2
+    20 s() PUSH
+    DUP
     $TokenDistrubuteInfo$_constructor_name_tokenDistrubutedPercentage_totalPhaseToken_percentage_totalSuppliedToken INLINECALLDICT
     $TokenDistrubuteInfo$_store_cell INLINECALLDICT
     __tact_dict_set_int_cell INLINECALLDICT
@@ -1495,7 +1591,8 @@ PROGRAM{
     B{b5ee9c7241010101001600002843726f73732d45636f6e6f6d792053797374656de4c9d6f1} B>boc <s PUSHSLICE
     10 PUSHINT
     8895000000000000 PUSHINT
-    s15 s15 PUSH2
+    20 s() PUSH
+    DUP
     $TokenDistrubuteInfo$_constructor_name_tokenDistrubutedPercentage_totalPhaseToken_percentage_totalSuppliedToken INLINECALLDICT
     $TokenDistrubuteInfo$_store_cell INLINECALLDICT
     __tact_dict_set_int_cell INLINECALLDICT
@@ -1504,7 +1601,8 @@ PROGRAM{
     B{b5ee9c7241010101000b0000124c6971756964697479b4417b3d} B>boc <s PUSHSLICE
     10 PUSHINT
     8895000000000000 PUSHINT
-    s15 s15 PUSH2
+    20 s() PUSH
+    DUP
     $TokenDistrubuteInfo$_constructor_name_tokenDistrubutedPercentage_totalPhaseToken_percentage_totalSuppliedToken INLINECALLDICT
     $TokenDistrubuteInfo$_store_cell INLINECALLDICT
     __tact_dict_set_int_cell INLINECALLDICT
@@ -1514,7 +1612,7 @@ PROGRAM{
     5 PUSHINT
     4447500000000000 PUSHINT
     555 PUSHINT
-    16 s() PUSH
+    21 s() PUSH
     $TokenDistrubuteInfo$_constructor_name_tokenDistrubutedPercentage_totalPhaseToken_percentage_totalSuppliedToken INLINECALLDICT
     $TokenDistrubuteInfo$_store_cell INLINECALLDICT
     __tact_dict_set_int_cell INLINECALLDICT
@@ -1524,17 +1622,11 @@ PROGRAM{
     13 PUSHINT
     11563500000000000 PUSHINT
     417 PUSHINT
-    16 s() PUSH
+    21 s() PUSH
     $TokenDistrubuteInfo$_constructor_name_tokenDistrubutedPercentage_totalPhaseToken_percentage_totalSuppliedToken INLINECALLDICT
     $TokenDistrubuteInfo$_store_cell INLINECALLDICT
     __tact_dict_set_int_cell INLINECALLDICT
-    s0 s8 XCHG
-    s0 s6 XCHG
-    s4 s10 s4 XCHG3
-    s1 s9 XCHG
-    s1 s7 XCHG
-    s1 s5 XCHG
-    s1 s3 XCHG
+    8 -ROLL
   }>
   $SamplePresale$_contract_load PROCREF:<{
     c4 PUSH
@@ -1546,7 +1638,9 @@ PROGRAM{
     SWAP
     IFJMP:<{
       $SamplePresale$_load INLINECALLDICT
-      1 15 BLKDROP2
+      17 s() POP
+      s15 16 s() XCHG
+      15 ROLL
     }>
     DROP
     MYADDR
@@ -1564,6 +1658,8 @@ PROGRAM{
     TRUE
     SWAP
     1 STI
+    s0 17 s() XCHG
+    s0 16 s() XCHG
     15 -ROLL
     $SamplePresale$_store INLINECALLDICT
     ENDC
@@ -1675,14 +1771,14 @@ PROGRAM{
     9 PUSHINT
     __tact_float_to_string INLINECALLDICT
   }>
-  $RefferData$_constructor_refferalAddress_amount_claim PROCINLINE:<{
+  $RefferData$_constructor_refferalAddress_amount_date_claim PROCINLINE:<{
   }>
   $RefferDetails$_constructor_reffer_size PROCINLINE:<{
   }>
   $SamplePresale$_fun_AddReferAddress PROCREF:<{
-    SWAP
-    5 MULCONST
-    100 PUSHINT
+    s1 s15 XCPU
+    MUL
+    1000 PUSHINT
     DIV
     60511 PUSHINT
     s5 PUSH
@@ -1696,26 +1792,27 @@ PROGRAM{
     s2 s3 PUSH2
     __tact_dict_set_slice_slice INLINECALLDICT
     s0 s4 XCHG
+    NOW
     FALSE
-    $RefferData$_constructor_refferalAddress_amount_claim INLINECALLDICT
-    s4 PUSH
-    267 PUSHINT
+    $RefferData$_constructor_refferalAddress_amount_date_claim INLINECALLDICT
     s5 PUSH
+    267 PUSHINT
+    s6 PUSH
     __tact_dict_get_slice_cell INLINECALLDICT
     $RefferDetails$_load_opt INLINECALLDICT
     ISNULL
     NOT
     IF:<{
-      s4 PUSH
-      267 PUSHINT
       s5 PUSH
+      267 PUSHINT
+      s6 PUSH
       __tact_dict_get_slice_cell INLINECALLDICT
       $RefferDetails$_load_opt INLINECALLDICT
       $RefferDetails$_not_null INLINECALLDICT
       $RefferDetails$_get_reffer INLINECALLDICT
-      s5 PUSH
-      267 PUSHINT
       s6 PUSH
+      267 PUSHINT
+      s7 PUSH
       __tact_dict_get_slice_cell INLINECALLDICT
       $RefferDetails$_load_opt INLINECALLDICT
       $RefferDetails$_not_null INLINECALLDICT
@@ -1723,9 +1820,9 @@ PROGRAM{
       257 PUSHINT
       OVER
       INC
-      s6 s5 s4 XCHG3
+      4 4 BLKSWAP
       $RefferData$_store_cell INLINECALLDICT
-      s3 s3 s0 XCHG3
+      s3 s4 XCHG
       __tact_dict_set_int_cell INLINECALLDICT
       SWAP
       INC
@@ -1737,12 +1834,14 @@ PROGRAM{
       s1 s2 XCHG
       __tact_dict_set_slice_cell INLINECALLDICT
     }>ELSE<{
+      s0 s3 XCHG
       PUSHNULL
       257 PUSHINT
       s4 s3 XCHG2
       1 PUSHINT
-      s0 s3 XCHG
+      s0 s6 XCHG
       $RefferData$_store_cell INLINECALLDICT
+      s1 s3 s0 XCHG3
       __tact_dict_set_int_cell INLINECALLDICT
       1 PUSHINT
       $RefferDetails$_constructor_reffer_size INLINECALLDICT
@@ -1755,7 +1854,7 @@ PROGRAM{
     }>
   }>
   $SamplePresale$_fun_UsdtAmount PROCREF:<{
-    s14 PUSH
+    16 s() PUSH
   }>
   $SamplePresale$_fun_getData PROCREF:<{
     267 PUSHINT
@@ -1896,9 +1995,6 @@ PROGRAM{
   $SamplePresale$_fun_getTokonomicsData PROCREF:<{
     s8 PUSH
   }>
-  $SamplePresale$_fun_getSeedRoundTime PROCREF:<{
-    s13 PUSH
-  }>
   $SamplePresale$_fun_getAllReferralDetails PROCREF:<{
     OVER
     267 PUSHINT
@@ -1939,10 +2035,22 @@ PROGRAM{
     __tact_create_address INLINECALLDICT
   }>
   $SamplePresale$_fun_getPresaleStatus PROCREF:<{
-    s12 PUSH
+    s14 PUSH
   }>
   $SamplePresale$_fun_getPresaleTime PROCREF:<{
+    s15 PUSH
+  }>
+  $SamplePresale$_fun_BZZNPriceInUSD PROCREF:<{
     s13 PUSH
+  }>
+  $SamplePresale$_fun_getReferralPercentage PROCREF:<{
+    s12 PUSH
+  }>
+  $SamplePresale$_fun_getMinimumUsdtAmount PROCREF:<{
+    s11 PUSH
+  }>
+  $SamplePresale$_fun_getMaximumUsdtAmount PROCREF:<{
+    s10 PUSH
   }>
   $SendParameters$_constructor_bounce_to_value_mode_body_code_data PROCINLINE:<{
   }>
@@ -1976,7 +2084,7 @@ PROGRAM{
     $SamplePresale$_fun_forward INLINECALLDICT
   }>
   $SamplePresale$_fun_owner PROCREF:<{
-    s10 PUSH
+    s9 PUSH
   }>
   $UserData$_constructor_beneficiary_totalToken_remainingToken_startTime_vestingDuration_lastClaimTime_initialCliff_releaseInterval_phaseName_active_USDTToken PROCINLINE:<{
   }>
@@ -2011,31 +2119,54 @@ PROGRAM{
   $DeployOk$_constructor_queryId PROCINLINE:<{
   }>
   $SamplePresale$_internal_text_6063e81b52f4d0be124a5f41250f486247355c1ab00e8ee80ddc65d3617d2bda PROCINLINE:<{
-    s12 POP
-    s12 POP
+    s14 POP
+    s14 POP
     54634 PUSHINT
     __tact_context_get_sender INLINECALLDICT
-    s10 s(-1) PUXC
+    s9 s(-1) PUXC
     __tact_slice_eq_bits INLINECALLDICT
     THROWANYIFNOT
     NOW
     2592000 PUSHINT
     ADD
-    s0 s12 XCHG
+    s0 s14 XCHG
     TRUE
-    s0 s12 XCHG
+    s0 s14 XCHG
+  }>
+  $SamplePresale$_internal_text_5aaee922c746e8fb15115281d641d1eaaf6f3e4e051736d59af516b469ea4e6f PROCINLINE:<{
+    s14 POP
+    54634 PUSHINT
+    __tact_context_get_sender INLINECALLDICT
+    s10 s(-1) PUXC
+    __tact_slice_eq_bits INLINECALLDICT
+    THROWANYIFNOT
+    FALSE
+    s0 s14 XCHG
   }>
   $SamplePresale$_internal_binary_TokenNotification PROCINLINE:<{
     s3 POP
     32633 PUSHINT
     NOW
-    18 s() PUSH
+    20 s() PUSH
     LESS
     THROWANYIFNOT
-    s15 PUSH
+    17 s() PUSH
     1275 THROWIFNOT
-    s1 s14 PUSH2
+    48332 PUSHINT
+    s15 s2 PUSH2
+    LESS
+    IF:<{
+      s2 s14 PUSH2
+      LESS
+    }>ELSE<{
+      FALSE
+    }>
+    THROWANYIFNOT
+    OVER
+    1000 PUSHINT
     MUL
+    17 s() PUSH
+    DIV
     s11 PUSH
     267 PUSHINT
     s3 PUSH
@@ -2115,25 +2246,29 @@ PROGRAM{
       __tact_slice_eq_bits INLINECALLDICT
       NOT
       IF:<{
+        17 s() 25 s() XCHG
+        16 s() 24 s() XCHG
         s15 23 s() XCHG
         s14 22 s() XCHG
         s13 21 s() XCHG
         s12 20 s() XCHG
         s11 19 s() XCHG
         s10 18 s() XCHG
-        s9 17 s() XCHG
-        s8 16 s() XCHG
+        s9 25 s() XCHG
+        s8 24 s() XCHG
         s7 23 s() XCHG
         s6 22 s() XCHG
         s5 21 s() XCHG
         s4 20 s() XCHG
         s3 19 s() XCHG
         s2 18 s() XCHG
-        s1 17 s() XCHG
-        s0 16 s() XCHG
-        23 s() PUSH
+        s1 25 s() XCHG
+        s0 24 s() XCHG
+        21 s() PUSH
         23 s() PUSH
         $SamplePresale$_fun_AddReferAddress INLINECALLDICT
+        16 s() 24 s() XCHG
+        s15 23 s() XCHG
         s14 22 s() XCHG
         s13 21 s() XCHG
         s12 20 s() XCHG
@@ -2185,41 +2320,45 @@ PROGRAM{
       s1 s7 s0 XCHG3
       __tact_dict_set_slice_cell INLINECALLDICT
     }>
-    s1 21 s() XCHG
+    s1 23 s() XCHG
     s0 s5 XCHG
     ADD
     s0 s2 XCHG
     ADD
-    s0 19 s() XCHG
+    s0 21 s() XCHG
     s12 s2 XCHG2
     257 PUSHINT
     s0 s5 XCHG
     0 PUSHINT
-    s0 21 s() XCHG
+    s0 23 s() XCHG
     $TokenDistrubuteInfo$_store_cell INLINECALLDICT
     s3 s11 XCHG
-    s1 17 s() XCHG
+    s1 19 s() XCHG
     __tact_dict_set_int_cell INLINECALLDICT
-    s7 s14 XCHG
+    s7 16 s() XCHG
     s0 s8 XCHG
   }>
   $SamplePresale$_internal_binary_BuyTokens PROCINLINE:<{
+    NIP
     32633 PUSHINT
     NOW
-    18 s() PUSH
+    19 s() PUSH
     LESS
     THROWANYIFNOT
-    s15 PUSH
+    16 s() PUSH
     1275 THROWIFNOT
-    s0 s14 PUSH2
+    DUP
+    1000 PUSHINT
     MUL
+    16 s() PUSH
+    DIV
     267 PUSHINT
     __tact_context_get_sender INLINECALLDICT
-    s13 PUSH
+    s12 PUSH
     -ROT
     __tact_dict_get_slice_cell INLINECALLDICT
     $UserArrayData$_load_opt INLINECALLDICT
-    s13 PUSH
+    s12 PUSH
     257 PUSHINT
     0 PUSHINT
     __tact_dict_get_int_cell INLINECALLDICT
@@ -2236,7 +2375,6 @@ PROGRAM{
     NOT
     IF:<{
       s7 POP
-      s7 POP
       267 PUSHINT
       __tact_context_get_sender INLINECALLDICT
       16 s() PUSH
@@ -2244,6 +2382,96 @@ PROGRAM{
       __tact_dict_get_slice_cell INLINECALLDICT
       $UserArrayData$_load_opt INLINECALLDICT
       $UserArrayData$_not_null INLINECALLDICT
+      __tact_context_get_sender INLINECALLDICT
+      NOW
+      NOW
+      630 PUSHINT
+      ADD
+      NOW
+      90 ADDCONST
+      s3 s4 XCHG
+      90 PUSHINT
+      30 PUSHINT
+      TRUE
+      s13 PUSH
+      s7 s14 XCPU
+      s0 s7 XCHG
+      s0 s6 XCHG
+      s0 s5 XCHG
+      s0 s4 XCHG
+      s3 s1 s3 XCHG3
+      s13 PUSH
+      s0 s2 XCHG
+      s0 17 s() XCHG
+      $UserData$_constructor_beneficiary_totalToken_remainingToken_startTime_vestingDuration_lastClaimTime_initialCliff_releaseInterval_phaseName_active_USDTToken INLINECALLDICT
+      257 PUSHINT
+      18 s() PUSH
+      INC
+      s10 s12 XCHG
+      5 8 REVERSE
+      s7 s11 XCHG
+      s6 s12 XCHG
+      s5 s11 XCHG
+      s4 s12 XCHG
+      s3 s11 XCHG
+      s12 s11 s12 XCHG3
+      $UserData$_store_cell INLINECALLDICT
+      s1 s2 XCHG
+      __tact_dict_set_int_cell INLINECALLDICT
+      s0 s6 XCHG
+      INC
+      267 PUSHINT
+      __tact_context_get_sender INLINECALLDICT
+      s8 s2 XCHG2
+      $UserArrayData$_store_cell INLINECALLDICT
+      s3 16 s() XCHG
+      s2 s7 XCHG
+      __tact_dict_set_slice_cell INLINECALLDICT
+    }>ELSE<{
+      0 PUSHINT
+      DUP
+      __tact_create_address INLINECALLDICT
+      s8 PUSH
+      __tact_slice_eq_bits INLINECALLDICT
+      NOT
+      IF:<{
+        __tact_context_get_sender INLINECALLDICT
+        18 s() 25 s() XCHG
+        17 s() 24 s() XCHG
+        16 s() 23 s() XCHG
+        s15 22 s() XCHG
+        s14 21 s() XCHG
+        s13 20 s() XCHG
+        s12 19 s() XCHG
+        s11 25 s() XCHG
+        s10 24 s() XCHG
+        s9 23 s() XCHG
+        s8 22 s() XCHG
+        s7 21 s() XCHG
+        s6 20 s() XCHG
+        s5 19 s() XCHG
+        s4 25 s() XCHG
+        s3 24 s() XCHG
+        s2 23 s() XCHG
+        s1 22 s() XCHG
+        20 s() PUSH
+        SWAP
+        $SamplePresale$_fun_AddReferAddress INLINECALLDICT
+        16 s() 23 s() XCHG
+        s15 22 s() XCHG
+        s14 21 s() XCHG
+        s13 20 s() XCHG
+        s12 19 s() XCHG
+        s11 18 s() XCHG
+        s10 17 s() XCHG
+        s9 16 s() XCHG
+        s8 s15 XCHG
+        s7 s14 XCHG
+        7 7 BLKSWAP
+      }>ELSE<{
+        s7 POP
+      }>
+      PUSHNULL
       __tact_context_get_sender INLINECALLDICT
       NOW
       NOW
@@ -2266,90 +2494,6 @@ PROGRAM{
       s0 s2 XCHG
       s0 16 s() XCHG
       $UserData$_constructor_beneficiary_totalToken_remainingToken_startTime_vestingDuration_lastClaimTime_initialCliff_releaseInterval_phaseName_active_USDTToken INLINECALLDICT
-      257 PUSHINT
-      17 s() PUSH
-      INC
-      s10 s12 XCHG
-      5 8 REVERSE
-      s7 s11 XCHG
-      s6 s12 XCHG
-      s5 s11 XCHG
-      s4 s12 XCHG
-      s3 s11 XCHG
-      s12 s11 s12 XCHG3
-      $UserData$_store_cell INLINECALLDICT
-      s1 s2 XCHG
-      __tact_dict_set_int_cell INLINECALLDICT
-      s0 s5 XCHG
-      INC
-      267 PUSHINT
-      __tact_context_get_sender INLINECALLDICT
-      s7 s2 XCHG2
-      $UserArrayData$_store_cell INLINECALLDICT
-      s3 16 s() XCHG
-      s2 s6 XCHG
-      __tact_dict_set_slice_cell INLINECALLDICT
-    }>ELSE<{
-      0 PUSHINT
-      DUP
-      __tact_create_address INLINECALLDICT
-      s9 PUSH
-      __tact_slice_eq_bits INLINECALLDICT
-      NOT
-      IF:<{
-        __tact_context_get_sender INLINECALLDICT
-        17 s() 24 s() XCHG
-        16 s() 23 s() XCHG
-        s15 22 s() XCHG
-        s14 21 s() XCHG
-        s13 20 s() XCHG
-        s12 19 s() XCHG
-        s11 18 s() XCHG
-        s10 24 s() XCHG
-        s9 23 s() XCHG
-        s8 22 s() XCHG
-        s7 21 s() XCHG
-        s6 20 s() XCHG
-        s5 19 s() XCHG
-        s4 18 s() XCHG
-        s3 24 s() XCHG
-        s2 23 s() XCHG
-        s1 22 s() XCHG
-        $SamplePresale$_fun_AddReferAddress INLINECALLDICT
-        s14 21 s() XCHG
-        s13 20 s() XCHG
-        s12 19 s() XCHG
-        s11 18 s() XCHG
-        s10 17 s() XCHG
-        s9 16 s() XCHG
-        s8 s15 XCHG
-        s7 s14 XCHG
-        7 7 BLKSWAP
-      }>ELSE<{
-        s7 POP
-        s7 POP
-      }>
-      PUSHNULL
-      __tact_context_get_sender INLINECALLDICT
-      NOW
-      NOW
-      630 PUSHINT
-      ADD
-      NOW
-      90 ADDCONST
-      s3 s4 XCHG
-      90 PUSHINT
-      30 PUSHINT
-      TRUE
-      s11 PUSH
-      s7 s12 XCPU
-      s0 s7 XCHG
-      s0 s6 XCHG
-      s0 s5 XCHG
-      s0 s4 XCHG
-      s3 s1 s3 XCHG3
-      s11 s0 s14 PUXC2
-      $UserData$_constructor_beneficiary_totalToken_remainingToken_startTime_vestingDuration_lastClaimTime_initialCliff_releaseInterval_phaseName_active_USDTToken INLINECALLDICT
       s8 s10 XCHG
       5 6 REVERSE
       s5 s9 XCHG
@@ -2361,7 +2505,7 @@ PROGRAM{
       1 PUSHINT
       s0 s12 XCHG
       $UserData$_store_cell INLINECALLDICT
-      s3 s7 XCHG
+      s3 s8 XCHG
       s1 s2 XCHG
       __tact_dict_set_int_cell INLINECALLDICT
       1 PUSHINT
@@ -2373,16 +2517,15 @@ PROGRAM{
       s3 16 s() XCHG
       __tact_dict_set_slice_cell INLINECALLDICT
     }>
-    s0 s2 XCHG
+    s2 s3 XCHG2
     ADD
-    s12 s12 s0 XCHG3
+    s1 s12 s0 XCHG3
     257 PUSHINT
-    s5 s4 XCHG2
+    s4 s5 XCHG2
     0 PUSHINT
-    s0 s6 XCHG
+    s0 s5 XCHG
     $TokenDistrubuteInfo$_store_cell INLINECALLDICT
     s3 s11 XCHG
-    s1 s2 XCHG
     __tact_dict_set_int_cell INLINECALLDICT
     s0 s8 XCHG
   }>
@@ -2392,7 +2535,7 @@ PROGRAM{
   $SamplePresale$_internal_binary_PrivateSaleMessage PROCINLINE:<{
     54634 PUSHINT
     __tact_context_get_sender INLINECALLDICT
-    s14 s(-1) PUXC
+    s13 s(-1) PUXC
     __tact_slice_eq_bits INLINECALLDICT
     THROWANYIFNOT
     s8 PUSH
@@ -2524,7 +2667,7 @@ PROGRAM{
   $SamplePresale$_internal_binary_MarketingMessage PROCINLINE:<{
     54634 PUSHINT
     __tact_context_get_sender INLINECALLDICT
-    s14 s(-1) PUXC
+    s13 s(-1) PUXC
     __tact_slice_eq_bits INLINECALLDICT
     THROWANYIFNOT
     s7 PUSH
@@ -2656,7 +2799,7 @@ PROGRAM{
   $SamplePresale$_internal_binary_TeamMessage PROCINLINE:<{
     54634 PUSHINT
     __tact_context_get_sender INLINECALLDICT
-    s14 s(-1) PUXC
+    s13 s(-1) PUXC
     __tact_slice_eq_bits INLINECALLDICT
     THROWANYIFNOT
     s6 PUSH
@@ -2788,7 +2931,7 @@ PROGRAM{
   $SamplePresale$_internal_binary_AdvisorMessage PROCINLINE:<{
     54634 PUSHINT
     __tact_context_get_sender INLINECALLDICT
-    s14 s(-1) PUXC
+    s13 s(-1) PUXC
     __tact_slice_eq_bits INLINECALLDICT
     THROWANYIFNOT
     s5 PUSH
@@ -2920,12 +3063,12 @@ PROGRAM{
   $SamplePresale$_internal_binary_TreasuryMessage PROCINLINE:<{
     54634 PUSHINT
     __tact_context_get_sender INLINECALLDICT
-    s14 s(-1) PUXC
+    s13 s(-1) PUXC
     __tact_slice_eq_bits INLINECALLDICT
     THROWANYIFNOT
     54634 PUSHINT
     __tact_context_get_sender INLINECALLDICT
-    s14 s(-1) PUXC
+    s13 s(-1) PUXC
     __tact_slice_eq_bits INLINECALLDICT
     THROWANYIFNOT
     s4 PUSH
@@ -3055,152 +3198,18 @@ PROGRAM{
     s0 s8 XCHG
   }>
   $SamplePresale$_internal_text_beb2935a82089b154d32f99c4377aa960aa115366cc2c602755e36b97f505cec PROCINLINE:<{
-    15509 PUSHINT
+    27921 PUSHINT
     __tact_context_get_sender INLINECALLDICT
-    s12 s(-1) PUXC
+    s11 s(-1) PUXC
     __tact_slice_eq_bits INLINECALLDICT
     THROWANYIFNOT
     __tact_context_get_sender INLINECALLDICT
     TRUE
     __tact_my_balance INLINECALLDICT
-    100000000 PUSHINT
+    500000000 PUSHINT
     SUB
     66 PUSHINT
     $SendParameters$_constructor_to_bounce_value_mode INLINECALLDICT
-    $global_send INLINECALLDICT
-  }>
-  $SamplePresale$_internal_binary_ClaimTokens PROCINLINE:<{
-    s2 POP
-    267 PUSHINT
-    __tact_context_get_sender INLINECALLDICT
-    s11 PUSH
-    -ROT
-    __tact_dict_get_slice_cell INLINECALLDICT
-    $UserArrayData$_load_opt INLINECALLDICT
-    $UserArrayData$_not_null INLINECALLDICT
-    0 PUSHINT
-    s2 PUSH
-    257 PUSHINT
-    __tact_dict_min_int_cell INLINECALLDICT
-    WHILE:<{
-    }>DO<{
-      $UserData$_load_opt INLINECALLDICT
-      $UserData$_not_null INLINECALLDICT
-      NOW
-      s7 PUSH
-      GEQ
-      IF:<{
-        NIP
-        s4 POP
-        s10 s6 XCHG2
-        ADD
-        FALSE
-        s4 PUSH
-        s8 s9 XCHG
-        s7 s9 XCHG
-        0 PUSHINT
-        s0 s7 XCHG
-        s0 s6 XCHG
-        s0 s5 XCHG
-        s12 s4 s12 XCHG3
-        s1 s3 XCHG
-        s1 s10 XCHG
-        257 PUSHINT
-        s0 s13 XCHG
-        $UserData$_store_cell INLINECALLDICT
-        s5 s3 s0 XCHG3
-        s5 s(-1) PUXC
-        __tact_dict_set_int_cell INLINECALLDICT
-        s0 s2 PUSH2
-        $UserArrayData$_constructor_data_size INLINECALLDICT
-        267 PUSHINT
-        __tact_context_get_sender INLINECALLDICT
-        2SWAP
-        $UserArrayData$_store_cell INLINECALLDICT
-        s3 16 s() XCHG
-        __tact_dict_set_slice_cell INLINECALLDICT
-      }>ELSE<{
-        NOW
-        s6 PUSH
-        SUB
-        s4 PUSH
-        DIV
-        26 s() PUSH
-        257 PUSHINT
-        0 PUSHINT
-        __tact_dict_get_int_cell INLINECALLDICT
-        $TokenDistrubuteInfo$_load_opt INLINECALLDICT
-        $TokenDistrubuteInfo$_not_null INLINECALLDICT
-        s1 s4 XCHG
-        4 BLKDROP
-        s11 PUSH
-        10000 PUSHINT
-        DIV
-        SWAP
-        MUL
-        OVER
-        MUL
-        s14 s14 XCPU
-        ADD
-        s1 s5 XCPU
-        MUL
-        s1 s7 XCHG
-        ADD
-        s9 s13 XCHG2
-        SUB
-        s9 s10 XCHG
-        s8 s10 XCHG
-        s0 s7 XCHG
-        s0 s6 XCHG
-        s0 s5 XCHG
-        s0 s12 XCHG
-        4 -ROLL
-        257 PUSHINT
-        s0 s11 XCHG
-        $UserData$_store_cell INLINECALLDICT
-        s2 PUSH
-        s3 s6 XCHG
-        SWAP
-        __tact_dict_set_int_cell INLINECALLDICT
-        s0 s2 PUSH2
-        $UserArrayData$_constructor_data_size INLINECALLDICT
-        267 PUSHINT
-        __tact_context_get_sender INLINECALLDICT
-        2SWAP
-        $UserArrayData$_store_cell INLINECALLDICT
-        s3 16 s() XCHG
-        __tact_dict_set_slice_cell INLINECALLDICT
-      }>
-      257 PUSHINT
-      s14 s0 s4 PUXC2
-      __tact_dict_next_int_cell INLINECALLDICT
-      s5 s15 XCHG
-    }>
-    s2 s4 XCHG
-    4 BLKDROP
-    44418 PUSHINT
-    OVER
-    0 NEQINT
-    THROWANYIFNOT
-    0 PUSHINT
-    7 PUSHPOW2
-    TRUE
-    s2 PUSH
-    PUSHNULL
-    10000000 PUSHINT
-    B{b5ee9c7241010101000600000800000000e300af0f} B>boc PUSHREF
-    CTOS
-    s9 PUSH
-    s4 s6 XCHG
-    s5 s8 XCHG
-    s0 s4 XCHG
-    s0 s10 XCHG
-    3 -ROLL
-    $TokenTransfer$_constructor_queryId_amount_destination_response_destination_custom_payload_forward_ton_amount_forward_payload INLINECALLDICT
-    $TokenTransfer$_store_cell INLINECALLDICT
-    s1 s3 XCHG
-    s4 s4 s0 XCHG3
-    $SendParameters$_constructor_to_value_mode_bounce_body INLINECALLDICT
     $global_send INLINECALLDICT
   }>
   $SamplePresale$_internal_binary_ClaimSingleToken PROCINLINE:<{
@@ -3976,6 +3985,11 @@ PROGRAM{
     $global_send INLINECALLDICT
   }>
   $SamplePresale$_internal_binary_ClaimReferralTokens PROCINLINE:<{
+    49708 PUSHINT
+    NOW
+    18 s() PUSH
+    GREATER
+    THROWANYIFNOT
     267 PUSHINT
     __tact_context_get_sender INLINECALLDICT
     s3 PUSH
@@ -4005,14 +4019,14 @@ PROGRAM{
       DUP
       IFNOT:<{
         DROP
-        s3 s3 XCPU
+        s4 s1 XCPU
         ADD
-        s0 s3 XCHG
+        s0 s4 XCHG
         TRUE
       }>
-      -ROT
+      3 -ROLL
       257 PUSHINT
-      s0 s3 XCHG
+      s0 s4 XCHG
       $RefferData$_store_cell INLINECALLDICT
       s2 PUSH
       s3 s6 XCHG
@@ -4056,11 +4070,11 @@ PROGRAM{
   $SamplePresale$_internal_binary_WithdrawUsdt PROCINLINE:<{
     54634 PUSHINT
     __tact_context_get_sender INLINECALLDICT
-    s13 s(-1) PUXC
+    s12 s(-1) PUXC
     __tact_slice_eq_bits INLINECALLDICT
     THROWANYIFNOT
     38387 PUSHINT
-    16 s() PUSH
+    18 s() PUSH
     0 GTINT
     THROWANYIFNOT
     0 PUSHINT
@@ -4074,16 +4088,85 @@ PROGRAM{
     B{b5ee9c7241010101000600000800000000e300af0f} B>boc PUSHREF
     CTOS
     s5 s6 XCHG
-    s5 24 s() XCHG
+    s5 26 s() XCHG
     $TokenTransfer$_constructor_queryId_amount_destination_response_destination_custom_payload_forward_ton_amount_forward_payload INLINECALLDICT
     $TokenTransfer$_store_cell INLINECALLDICT
     s3 s4 XCHG
     s1 s3 s0 XCHG3
-    s1 18 s() XCHG
+    s1 20 s() XCHG
     $SendParameters$_constructor_to_value_mode_bounce_body INLINECALLDICT
     $global_send INLINECALLDICT
     0 PUSHINT
-    s0 s14 XCHG
+    s0 16 s() XCHG
+  }>
+  $SamplePresale$_internal_binary_WithdrawBZZN PROCINLINE:<{
+    18 s() POP
+    54634 PUSHINT
+    __tact_context_get_sender INLINECALLDICT
+    s12 s(-1) PUXC
+    __tact_slice_eq_bits INLINECALLDICT
+    THROWANYIFNOT
+    0 PUSHINT
+    7 PUSHPOW2
+    TRUE
+    s2 PUSH
+    __tact_context_get_sender INLINECALLDICT
+    __tact_context_get_sender INLINECALLDICT
+    PUSHNULL
+    1 PUSHINT
+    B{b5ee9c7241010101000600000800000000e300af0f} B>boc PUSHREF
+    CTOS
+    s5 s6 XCHG
+    s5 26 s() XCHG
+    $TokenTransfer$_constructor_queryId_amount_destination_response_destination_custom_payload_forward_ton_amount_forward_payload INLINECALLDICT
+    $TokenTransfer$_store_cell INLINECALLDICT
+    s3 s4 XCHG
+    s1 s3 s0 XCHG3
+    s1 20 s() XCHG
+    $SendParameters$_constructor_to_value_mode_bounce_body INLINECALLDICT
+    $global_send INLINECALLDICT
+    0 PUSHINT
+    s0 16 s() XCHG
+  }>
+  $SamplePresale$_internal_binary_ChangeTokenPrice PROCINLINE:<{
+    s14 POP
+    54634 PUSHINT
+    __tact_context_get_sender INLINECALLDICT
+    s11 s(-1) PUXC
+    __tact_slice_eq_bits INLINECALLDICT
+    THROWANYIFNOT
+  }>
+  $SamplePresale$_internal_binary_ChangeSeedRoundTimeMessage PROCINLINE:<{
+    16 s() POP
+    54634 PUSHINT
+    __tact_context_get_sender INLINECALLDICT
+    s11 s(-1) PUXC
+    __tact_slice_eq_bits INLINECALLDICT
+    THROWANYIFNOT
+  }>
+  $SamplePresale$_internal_binary_ChangeReferralPercentageMessage PROCINLINE:<{
+    s13 POP
+    54634 PUSHINT
+    __tact_context_get_sender INLINECALLDICT
+    s11 s(-1) PUXC
+    __tact_slice_eq_bits INLINECALLDICT
+    THROWANYIFNOT
+  }>
+  $SamplePresale$_internal_binary_MinimumUsdtAmountMessage PROCINLINE:<{
+    s12 POP
+    54634 PUSHINT
+    __tact_context_get_sender INLINECALLDICT
+    s11 s(-1) PUXC
+    __tact_slice_eq_bits INLINECALLDICT
+    THROWANYIFNOT
+  }>
+  $SamplePresale$_internal_binary_MaximumUsdtAmountMessage PROCINLINE:<{
+    s11 POP
+    54634 PUSHINT
+    __tact_context_get_sender INLINECALLDICT
+    s11 s(-1) PUXC
+    __tact_slice_eq_bits INLINECALLDICT
+    THROWANYIFNOT
   }>
   $SamplePresale$_internal_binary_Deploy PROCINLINE:<{
     $DeployOk$_constructor_queryId INLINECALLDICT
@@ -4093,103 +4176,174 @@ PROGRAM{
   %UsdtAmount PROC:<{
     $SamplePresale$_contract_load INLINECALLDICT
     $SamplePresale$_fun_UsdtAmount INLINECALLDICT
-    15 1 BLKDROP2
+    16 s() POP
+    15 BLKDROP
+    NIP
   }>
   %getData PROC:<{
     SWAP
     __tact_verify_address INLINECALLDICT
     $SamplePresale$_contract_load INLINECALLDICT
+    16 s() 18 s() XCHG
+    s15 17 s() XCHG
     s14 16 s() XCHG
     2 14 BLKSWAP
     $SamplePresale$_fun_getData INLINECALLDICT
-    15 1 BLKDROP2
+    16 s() POP
+    15 BLKDROP
+    NIP
     $UserData$_to_opt_external INLINECALLDICT
   }>
   %balance PROC:<{
     $SamplePresale$_contract_load INLINECALLDICT
     $SamplePresale$_fun_balance INLINECALLDICT
-    15 1 BLKDROP2
+    16 s() POP
+    15 BLKDROP
+    NIP
   }>
   %getAllSeedTokenData PROC:<{
     __tact_verify_address INLINECALLDICT
     $SamplePresale$_contract_load INLINECALLDICT
+    16 s() 17 s() XCHG
+    s15 16 s() XCHG
     15 ROLL
     $SamplePresale$_fun_getAllSeedTokenData INLINECALLDICT
-    15 1 BLKDROP2
+    16 s() POP
+    15 BLKDROP
+    NIP
   }>
   %getAllPrivateTokenData PROC:<{
     __tact_verify_address INLINECALLDICT
     $SamplePresale$_contract_load INLINECALLDICT
+    16 s() 17 s() XCHG
+    s15 16 s() XCHG
     15 ROLL
     $SamplePresale$_fun_getAllPrivateTokenData INLINECALLDICT
-    15 1 BLKDROP2
+    16 s() POP
+    15 BLKDROP
+    NIP
   }>
   %getAllMarketingTokenData PROC:<{
     __tact_verify_address INLINECALLDICT
     $SamplePresale$_contract_load INLINECALLDICT
+    16 s() 17 s() XCHG
+    s15 16 s() XCHG
     15 ROLL
     $SamplePresale$_fun_getAllMarketingTokenData INLINECALLDICT
-    15 1 BLKDROP2
+    16 s() POP
+    15 BLKDROP
+    NIP
   }>
   %getAllTeamTokenData PROC:<{
     __tact_verify_address INLINECALLDICT
     $SamplePresale$_contract_load INLINECALLDICT
+    16 s() 17 s() XCHG
+    s15 16 s() XCHG
     15 ROLL
     $SamplePresale$_fun_getAllTeamTokenData INLINECALLDICT
-    15 1 BLKDROP2
+    16 s() POP
+    15 BLKDROP
+    NIP
   }>
   %getAllAdvisorTokenData PROC:<{
     __tact_verify_address INLINECALLDICT
     $SamplePresale$_contract_load INLINECALLDICT
+    16 s() 17 s() XCHG
+    s15 16 s() XCHG
     15 ROLL
     $SamplePresale$_fun_getAllAdvisorTokenData INLINECALLDICT
-    15 1 BLKDROP2
+    16 s() POP
+    15 BLKDROP
+    NIP
   }>
   %getAllTreasuryTokenData PROC:<{
     __tact_verify_address INLINECALLDICT
     $SamplePresale$_contract_load INLINECALLDICT
+    16 s() 17 s() XCHG
+    s15 16 s() XCHG
     15 ROLL
     $SamplePresale$_fun_getAllTreasuryTokenData INLINECALLDICT
-    15 1 BLKDROP2
+    16 s() POP
+    15 BLKDROP
+    NIP
   }>
   %getTokonomicsData PROC:<{
     $SamplePresale$_contract_load INLINECALLDICT
     $SamplePresale$_fun_getTokonomicsData INLINECALLDICT
-    15 1 BLKDROP2
-  }>
-  %getSeedRoundTime PROC:<{
-    $SamplePresale$_contract_load INLINECALLDICT
-    $SamplePresale$_fun_getSeedRoundTime INLINECALLDICT
-    15 1 BLKDROP2
+    16 s() POP
+    15 BLKDROP
+    NIP
   }>
   %getAllReferralDetails PROC:<{
     __tact_verify_address INLINECALLDICT
     $SamplePresale$_contract_load INLINECALLDICT
+    16 s() 17 s() XCHG
+    s15 16 s() XCHG
     15 ROLL
     $SamplePresale$_fun_getAllReferralDetails INLINECALLDICT
-    15 1 BLKDROP2
+    16 s() POP
+    15 BLKDROP
+    NIP
   }>
   %getReferrer PROC:<{
     __tact_verify_address INLINECALLDICT
     $SamplePresale$_contract_load INLINECALLDICT
+    16 s() 17 s() XCHG
+    s15 16 s() XCHG
     15 ROLL
     $SamplePresale$_fun_getReferrer INLINECALLDICT
-    15 1 BLKDROP2
+    16 s() POP
+    15 BLKDROP
+    NIP
   }>
   %getPresaleStatus PROC:<{
     $SamplePresale$_contract_load INLINECALLDICT
     $SamplePresale$_fun_getPresaleStatus INLINECALLDICT
-    15 1 BLKDROP2
+    16 s() POP
+    15 BLKDROP
+    NIP
   }>
   %getPresaleTime PROC:<{
     $SamplePresale$_contract_load INLINECALLDICT
     $SamplePresale$_fun_getPresaleTime INLINECALLDICT
-    15 1 BLKDROP2
+    16 s() POP
+    15 BLKDROP
+    NIP
+  }>
+  %BZZNPriceInUSD PROC:<{
+    $SamplePresale$_contract_load INLINECALLDICT
+    $SamplePresale$_fun_BZZNPriceInUSD INLINECALLDICT
+    16 s() POP
+    15 BLKDROP
+    NIP
+  }>
+  %getReferralPercentage PROC:<{
+    $SamplePresale$_contract_load INLINECALLDICT
+    $SamplePresale$_fun_getReferralPercentage INLINECALLDICT
+    16 s() POP
+    15 BLKDROP
+    NIP
+  }>
+  %getMinimumUsdtAmount PROC:<{
+    $SamplePresale$_contract_load INLINECALLDICT
+    $SamplePresale$_fun_getMinimumUsdtAmount INLINECALLDICT
+    16 s() POP
+    15 BLKDROP
+    NIP
+  }>
+  %getMaximumUsdtAmount PROC:<{
+    $SamplePresale$_contract_load INLINECALLDICT
+    $SamplePresale$_fun_getMaximumUsdtAmount INLINECALLDICT
+    16 s() POP
+    15 BLKDROP
+    NIP
   }>
   %owner PROC:<{
     $SamplePresale$_contract_load INLINECALLDICT
     $SamplePresale$_fun_owner INLINECALLDICT
-    15 1 BLKDROP2
+    16 s() POP
+    15 BLKDROP
+    NIP
   }>
   supported_interfaces PROC:<{
     123515602279859691144772641439386770278 PUSHINT
@@ -4199,7 +4353,7 @@ PROGRAM{
     86142586315491086060343270784266291122 PUSHINT
   }>
   get_abi_ipfs PROC:<{
-    x{697066733a2f2f516d656657677a4a48774c766a555632635965736e775745767655595536646b473451376652583347774c797868} PUSHSLICE
+    x{697066733a2f2f516d537168776f4253654c4646636442527772366770734a6543565965465372676e77753259384e707052794d4e} PUSHSLICE
   }>
   lazy_deployment_completed PROC:<{
     c4 PUSH
@@ -4305,16 +4459,6 @@ PROGRAM{
       TRUE
     }>
     DUP
-    86893668 PUSHINT
-    EQUAL
-    IFJMP:<{
-      DROP
-      $ClaimTokens$_load INLINECALLDICT
-      1 3 BLKDROP2
-      $SamplePresale$_internal_binary_ClaimTokens INLINECALLDICT
-      TRUE
-    }>
-    DUP
     2644494419 PUSHINT
     EQUAL
     IFJMP:<{
@@ -4395,6 +4539,66 @@ PROGRAM{
       TRUE
     }>
     DUP
+    2196575032 PUSHINT
+    EQUAL
+    IFJMP:<{
+      DROP
+      $WithdrawBZZN$_load INLINECALLDICT
+      1 2 BLKDROP2
+      $SamplePresale$_internal_binary_WithdrawBZZN INLINECALLDICT
+      TRUE
+    }>
+    DUP
+    2234742056 PUSHINT
+    EQUAL
+    IFJMP:<{
+      DROP
+      $ChangeTokenPrice$_load INLINECALLDICT
+      NIP
+      $SamplePresale$_internal_binary_ChangeTokenPrice INLINECALLDICT
+      TRUE
+    }>
+    DUP
+    2834877433 PUSHINT
+    EQUAL
+    IFJMP:<{
+      DROP
+      $ChangeSeedRoundTimeMessage$_load INLINECALLDICT
+      NIP
+      $SamplePresale$_internal_binary_ChangeSeedRoundTimeMessage INLINECALLDICT
+      TRUE
+    }>
+    DUP
+    4112867585 PUSHINT
+    EQUAL
+    IFJMP:<{
+      DROP
+      $ChangeReferralPercentageMessage$_load INLINECALLDICT
+      NIP
+      $SamplePresale$_internal_binary_ChangeReferralPercentageMessage INLINECALLDICT
+      TRUE
+    }>
+    DUP
+    1547832652 PUSHINT
+    EQUAL
+    IFJMP:<{
+      DROP
+      $MinimumUsdtAmountMessage$_load INLINECALLDICT
+      NIP
+      $SamplePresale$_internal_binary_MinimumUsdtAmountMessage INLINECALLDICT
+      TRUE
+    }>
+    DUP
+    3137358584 PUSHINT
+    EQUAL
+    IFJMP:<{
+      DROP
+      $MaximumUsdtAmountMessage$_load INLINECALLDICT
+      NIP
+      $SamplePresale$_internal_binary_MaximumUsdtAmountMessage INLINECALLDICT
+      TRUE
+    }>
+    DUP
     2490013878 PUSHINT
     EQUAL
     IFJMP:<{
@@ -4413,6 +4617,15 @@ PROGRAM{
       IFJMP:<{
         DROP
         $SamplePresale$_internal_text_6063e81b52f4d0be124a5f41250f486247355c1ab00e8ee80ddc65d3617d2bda INLINECALLDICT
+        TRUE
+        RETALT
+      }>
+      DUP
+      41017196806288719468922276073307113448792991213121292347035900112983116369519 PUSHINT
+      EQUAL
+      IFJMP:<{
+        DROP
+        $SamplePresale$_internal_text_5aaee922c746e8fb15115281d641d1eaaf6f3e4e051736d59af516b469ea4e6f INLINECALLDICT
         TRUE
         RETALT
       }>
@@ -4447,6 +4660,8 @@ PROGRAM{
     s0 s2 XCHG
     __tact_context_sender SETGLOB
     $SamplePresale$_contract_load INLINECALLDICT
+    16 s() 18 s() XCHG
+    s15 17 s() XCHG
     s14 16 s() XCHG
     s13 s15 XCHG
     2 13 BLKSWAP
