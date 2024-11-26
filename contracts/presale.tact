@@ -81,6 +81,11 @@ struct TreasuryArrayData{
   size : Int;
 }
 
+struct AllData{
+  minimum: Int as coins;
+  maximum: Int;
+}
+
 message BuyTokens{
   referrer: Address;
   tonAmount: Int as coins;
@@ -186,7 +191,7 @@ contract SamplePresale with Ownable, Deployable {
   totalUsdtAmount : Int = 0;
   seedRoundTime : Int = 0;
   presaleStatus : Bool = false;
-  BZZNPrice : Int = 250;
+  BZZNPriceInUSDT : Int = 250;
   referralPercentage : Int = 50;
   minimumUSDTAmount : Int = 1000000000;
   maximumUSDTAmount : Int = 100000000000;
@@ -320,7 +325,7 @@ contract SamplePresale with Ownable, Deployable {
     require(now() < self.seedRoundTime, "Presale is over");
     require(self.presaleStatus, "Presale is not start yet");
     require( self.minimumUSDTAmount < msg.amount && msg.amount < self.maximumUSDTAmount, "Invalid USDT Amount");
-    let TokenAmount : Int = (msg.amount  *1000) / self.BZZNPrice;
+    let TokenAmount : Int = (msg.amount  *1000) / self.BZZNPriceInUSDT;
     let gotButUnsure: UserArrayData? = self.SeedData.get(msg.from);
     let seedData : TokenDistrubuteInfo = self.TokenData.get(0)!!;
     require(seedData.totalPhaseToken >= seedData.totalSuppliedToken + TokenAmount,"Seed Token Supply is completed");
@@ -381,7 +386,7 @@ contract SamplePresale with Ownable, Deployable {
     let ctx:Context = context();
     require(now() < self.seedRoundTime, "Presale is over");
     require(self.presaleStatus, "Presale is not start yet");
-    let TokenAmount : Int = (msg.usdtAmount *1000) /self.BZZNPrice;
+    let TokenAmount : Int = (msg.usdtAmount *1000) /self.BZZNPriceInUSDT;
    let gotButUnsure: UserArrayData? = self.SeedData.get(sender());
    let seedData : TokenDistrubuteInfo = self.TokenData.get(0)!!;
    require(seedData.totalPhaseToken >= seedData.totalSuppliedToken + TokenAmount,"Seed Token Supply is completed");
@@ -1148,7 +1153,7 @@ contract SamplePresale with Ownable, Deployable {
 
   receive(msg : ChangeTokenPrice){
     require(sender() == self.owner,"You are not owner");
-    self.BZZNPrice = msg.price;
+    self.BZZNPriceInUSDT = msg.price;
   }
 
   receive(msg : ChangeSeedRoundTimeMessage){
@@ -1193,6 +1198,23 @@ contract SamplePresale with Ownable, Deployable {
       return emptyMap();
     }
     
+  }
+
+  get fun getAllSeedData(): map<Address, UserArrayData>{
+    if(self.SeedData != null){
+     return self.SeedData ;
+    }
+    else{
+      return emptyMap();
+    }
+  }
+
+  get fun getAllData() : AllData{
+    let data: AllData = AllData{
+      minimum: self.minimumUSDTAmount,
+      maximum: self.maximumUSDTAmount
+    };
+    return data;
   }
 
   get fun getAllPrivateTokenData(addr:Address): map<Int,TokenVestingInfo>{
@@ -1285,7 +1307,7 @@ contract SamplePresale with Ownable, Deployable {
   }
 
   get fun BZZNPriceInUSD():Int{
-    return self.BZZNPrice;
+    return self.BZZNPriceInUSDT;
   }
 
   get fun getReferralPercentage():Int{

@@ -363,6 +363,9 @@ _ $RefferDetails$_get_size((cell, int) v) inline;
 ;; $TreasuryArrayData$_not_null
 ((cell, int)) $TreasuryArrayData$_not_null(tuple v) inline;
 
+;; $AllData$_to_external
+(int, int) $AllData$_to_external(((int, int)) v) inline;
+
 ;; $TokenDistrubuteInfo$_constructor_name_tokenDistrubutedPercentage_totalPhaseToken_percentage_totalSuppliedToken
 ((slice, int, int, int, int)) $TokenDistrubuteInfo$_constructor_name_tokenDistrubutedPercentage_totalPhaseToken_percentage_totalSuppliedToken(slice name, int tokenDistrubutedPercentage, int totalPhaseToken, int percentage, int totalSuppliedToken) inline;
 
@@ -401,6 +404,15 @@ slice $Int$_fun_toCoinsString(int $self) impure inline;
 
 ;; $SamplePresale$_fun_getAllSeedTokenData
 ((int, int, int, int, int, int, int, slice, cell, cell, cell, cell, cell, cell, cell, cell, cell), cell) $SamplePresale$_fun_getAllSeedTokenData((int, int, int, int, int, int, int, slice, cell, cell, cell, cell, cell, cell, cell, cell, cell) $self, slice $addr) impure inline_ref;
+
+;; $SamplePresale$_fun_getAllSeedData
+((int, int, int, int, int, int, int, slice, cell, cell, cell, cell, cell, cell, cell, cell, cell), cell) $SamplePresale$_fun_getAllSeedData((int, int, int, int, int, int, int, slice, cell, cell, cell, cell, cell, cell, cell, cell, cell) $self) impure inline_ref;
+
+;; $AllData$_constructor_minimum_maximum
+((int, int)) $AllData$_constructor_minimum_maximum(int minimum, int maximum) inline;
+
+;; $SamplePresale$_fun_getAllData
+((int, int, int, int, int, int, int, slice, cell, cell, cell, cell, cell, cell, cell, cell, cell), (int, int)) $SamplePresale$_fun_getAllData((int, int, int, int, int, int, int, slice, cell, cell, cell, cell, cell, cell, cell, cell, cell) $self) impure inline_ref;
 
 ;; $SamplePresale$_fun_getAllPrivateTokenData
 ((int, int, int, int, int, int, int, slice, cell, cell, cell, cell, cell, cell, cell, cell, cell), cell) $SamplePresale$_fun_getAllPrivateTokenData((int, int, int, int, int, int, int, slice, cell, cell, cell, cell, cell, cell, cell, cell, cell) $self, slice $addr) impure inline_ref;

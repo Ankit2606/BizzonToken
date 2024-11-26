@@ -119,6 +119,7 @@ PROGRAM{
   DECLPROC $TeamArrayData$_not_null
   DECLPROC $AdvisorArrayData$_not_null
   DECLPROC $TreasuryArrayData$_not_null
+  DECLPROC $AllData$_to_external
   DECLPROC $TokenDistrubuteInfo$_constructor_name_tokenDistrubutedPercentage_totalPhaseToken_percentage_totalSuppliedToken
   DECLPROC $SamplePresale$_contract_init
   DECLPROC $SamplePresale$_contract_load
@@ -132,6 +133,9 @@ PROGRAM{
   DECLPROC $SamplePresale$_fun_getData
   DECLPROC $SamplePresale$_fun_balance
   DECLPROC $SamplePresale$_fun_getAllSeedTokenData
+  DECLPROC $SamplePresale$_fun_getAllSeedData
+  DECLPROC $AllData$_constructor_minimum_maximum
+  DECLPROC $SamplePresale$_fun_getAllData
   DECLPROC $SamplePresale$_fun_getAllPrivateTokenData
   DECLPROC $SamplePresale$_fun_getAllMarketingTokenData
   DECLPROC $SamplePresale$_fun_getAllTeamTokenData
@@ -192,6 +196,8 @@ PROGRAM{
   103147 DECLMETHOD %getData
   104128 DECLMETHOD %balance
   129557 DECLMETHOD %getAllSeedTokenData
+  127207 DECLMETHOD %getAllSeedData
+  95432 DECLMETHOD %getAllData
   68327 DECLMETHOD %getAllPrivateTokenData
   102823 DECLMETHOD %getAllMarketingTokenData
   83028 DECLMETHOD %getAllTeamTokenData
@@ -1495,6 +1501,8 @@ PROGRAM{
     128 THROWIF
     2 UNTUPLE
   }>
+  $AllData$_to_external PROCINLINE:<{
+  }>
   $TokenDistrubuteInfo$_constructor_name_tokenDistrubutedPercentage_totalPhaseToken_percentage_totalSuppliedToken PROCINLINE:<{
   }>
   $SamplePresale$_contract_init PROCREF:<{
@@ -1891,6 +1899,21 @@ PROGRAM{
     }>
     DROP
     PUSHNULL
+  }>
+  $SamplePresale$_fun_getAllSeedData PROCREF:<{
+    s7 PUSH
+    ISNULL
+    NOT
+    IFJMP:<{
+      s7 PUSH
+    }>
+    PUSHNULL
+  }>
+  $AllData$_constructor_minimum_maximum PROCINLINE:<{
+  }>
+  $SamplePresale$_fun_getAllData PROCREF:<{
+    s11 s10 PUSH2
+    $AllData$_constructor_minimum_maximum INLINECALLDICT
   }>
   $SamplePresale$_fun_getAllPrivateTokenData PROCREF:<{
     s7 PUSH
@@ -4212,6 +4235,21 @@ PROGRAM{
     15 BLKDROP
     NIP
   }>
+  %getAllSeedData PROC:<{
+    $SamplePresale$_contract_load INLINECALLDICT
+    $SamplePresale$_fun_getAllSeedData INLINECALLDICT
+    16 s() POP
+    15 BLKDROP
+    NIP
+  }>
+  %getAllData PROC:<{
+    $SamplePresale$_contract_load INLINECALLDICT
+    $SamplePresale$_fun_getAllData INLINECALLDICT
+    17 s() POP
+    17 s() POP
+    15 BLKDROP
+    $AllData$_to_external INLINECALLDICT
+  }>
   %getAllPrivateTokenData PROC:<{
     __tact_verify_address INLINECALLDICT
     $SamplePresale$_contract_load INLINECALLDICT
@@ -4353,7 +4391,7 @@ PROGRAM{
     86142586315491086060343270784266291122 PUSHINT
   }>
   get_abi_ipfs PROC:<{
-    x{697066733a2f2f516d537168776f4253654c4646636442527772366770734a6543565965465372676e77753259384e707052794d4e} PUSHSLICE
+    x{697066733a2f2f516d62627a635836596a5a4e6a775139384e7a7954343373465a747a77486647437a646a7274734d594b416d3768} PUSHSLICE
   }>
   lazy_deployment_completed PROC:<{
     c4 PUSH

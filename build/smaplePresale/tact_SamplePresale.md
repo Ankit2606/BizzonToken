@@ -1,9 +1,9 @@
 # TACT Compilation Report
 Contract: SamplePresale
-BOC Size: 12747 bytes
+BOC Size: 12803 bytes
 
 # Types
-Total Types: 47
+Total Types: 48
 
 ## StateInit
 TLB: `_ code:^cell data:^cell = StateInit`
@@ -113,6 +113,10 @@ Signature: `AdvisorArrayData{data:dict<int, ^TokenVestingInfo{beneficiary:addres
 TLB: `_ data:dict<int, ^TokenVestingInfo{beneficiary:address,totalToken:coins,remainingToken:coins,startTime:int257,vestingDuration:int257,lastClaimTime:int257,releaseInterval:int257,initialCliff:int257,phaseName:^string,active:bool,USDTToken:coins}> size:int257 = TreasuryArrayData`
 Signature: `TreasuryArrayData{data:dict<int, ^TokenVestingInfo{beneficiary:address,totalToken:coins,remainingToken:coins,startTime:int257,vestingDuration:int257,lastClaimTime:int257,releaseInterval:int257,initialCliff:int257,phaseName:^string,active:bool,USDTToken:coins}>,size:int257}`
 
+## AllData
+TLB: `_ minimum:coins maximum:int257 = AllData`
+Signature: `AllData{minimum:coins,maximum:int257}`
+
 ## BuyTokens
 TLB: `buy_tokens#9ab69a78 referrer:address tonAmount:coins usdtAmount:coins = BuyTokens`
 Signature: `BuyTokens{referrer:address,tonAmount:coins,usdtAmount:coins}`
@@ -194,7 +198,7 @@ TLB: `minimum_usdt_amount_message#5c420d4c amount:int257 = MinimumUsdtAmountMess
 Signature: `MinimumUsdtAmountMessage{amount:int257}`
 
 # Get Methods
-Total Get Methods: 19
+Total Get Methods: 21
 
 ## UsdtAmount
 
@@ -206,6 +210,10 @@ Argument: num
 
 ## getAllSeedTokenData
 Argument: addr
+
+## getAllSeedData
+
+## getAllData
 
 ## getAllPrivateTokenData
 Argument: addr
