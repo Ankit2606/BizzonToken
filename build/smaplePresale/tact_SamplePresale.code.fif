@@ -134,7 +134,7 @@ PROGRAM{
   DECLPROC $SamplePresale$_fun_balance
   DECLPROC $SamplePresale$_fun_getAllSeedTokenData
   DECLPROC $SamplePresale$_fun_getAllSeedData
-  DECLPROC $AllData$_constructor_minimum_maximum
+  DECLPROC $AllData$_constructor_USDTAmount_balance_presaleStatus_presaleTime_BZZNPriceInUSD_referralPercentage_minimumBuyPrice_maximumBuyPrice
   DECLPROC $SamplePresale$_fun_getAllData
   DECLPROC $SamplePresale$_fun_getAllPrivateTokenData
   DECLPROC $SamplePresale$_fun_getAllMarketingTokenData
@@ -1909,11 +1909,20 @@ PROGRAM{
     }>
     PUSHNULL
   }>
-  $AllData$_constructor_minimum_maximum PROCINLINE:<{
+  $AllData$_constructor_USDTAmount_balance_presaleStatus_presaleTime_BZZNPriceInUSD_referralPercentage_minimumBuyPrice_maximumBuyPrice PROCINLINE:<{
   }>
   $SamplePresale$_fun_getAllData PROCREF:<{
-    s11 s10 PUSH2
-    $AllData$_constructor_minimum_maximum INLINECALLDICT
+    __tact_my_balance INLINECALLDICT
+    $Int$_fun_toCoinsString INLINECALLDICT
+    17 s() PUSH
+    SWAP
+    16 s() PUSH
+    18 s() PUSH
+    17 s() PUSH
+    17 s() PUSH
+    17 s() PUSH
+    17 s() PUSH
+    $AllData$_constructor_USDTAmount_balance_presaleStatus_presaleTime_BZZNPriceInUSD_referralPercentage_minimumBuyPrice_maximumBuyPrice INLINECALLDICT
   }>
   $SamplePresale$_fun_getAllPrivateTokenData PROCREF:<{
     s7 PUSH
@@ -4245,9 +4254,8 @@ PROGRAM{
   %getAllData PROC:<{
     $SamplePresale$_contract_load INLINECALLDICT
     $SamplePresale$_fun_getAllData INLINECALLDICT
-    17 s() POP
-    17 s() POP
-    15 BLKDROP
+    8 8 BLKDROP2
+    9 8 BLKDROP2
     $AllData$_to_external INLINECALLDICT
   }>
   %getAllPrivateTokenData PROC:<{
@@ -4391,7 +4399,7 @@ PROGRAM{
     86142586315491086060343270784266291122 PUSHINT
   }>
   get_abi_ipfs PROC:<{
-    x{697066733a2f2f516d62627a635836596a5a4e6a775139384e7a7954343373465a747a77486647437a646a7274734d594b416d3768} PUSHSLICE
+    x{697066733a2f2f516d64713568424d4c5567736e4b48467a4d73623736414b434c53697741517643696f6b5a4b5633624b474a336b} PUSHSLICE
   }>
   lazy_deployment_completed PROC:<{
     c4 PUSH

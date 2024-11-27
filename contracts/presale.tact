@@ -82,8 +82,15 @@ struct TreasuryArrayData{
 }
 
 struct AllData{
-  minimum: Int as coins;
-  maximum: Int;
+  USDTAmount: Int as coins;
+  balance: String;
+  presaleStatus: Bool;
+  presaleTime: Int;
+  BZZNPriceInUSD: Int;
+  referralPercentage: Int;
+  minimumBuyPrice: Int as coins;
+  maximumBuyPrice: Int as coins;
+  tokenData: map<Int, TokenDistrubuteInfo>;
 }
 
 message BuyTokens{
@@ -1176,18 +1183,18 @@ contract SamplePresale with Ownable, Deployable {
     self.maximumUSDTAmount = msg.amount;
   }
 
-  get fun UsdtAmount(): Int{
-    return self.totalUsdtAmount;
-  }
+  // get fun UsdtAmount(): Int{
+  //   return self.totalUsdtAmount;
+  // }
     
   get fun getData(addr: Address,num: Int):UserData?{
     let data: UserArrayData = self.SeedData.get(addr)!!;
     return data.data.get(num);
   }
 
-  get fun balance(): String {
-        return myBalance().toCoinsString();
-  }
+  // get fun balance(): String {
+  //       return myBalance().toCoinsString();
+  // }
 
   get fun getAllSeedTokenData(addr:Address): map<Int,UserData>{
     if(self.SeedData.get(addr) != null){
@@ -1211,8 +1218,14 @@ contract SamplePresale with Ownable, Deployable {
 
   get fun getAllData() : AllData{
     let data: AllData = AllData{
-      minimum: self.minimumUSDTAmount,
-      maximum: self.maximumUSDTAmount
+      USDTAmount: self.totalUsdtAmount,
+      balance: myBalance().toCoinsString(),
+      presaleStatus: self.presaleStatus,
+      presaleTime: self.seedRoundTime,
+      BZZNPriceInUSD: self.BZZNPriceInUSDT,
+      referralPercentage: self.referralPercentage,
+      minimumBuyPrice: self.minimumUSDTAmount,
+      maximumBuyPrice: self.maximumUSDTAmount,
     };
     return data;
   }
@@ -1298,28 +1311,28 @@ contract SamplePresale with Ownable, Deployable {
     }
   }
 
-  get fun getPresaleStatus():Bool{
-    return self.presaleStatus;
-  }
+  // get fun getPresaleStatus():Bool{
+  //   return self.presaleStatus;
+  // }
 
-  get fun getPresaleTime():Int{
-    return self.seedRoundTime;
-  }
+  // get fun getPresaleTime():Int{
+  //   return self.seedRoundTime;
+  // }
 
-  get fun BZZNPriceInUSD():Int{
-    return self.BZZNPriceInUSDT;
-  }
+  // get fun BZZNPriceInUSD():Int{
+  //   return self.BZZNPriceInUSDT;
+  // }
 
-  get fun getReferralPercentage():Int{
-    return self.referralPercentage;
-  }
+  // get fun getReferralPercentage():Int{
+  //   return self.referralPercentage;
+  // }
 
-  get fun getMinimumUsdtAmount():Int{
-    return self.minimumUSDTAmount;
-  }
+  // get fun getMinimumUsdtAmount():Int{
+  //   return self.minimumUSDTAmount;
+  // }
 
-  get fun getMaximumUsdtAmount():Int{
-    return self.maximumUSDTAmount;
-  }
+  // get fun getMaximumUsdtAmount():Int{
+  //   return self.maximumUSDTAmount;
+  // }
   
 }

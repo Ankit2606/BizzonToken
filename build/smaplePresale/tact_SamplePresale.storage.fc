@@ -697,16 +697,16 @@ tuple $TreasuryArrayData$_load_opt(cell cl) inline {
 
 ;;
 ;; Type: AllData
-;; TLB: _ minimum:coins maximum:int257 = AllData
+;; TLB: _ USDTAmount:coins balance:^string presaleStatus:bool presaleTime:int257 BZZNPriceInUSD:int257 referralPercentage:int257 minimumBuyPrice:coins maximumBuyPrice:coins = AllData
 ;;
 
-(int, int) $AllData$_to_external(((int, int)) v) inline {
-    var (v'minimum, v'maximum) = v; 
-    return (v'minimum, v'maximum);
+(int, slice, int, int, int, int, int, int) $AllData$_to_external(((int, slice, int, int, int, int, int, int)) v) inline {
+    var (v'USDTAmount, v'balance, v'presaleStatus, v'presaleTime, v'BZZNPriceInUSD, v'referralPercentage, v'minimumBuyPrice, v'maximumBuyPrice) = v; 
+    return (v'USDTAmount, v'balance, v'presaleStatus, v'presaleTime, v'BZZNPriceInUSD, v'referralPercentage, v'minimumBuyPrice, v'maximumBuyPrice);
 }
 
-((int, int)) $AllData$_constructor_minimum_maximum(int minimum, int maximum) inline {
-    return (minimum, maximum);
+((int, slice, int, int, int, int, int, int)) $AllData$_constructor_USDTAmount_balance_presaleStatus_presaleTime_BZZNPriceInUSD_referralPercentage_minimumBuyPrice_maximumBuyPrice(int USDTAmount, slice balance, int presaleStatus, int presaleTime, int BZZNPriceInUSD, int referralPercentage, int minimumBuyPrice, int maximumBuyPrice) inline {
+    return (USDTAmount, balance, presaleStatus, presaleTime, BZZNPriceInUSD, referralPercentage, minimumBuyPrice, maximumBuyPrice);
 }
 
 ;;

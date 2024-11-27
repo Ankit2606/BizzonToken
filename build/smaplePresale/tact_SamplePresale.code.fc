@@ -85,10 +85,10 @@
     }
 }
 
-((int, int, int, int, int, int, int, slice, cell, cell, cell, cell, cell, cell, cell, cell, cell), (int, int)) $SamplePresale$_fun_getAllData((int, int, int, int, int, int, int, slice, cell, cell, cell, cell, cell, cell, cell, cell, cell) $self) impure inline_ref {
+((int, int, int, int, int, int, int, slice, cell, cell, cell, cell, cell, cell, cell, cell, cell), (int, slice, int, int, int, int, int, int)) $SamplePresale$_fun_getAllData((int, int, int, int, int, int, int, slice, cell, cell, cell, cell, cell, cell, cell, cell, cell) $self) impure inline_ref {
     var (($self'totalUsdtAmount, $self'seedRoundTime, $self'presaleStatus, $self'BZZNPriceInUSDT, $self'referralPercentage, $self'minimumUSDTAmount, $self'maximumUSDTAmount, $self'owner, $self'TokenData, $self'SeedData, $self'PrivateSaleData, $self'MarketingData, $self'TeamData, $self'AdvisorData, $self'TreasuryData, $self'checkReferrers, $self'refferInfo)) = $self;
-    var ($data'minimum, $data'maximum) = $AllData$_constructor_minimum_maximum($self'minimumUSDTAmount, $self'maximumUSDTAmount);
-    return (($self'totalUsdtAmount, $self'seedRoundTime, $self'presaleStatus, $self'BZZNPriceInUSDT, $self'referralPercentage, $self'minimumUSDTAmount, $self'maximumUSDTAmount, $self'owner, $self'TokenData, $self'SeedData, $self'PrivateSaleData, $self'MarketingData, $self'TeamData, $self'AdvisorData, $self'TreasuryData, $self'checkReferrers, $self'refferInfo), ($data'minimum, $data'maximum));
+    var ($data'USDTAmount, $data'balance, $data'presaleStatus, $data'presaleTime, $data'BZZNPriceInUSD, $data'referralPercentage, $data'minimumBuyPrice, $data'maximumBuyPrice) = $AllData$_constructor_USDTAmount_balance_presaleStatus_presaleTime_BZZNPriceInUSD_referralPercentage_minimumBuyPrice_maximumBuyPrice($self'totalUsdtAmount, $Int$_fun_toCoinsString(__tact_my_balance()), $self'presaleStatus, $self'seedRoundTime, $self'BZZNPriceInUSDT, $self'referralPercentage, $self'minimumUSDTAmount, $self'maximumUSDTAmount);
+    return (($self'totalUsdtAmount, $self'seedRoundTime, $self'presaleStatus, $self'BZZNPriceInUSDT, $self'referralPercentage, $self'minimumUSDTAmount, $self'maximumUSDTAmount, $self'owner, $self'TokenData, $self'SeedData, $self'PrivateSaleData, $self'MarketingData, $self'TeamData, $self'AdvisorData, $self'TreasuryData, $self'checkReferrers, $self'refferInfo), ($data'USDTAmount, $data'balance, $data'presaleStatus, $data'presaleTime, $data'BZZNPriceInUSD, $data'referralPercentage, $data'minimumBuyPrice, $data'maximumBuyPrice));
 }
 
 ((int, int, int, int, int, int, int, slice, cell, cell, cell, cell, cell, cell, cell, cell, cell), cell) $SamplePresale$_fun_getAllPrivateTokenData((int, int, int, int, int, int, int, slice, cell, cell, cell, cell, cell, cell, cell, cell, cell) $self, slice $addr) impure inline_ref {
@@ -883,7 +883,7 @@ _ supported_interfaces() method_id {
 }
 
 _ get_abi_ipfs() method_id {
-    return "ipfs://QmbbzcX6YjZNjwQ98NzyT43sFZtzwHfGCzdjrtsMYKAm7h";
+    return "ipfs://Qmdq5hBMLUgsnKHFzMsb76AKCLSiwAQvCiokZKV3bKGJ3k";
 }
 
 _ lazy_deployment_completed() method_id {

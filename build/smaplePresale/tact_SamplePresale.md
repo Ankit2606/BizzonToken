@@ -1,6 +1,6 @@
 # TACT Compilation Report
 Contract: SamplePresale
-BOC Size: 12803 bytes
+BOC Size: 12822 bytes
 
 # Types
 Total Types: 48
@@ -114,8 +114,8 @@ TLB: `_ data:dict<int, ^TokenVestingInfo{beneficiary:address,totalToken:coins,re
 Signature: `TreasuryArrayData{data:dict<int, ^TokenVestingInfo{beneficiary:address,totalToken:coins,remainingToken:coins,startTime:int257,vestingDuration:int257,lastClaimTime:int257,releaseInterval:int257,initialCliff:int257,phaseName:^string,active:bool,USDTToken:coins}>,size:int257}`
 
 ## AllData
-TLB: `_ minimum:coins maximum:int257 = AllData`
-Signature: `AllData{minimum:coins,maximum:int257}`
+TLB: `_ USDTAmount:coins balance:^string presaleStatus:bool presaleTime:int257 BZZNPriceInUSD:int257 referralPercentage:int257 minimumBuyPrice:coins maximumBuyPrice:coins = AllData`
+Signature: `AllData{USDTAmount:coins,balance:^string,presaleStatus:bool,presaleTime:int257,BZZNPriceInUSD:int257,referralPercentage:int257,minimumBuyPrice:coins,maximumBuyPrice:coins}`
 
 ## BuyTokens
 TLB: `buy_tokens#9ab69a78 referrer:address tonAmount:coins usdtAmount:coins = BuyTokens`

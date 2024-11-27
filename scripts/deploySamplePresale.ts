@@ -20,7 +20,7 @@ export async function run(provider: NetworkProvider) {
 
     // const samplePresale = provider.open(await SamplePresale.fromInit());
     const samplePresale = provider.open(await SamplePresale.fromAddress(
-      Address.parse("EQDXyyRhVTP9Wc_S83Z2UkjNqjuCCUqk9yaksM_3RcVzo-_w")
+      Address.parse("EQDOqdjVi1NXurWXoE8BKaJQZ5nELwbFMu_vw-eIKBZUQodC")
     ));
 
     // await samplePresale.send(
@@ -76,10 +76,10 @@ export async function run(provider: NetworkProvider) {
 
 
     // for (let i = 0n; i < 10n; i++) {
-     const walletData = await samplePresale.getGetAllSeedData();
-     console.log(walletData.keys());
-     const data = walletData.get(Address.parse("0QBony_meSMNl6w6cMQpEvW9dQbvy-AwJFKDJeA5CydJ4p4q"));
-     console.log(data?.data.values());
+     const walletData = await samplePresale.getGetAllData();
+     console.log(walletData);
+    //  const data = walletData.get(Address.parse("0QBony_meSMNl6w6cMQpEvW9dQbvy-AwJFKDJeA5CydJ4p4q"));
+    //  console.log(data?.data.values());
     // }
     // const walletDatas1 = await samplePresale.getUsdtAmount();
     //  console.log(walletDatas1);
