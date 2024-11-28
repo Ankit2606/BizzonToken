@@ -129,12 +129,10 @@ PROGRAM{
   DECLPROC $RefferData$_constructor_refferalAddress_amount_date_claim
   DECLPROC $RefferDetails$_constructor_reffer_size
   DECLPROC $SamplePresale$_fun_AddReferAddress
-  DECLPROC $SamplePresale$_fun_UsdtAmount
   DECLPROC $SamplePresale$_fun_getData
-  DECLPROC $SamplePresale$_fun_balance
   DECLPROC $SamplePresale$_fun_getAllSeedTokenData
   DECLPROC $SamplePresale$_fun_getAllSeedData
-  DECLPROC $AllData$_constructor_USDTAmount_balance_presaleStatus_presaleTime_BZZNPriceInUSD_referralPercentage_minimumBuyPrice_maximumBuyPrice
+  DECLPROC $AllData$_constructor_USDTAmount_balance_presaleStatus_presaleTime_BZZNPriceInUSD_referralPercentage_minimumBuyPrice_maximumBuyPrice_tokenData
   DECLPROC $SamplePresale$_fun_getAllData
   DECLPROC $SamplePresale$_fun_getAllPrivateTokenData
   DECLPROC $SamplePresale$_fun_getAllMarketingTokenData
@@ -144,12 +142,6 @@ PROGRAM{
   DECLPROC $SamplePresale$_fun_getTokonomicsData
   DECLPROC $SamplePresale$_fun_getAllReferralDetails
   DECLPROC $SamplePresale$_fun_getReferrer
-  DECLPROC $SamplePresale$_fun_getPresaleStatus
-  DECLPROC $SamplePresale$_fun_getPresaleTime
-  DECLPROC $SamplePresale$_fun_BZZNPriceInUSD
-  DECLPROC $SamplePresale$_fun_getReferralPercentage
-  DECLPROC $SamplePresale$_fun_getMinimumUsdtAmount
-  DECLPROC $SamplePresale$_fun_getMaximumUsdtAmount
   DECLPROC $SendParameters$_constructor_bounce_to_value_mode_body_code_data
   DECLPROC $SamplePresale$_fun_forward
   DECLPROC $SamplePresale$_fun_notify
@@ -192,9 +184,7 @@ PROGRAM{
   DECLPROC $SamplePresale$_internal_binary_MinimumUsdtAmountMessage
   DECLPROC $SamplePresale$_internal_binary_MaximumUsdtAmountMessage
   DECLPROC $SamplePresale$_internal_binary_Deploy
-  121589 DECLMETHOD %UsdtAmount
   103147 DECLMETHOD %getData
-  104128 DECLMETHOD %balance
   129557 DECLMETHOD %getAllSeedTokenData
   127207 DECLMETHOD %getAllSeedData
   95432 DECLMETHOD %getAllData
@@ -206,12 +196,6 @@ PROGRAM{
   88851 DECLMETHOD %getTokonomicsData
   125421 DECLMETHOD %getAllReferralDetails
   109619 DECLMETHOD %getReferrer
-  104373 DECLMETHOD %getPresaleStatus
-  65881 DECLMETHOD %getPresaleTime
-  97398 DECLMETHOD %BZZNPriceInUSD
-  103881 DECLMETHOD %getReferralPercentage
-  118345 DECLMETHOD %getMinimumUsdtAmount
-  83757 DECLMETHOD %getMaximumUsdtAmount
   83229 DECLMETHOD %owner
   113617 DECLMETHOD supported_interfaces
   121275 DECLMETHOD get_abi_ipfs
@@ -1861,9 +1845,6 @@ PROGRAM{
       __tact_dict_set_slice_cell INLINECALLDICT
     }>
   }>
-  $SamplePresale$_fun_UsdtAmount PROCREF:<{
-    16 s() PUSH
-  }>
   $SamplePresale$_fun_getData PROCREF:<{
     267 PUSHINT
     s10 s0 s2 PUXC2
@@ -1875,10 +1856,6 @@ PROGRAM{
     ROT
     __tact_dict_get_int_cell INLINECALLDICT
     $UserData$_load_opt INLINECALLDICT
-  }>
-  $SamplePresale$_fun_balance PROCREF:<{
-    __tact_my_balance INLINECALLDICT
-    $Int$_fun_toCoinsString INLINECALLDICT
   }>
   $SamplePresale$_fun_getAllSeedTokenData PROCREF:<{
     s8 PUSH
@@ -1909,7 +1886,7 @@ PROGRAM{
     }>
     PUSHNULL
   }>
-  $AllData$_constructor_USDTAmount_balance_presaleStatus_presaleTime_BZZNPriceInUSD_referralPercentage_minimumBuyPrice_maximumBuyPrice PROCINLINE:<{
+  $AllData$_constructor_USDTAmount_balance_presaleStatus_presaleTime_BZZNPriceInUSD_referralPercentage_minimumBuyPrice_maximumBuyPrice_tokenData PROCINLINE:<{
   }>
   $SamplePresale$_fun_getAllData PROCREF:<{
     __tact_my_balance INLINECALLDICT
@@ -1922,7 +1899,8 @@ PROGRAM{
     17 s() PUSH
     17 s() PUSH
     17 s() PUSH
-    $AllData$_constructor_USDTAmount_balance_presaleStatus_presaleTime_BZZNPriceInUSD_referralPercentage_minimumBuyPrice_maximumBuyPrice INLINECALLDICT
+    16 s() PUSH
+    $AllData$_constructor_USDTAmount_balance_presaleStatus_presaleTime_BZZNPriceInUSD_referralPercentage_minimumBuyPrice_maximumBuyPrice_tokenData INLINECALLDICT
   }>
   $SamplePresale$_fun_getAllPrivateTokenData PROCREF:<{
     s7 PUSH
@@ -2065,24 +2043,6 @@ PROGRAM{
     0 PUSHINT
     DUP
     __tact_create_address INLINECALLDICT
-  }>
-  $SamplePresale$_fun_getPresaleStatus PROCREF:<{
-    s14 PUSH
-  }>
-  $SamplePresale$_fun_getPresaleTime PROCREF:<{
-    s15 PUSH
-  }>
-  $SamplePresale$_fun_BZZNPriceInUSD PROCREF:<{
-    s13 PUSH
-  }>
-  $SamplePresale$_fun_getReferralPercentage PROCREF:<{
-    s12 PUSH
-  }>
-  $SamplePresale$_fun_getMinimumUsdtAmount PROCREF:<{
-    s11 PUSH
-  }>
-  $SamplePresale$_fun_getMaximumUsdtAmount PROCREF:<{
-    s10 PUSH
   }>
   $SendParameters$_constructor_bounce_to_value_mode_body_code_data PROCINLINE:<{
   }>
@@ -4205,13 +4165,6 @@ PROGRAM{
     $DeployOk$_store_cell INLINECALLDICT
     $SamplePresale$_fun_notify INLINECALLDICT
   }>
-  %UsdtAmount PROC:<{
-    $SamplePresale$_contract_load INLINECALLDICT
-    $SamplePresale$_fun_UsdtAmount INLINECALLDICT
-    16 s() POP
-    15 BLKDROP
-    NIP
-  }>
   %getData PROC:<{
     SWAP
     __tact_verify_address INLINECALLDICT
@@ -4225,13 +4178,6 @@ PROGRAM{
     15 BLKDROP
     NIP
     $UserData$_to_opt_external INLINECALLDICT
-  }>
-  %balance PROC:<{
-    $SamplePresale$_contract_load INLINECALLDICT
-    $SamplePresale$_fun_balance INLINECALLDICT
-    16 s() POP
-    15 BLKDROP
-    NIP
   }>
   %getAllSeedTokenData PROC:<{
     __tact_verify_address INLINECALLDICT
@@ -4254,8 +4200,8 @@ PROGRAM{
   %getAllData PROC:<{
     $SamplePresale$_contract_load INLINECALLDICT
     $SamplePresale$_fun_getAllData INLINECALLDICT
-    8 8 BLKDROP2
-    9 8 BLKDROP2
+    9 9 BLKDROP2
+    8 9 BLKDROP2
     $AllData$_to_external INLINECALLDICT
   }>
   %getAllPrivateTokenData PROC:<{
@@ -4342,48 +4288,6 @@ PROGRAM{
     15 BLKDROP
     NIP
   }>
-  %getPresaleStatus PROC:<{
-    $SamplePresale$_contract_load INLINECALLDICT
-    $SamplePresale$_fun_getPresaleStatus INLINECALLDICT
-    16 s() POP
-    15 BLKDROP
-    NIP
-  }>
-  %getPresaleTime PROC:<{
-    $SamplePresale$_contract_load INLINECALLDICT
-    $SamplePresale$_fun_getPresaleTime INLINECALLDICT
-    16 s() POP
-    15 BLKDROP
-    NIP
-  }>
-  %BZZNPriceInUSD PROC:<{
-    $SamplePresale$_contract_load INLINECALLDICT
-    $SamplePresale$_fun_BZZNPriceInUSD INLINECALLDICT
-    16 s() POP
-    15 BLKDROP
-    NIP
-  }>
-  %getReferralPercentage PROC:<{
-    $SamplePresale$_contract_load INLINECALLDICT
-    $SamplePresale$_fun_getReferralPercentage INLINECALLDICT
-    16 s() POP
-    15 BLKDROP
-    NIP
-  }>
-  %getMinimumUsdtAmount PROC:<{
-    $SamplePresale$_contract_load INLINECALLDICT
-    $SamplePresale$_fun_getMinimumUsdtAmount INLINECALLDICT
-    16 s() POP
-    15 BLKDROP
-    NIP
-  }>
-  %getMaximumUsdtAmount PROC:<{
-    $SamplePresale$_contract_load INLINECALLDICT
-    $SamplePresale$_fun_getMaximumUsdtAmount INLINECALLDICT
-    16 s() POP
-    15 BLKDROP
-    NIP
-  }>
   %owner PROC:<{
     $SamplePresale$_contract_load INLINECALLDICT
     $SamplePresale$_fun_owner INLINECALLDICT
@@ -4399,7 +4303,7 @@ PROGRAM{
     86142586315491086060343270784266291122 PUSHINT
   }>
   get_abi_ipfs PROC:<{
-    x{697066733a2f2f516d64713568424d4c5567736e4b48467a4d73623736414b434c53697741517643696f6b5a4b5633624b474a336b} PUSHSLICE
+    x{697066733a2f2f516d506335614c4c3672515975783572457a58766234786f38486333766d6d6955414b75366d3378644a447a6b6a} PUSHSLICE
   }>
   lazy_deployment_completed PROC:<{
     c4 PUSH

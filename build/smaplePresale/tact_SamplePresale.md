@@ -1,6 +1,6 @@
 # TACT Compilation Report
 Contract: SamplePresale
-BOC Size: 12822 bytes
+BOC Size: 12630 bytes
 
 # Types
 Total Types: 48
@@ -114,8 +114,8 @@ TLB: `_ data:dict<int, ^TokenVestingInfo{beneficiary:address,totalToken:coins,re
 Signature: `TreasuryArrayData{data:dict<int, ^TokenVestingInfo{beneficiary:address,totalToken:coins,remainingToken:coins,startTime:int257,vestingDuration:int257,lastClaimTime:int257,releaseInterval:int257,initialCliff:int257,phaseName:^string,active:bool,USDTToken:coins}>,size:int257}`
 
 ## AllData
-TLB: `_ USDTAmount:coins balance:^string presaleStatus:bool presaleTime:int257 BZZNPriceInUSD:int257 referralPercentage:int257 minimumBuyPrice:coins maximumBuyPrice:coins = AllData`
-Signature: `AllData{USDTAmount:coins,balance:^string,presaleStatus:bool,presaleTime:int257,BZZNPriceInUSD:int257,referralPercentage:int257,minimumBuyPrice:coins,maximumBuyPrice:coins}`
+TLB: `_ USDTAmount:coins balance:^string presaleStatus:bool presaleTime:int257 BZZNPriceInUSD:int257 referralPercentage:int257 minimumBuyPrice:coins maximumBuyPrice:coins tokenData:dict<int, ^TokenDistrubuteInfo{name:^string,tokenDistrubutedPercentage:int257,totalPhaseToken:coins,percentage:int257,totalSuppliedToken:coins}> = AllData`
+Signature: `AllData{USDTAmount:coins,balance:^string,presaleStatus:bool,presaleTime:int257,BZZNPriceInUSD:int257,referralPercentage:int257,minimumBuyPrice:coins,maximumBuyPrice:coins,tokenData:dict<int, ^TokenDistrubuteInfo{name:^string,tokenDistrubutedPercentage:int257,totalPhaseToken:coins,percentage:int257,totalSuppliedToken:coins}>}`
 
 ## BuyTokens
 TLB: `buy_tokens#9ab69a78 referrer:address tonAmount:coins usdtAmount:coins = BuyTokens`
@@ -198,15 +198,11 @@ TLB: `minimum_usdt_amount_message#5c420d4c amount:int257 = MinimumUsdtAmountMess
 Signature: `MinimumUsdtAmountMessage{amount:int257}`
 
 # Get Methods
-Total Get Methods: 21
-
-## UsdtAmount
+Total Get Methods: 13
 
 ## getData
 Argument: addr
 Argument: num
-
-## balance
 
 ## getAllSeedTokenData
 Argument: addr
@@ -237,18 +233,6 @@ Argument: referrerAddress
 
 ## getReferrer
 Argument: userAddress
-
-## getPresaleStatus
-
-## getPresaleTime
-
-## BZZNPriceInUSD
-
-## getReferralPercentage
-
-## getMinimumUsdtAmount
-
-## getMaximumUsdtAmount
 
 ## owner
 

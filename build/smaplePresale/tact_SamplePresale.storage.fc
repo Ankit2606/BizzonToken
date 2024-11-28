@@ -697,16 +697,16 @@ tuple $TreasuryArrayData$_load_opt(cell cl) inline {
 
 ;;
 ;; Type: AllData
-;; TLB: _ USDTAmount:coins balance:^string presaleStatus:bool presaleTime:int257 BZZNPriceInUSD:int257 referralPercentage:int257 minimumBuyPrice:coins maximumBuyPrice:coins = AllData
+;; TLB: _ USDTAmount:coins balance:^string presaleStatus:bool presaleTime:int257 BZZNPriceInUSD:int257 referralPercentage:int257 minimumBuyPrice:coins maximumBuyPrice:coins tokenData:dict<int, ^TokenDistrubuteInfo{name:^string,tokenDistrubutedPercentage:int257,totalPhaseToken:coins,percentage:int257,totalSuppliedToken:coins}> = AllData
 ;;
 
-(int, slice, int, int, int, int, int, int) $AllData$_to_external(((int, slice, int, int, int, int, int, int)) v) inline {
-    var (v'USDTAmount, v'balance, v'presaleStatus, v'presaleTime, v'BZZNPriceInUSD, v'referralPercentage, v'minimumBuyPrice, v'maximumBuyPrice) = v; 
-    return (v'USDTAmount, v'balance, v'presaleStatus, v'presaleTime, v'BZZNPriceInUSD, v'referralPercentage, v'minimumBuyPrice, v'maximumBuyPrice);
+(int, slice, int, int, int, int, int, int, cell) $AllData$_to_external(((int, slice, int, int, int, int, int, int, cell)) v) inline {
+    var (v'USDTAmount, v'balance, v'presaleStatus, v'presaleTime, v'BZZNPriceInUSD, v'referralPercentage, v'minimumBuyPrice, v'maximumBuyPrice, v'tokenData) = v; 
+    return (v'USDTAmount, v'balance, v'presaleStatus, v'presaleTime, v'BZZNPriceInUSD, v'referralPercentage, v'minimumBuyPrice, v'maximumBuyPrice, v'tokenData);
 }
 
-((int, slice, int, int, int, int, int, int)) $AllData$_constructor_USDTAmount_balance_presaleStatus_presaleTime_BZZNPriceInUSD_referralPercentage_minimumBuyPrice_maximumBuyPrice(int USDTAmount, slice balance, int presaleStatus, int presaleTime, int BZZNPriceInUSD, int referralPercentage, int minimumBuyPrice, int maximumBuyPrice) inline {
-    return (USDTAmount, balance, presaleStatus, presaleTime, BZZNPriceInUSD, referralPercentage, minimumBuyPrice, maximumBuyPrice);
+((int, slice, int, int, int, int, int, int, cell)) $AllData$_constructor_USDTAmount_balance_presaleStatus_presaleTime_BZZNPriceInUSD_referralPercentage_minimumBuyPrice_maximumBuyPrice_tokenData(int USDTAmount, slice balance, int presaleStatus, int presaleTime, int BZZNPriceInUSD, int referralPercentage, int minimumBuyPrice, int maximumBuyPrice, cell tokenData) inline {
+    return (USDTAmount, balance, presaleStatus, presaleTime, BZZNPriceInUSD, referralPercentage, minimumBuyPrice, maximumBuyPrice, tokenData);
 }
 
 ;;

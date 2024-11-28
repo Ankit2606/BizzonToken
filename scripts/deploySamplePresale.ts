@@ -20,7 +20,7 @@ export async function run(provider: NetworkProvider) {
 
     // const samplePresale = provider.open(await SamplePresale.fromInit());
     const samplePresale = provider.open(await SamplePresale.fromAddress(
-      Address.parse("EQDOqdjVi1NXurWXoE8BKaJQZ5nELwbFMu_vw-eIKBZUQodC")
+      Address.parse("EQB82SmYm3jIFLyh3Rz0GeJ2HrNUr3cSbgE9fyQ1xjQ4xQkh")
     ));
 
     // await samplePresale.send(
@@ -109,7 +109,6 @@ export async function run(provider: NetworkProvider) {
     // const sampleJetton = provider.open(SampleJetton.fromAddress(Address.parse("kQDPaqVHTSDzv1GMvIUS9agdoDy_TVZ2qraVDF6fKR7y_JTq")));
     // const contwalladd = await sampleJetton.getGetWalletAddress(Address.parse("EQBEa9K1NRsl2kY4TsoGNkvpAyUNQ1uXjvpi4b0QQWvq831I"));
     // console.log(contwalladd,"hjbhjubjhbgujbujhbhjuhbjuhbikh");
-    
     
     // await samplePresale.send(
     //     provider.sender(),
