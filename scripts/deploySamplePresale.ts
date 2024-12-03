@@ -20,7 +20,7 @@ export async function run(provider: NetworkProvider) {
 
     // const samplePresale = provider.open(await SamplePresale.fromInit());
     const samplePresale = provider.open(await SamplePresale.fromAddress(
-      Address.parse("EQB82SmYm3jIFLyh3Rz0GeJ2HrNUr3cSbgE9fyQ1xjQ4xQkh")
+      Address.parse("EQDyaPePLcPzXbbWaGW0sETM0aCMyGrkgkrOX0t5zHxGgUeC")
     ));
 
     // await samplePresale.send(
@@ -63,7 +63,7 @@ export async function run(provider: NetworkProvider) {
     //     {
     //         value: toNano('0.5'),
     //     },
-    //      'Buy Tokens'
+    //      'start Presale'
     // );
 
     // const tx =  await samplePresale.send(
@@ -76,13 +76,15 @@ export async function run(provider: NetworkProvider) {
 
 
     // for (let i = 0n; i < 10n; i++) {
-     const walletData = await samplePresale.getGetAllData();
-     console.log(walletData);
+    //  const walletData = await samplePresale.getGetAllData();
+    //  console.log(walletData);
+     const walletData = await samplePresale.getGetDynamicRoundData();
+     console.log(walletData.values());
     //  const data = walletData.get(Address.parse("0QBony_meSMNl6w6cMQpEvW9dQbvy-AwJFKDJeA5CydJ4p4q"));
     //  console.log(data?.data.values());
     // }
-    // const walletDatas1 = await samplePresale.getUsdtAmount();
-    //  console.log(walletDatas1);
+    // const walletDatas1 = await samplePresale.getGetAllSeedTokenData(Address.parse("0QDGrwmNIPG8zuYDRl-GGPc1_dVwRepq-JQqMMVVMkaWqoMB") as Address);
+    //  console.log(walletDatas1.values());
 
     //  const walletDatas = await samplePresale.getGetData( Address.parse("0QBony_meSMNl6w6cMQpEvW9dQbvy-AwJFKDJeA5CydJ4p4q") as Address,2n);
     //  console.log(walletDatas);
@@ -97,11 +99,7 @@ export async function run(provider: NetworkProvider) {
     //     {
     //         value: toNano('0.05'),
     //     },
-    //     {
-    //         $$type: 'PrivateSaleMessage',
-    //         amount: 10000000000000n,
-    //         UserAddress: Address.parse("0QCL20gS8GdNJy5hLuJjxwCFTL9kveyW3yiC4wqdosCT2Q0A") as Address
-    //     }
+    //     "End Dynamic Round"
     // );
 
     // const callerToken = provider.open(Caller22.fromAddress(Address.parse("EQAuGAFHQgr9oyXwOFeCTxxW_Bgy5PJYvfnoad4aK-Yt428x")));

@@ -114,11 +114,11 @@ cell $TokenTransfer$_store_cell((int, int, slice, slice, cell, int, slice) v) in
 }
 
 ;;
-;; Type: TokenDistrubuteInfo
-;; TLB: _ name:^string tokenDistrubutedPercentage:int257 totalPhaseToken:coins percentage:int257 totalSuppliedToken:coins = TokenDistrubuteInfo
+;; Type: TokenDistributeInfo
+;; TLB: _ name:^string tokenDistrubutedPercentage:int257 totalPhaseToken:coins percentage:int257 totalSuppliedToken:coins = TokenDistributeInfo
 ;;
 
-builder $TokenDistrubuteInfo$_store(builder build_0, (slice, int, int, int, int) v) inline {
+builder $TokenDistributeInfo$_store(builder build_0, (slice, int, int, int, int) v) inline {
     var (v'name, v'tokenDistrubutedPercentage, v'totalPhaseToken, v'percentage, v'totalSuppliedToken) = v;
     build_0 = build_0.store_ref(begin_cell().store_slice(v'name).end_cell());
     build_0 = build_0.store_int(v'tokenDistrubutedPercentage, 257);
@@ -128,11 +128,11 @@ builder $TokenDistrubuteInfo$_store(builder build_0, (slice, int, int, int, int)
     return build_0;
 }
 
-cell $TokenDistrubuteInfo$_store_cell((slice, int, int, int, int) v) inline {
-    return $TokenDistrubuteInfo$_store(begin_cell(), v).end_cell();
+cell $TokenDistributeInfo$_store_cell((slice, int, int, int, int) v) inline {
+    return $TokenDistributeInfo$_store(begin_cell(), v).end_cell();
 }
 
-(slice, ((slice, int, int, int, int))) $TokenDistrubuteInfo$_load(slice sc_0) inline {
+(slice, ((slice, int, int, int, int))) $TokenDistributeInfo$_load(slice sc_0) inline {
     var v'name = sc_0~load_ref().begin_parse();
     var v'tokenDistrubutedPercentage = sc_0~load_int(257);
     var v'totalPhaseToken = sc_0~load_coins();
@@ -141,26 +141,26 @@ cell $TokenDistrubuteInfo$_store_cell((slice, int, int, int, int) v) inline {
     return (sc_0, (v'name, v'tokenDistrubutedPercentage, v'totalPhaseToken, v'percentage, v'totalSuppliedToken));
 }
 
-tuple $TokenDistrubuteInfo$_as_optional((slice, int, int, int, int) v) inline {
+tuple $TokenDistributeInfo$_as_optional((slice, int, int, int, int) v) inline {
     var (v'name, v'tokenDistrubutedPercentage, v'totalPhaseToken, v'percentage, v'totalSuppliedToken) = v;
     return __tact_tuple_create_5(v'name, v'tokenDistrubutedPercentage, v'totalPhaseToken, v'percentage, v'totalSuppliedToken);
 }
 
-tuple $TokenDistrubuteInfo$_load_opt(cell cl) inline {
+tuple $TokenDistributeInfo$_load_opt(cell cl) inline {
     if (null?(cl)) {
         return null();
     }
     var sc = cl.begin_parse();
-    return $TokenDistrubuteInfo$_as_optional(sc~$TokenDistrubuteInfo$_load());
+    return $TokenDistributeInfo$_as_optional(sc~$TokenDistributeInfo$_load());
 }
 
-((slice, int, int, int, int)) $TokenDistrubuteInfo$_not_null(tuple v) inline {
+((slice, int, int, int, int)) $TokenDistributeInfo$_not_null(tuple v) inline {
     throw_if(128, null?(v));
     var (slice vvv'name, int vvv'tokenDistrubutedPercentage, int vvv'totalPhaseToken, int vvv'percentage, int vvv'totalSuppliedToken) = __tact_tuple_destroy_5(v);
     return (vvv'name, vvv'tokenDistrubutedPercentage, vvv'totalPhaseToken, vvv'percentage, vvv'totalSuppliedToken);
 }
 
-((slice, int, int, int, int)) $TokenDistrubuteInfo$_constructor_name_tokenDistrubutedPercentage_totalPhaseToken_percentage_totalSuppliedToken(slice name, int tokenDistrubutedPercentage, int totalPhaseToken, int percentage, int totalSuppliedToken) inline {
+((slice, int, int, int, int)) $TokenDistributeInfo$_constructor_name_tokenDistrubutedPercentage_totalPhaseToken_percentage_totalSuppliedToken(slice name, int tokenDistrubutedPercentage, int totalPhaseToken, int percentage, int totalSuppliedToken) inline {
     return (name, tokenDistrubutedPercentage, totalPhaseToken, percentage, totalSuppliedToken);
 }
 
@@ -697,30 +697,89 @@ tuple $TreasuryArrayData$_load_opt(cell cl) inline {
 
 ;;
 ;; Type: AllData
-;; TLB: _ USDTAmount:coins balance:^string presaleStatus:bool presaleTime:int257 BZZNPriceInUSD:int257 referralPercentage:int257 minimumBuyPrice:coins maximumBuyPrice:coins tokenData:dict<int, ^TokenDistrubuteInfo{name:^string,tokenDistrubutedPercentage:int257,totalPhaseToken:coins,percentage:int257,totalSuppliedToken:coins}> = AllData
+;; TLB: _ USDTAmount:coins balance:^string presaleStatus:bool presaleTime:int257 BZZNPriceInUSD:int257 referralPercentage:int257 minimumBuyPrice:coins maximumBuyPrice:coins tokenData:dict<int, ^TokenDistributeInfo{name:^string,tokenDistrubutedPercentage:int257,totalPhaseToken:coins,percentage:int257,totalSuppliedToken:coins}> activeRoundIndex:int257 = AllData
 ;;
 
-(int, slice, int, int, int, int, int, int, cell) $AllData$_to_external(((int, slice, int, int, int, int, int, int, cell)) v) inline {
-    var (v'USDTAmount, v'balance, v'presaleStatus, v'presaleTime, v'BZZNPriceInUSD, v'referralPercentage, v'minimumBuyPrice, v'maximumBuyPrice, v'tokenData) = v; 
-    return (v'USDTAmount, v'balance, v'presaleStatus, v'presaleTime, v'BZZNPriceInUSD, v'referralPercentage, v'minimumBuyPrice, v'maximumBuyPrice, v'tokenData);
+(int, slice, int, int, int, int, int, int, cell, int) $AllData$_to_external(((int, slice, int, int, int, int, int, int, cell, int)) v) inline {
+    var (v'USDTAmount, v'balance, v'presaleStatus, v'presaleTime, v'BZZNPriceInUSD, v'referralPercentage, v'minimumBuyPrice, v'maximumBuyPrice, v'tokenData, v'activeRoundIndex) = v; 
+    return (v'USDTAmount, v'balance, v'presaleStatus, v'presaleTime, v'BZZNPriceInUSD, v'referralPercentage, v'minimumBuyPrice, v'maximumBuyPrice, v'tokenData, v'activeRoundIndex);
 }
 
-((int, slice, int, int, int, int, int, int, cell)) $AllData$_constructor_USDTAmount_balance_presaleStatus_presaleTime_BZZNPriceInUSD_referralPercentage_minimumBuyPrice_maximumBuyPrice_tokenData(int USDTAmount, slice balance, int presaleStatus, int presaleTime, int BZZNPriceInUSD, int referralPercentage, int minimumBuyPrice, int maximumBuyPrice, cell tokenData) inline {
-    return (USDTAmount, balance, presaleStatus, presaleTime, BZZNPriceInUSD, referralPercentage, minimumBuyPrice, maximumBuyPrice, tokenData);
+((int, slice, int, int, int, int, int, int, cell, int)) $AllData$_constructor_USDTAmount_balance_presaleStatus_presaleTime_BZZNPriceInUSD_referralPercentage_minimumBuyPrice_maximumBuyPrice_tokenData_activeRoundIndex(int USDTAmount, slice balance, int presaleStatus, int presaleTime, int BZZNPriceInUSD, int referralPercentage, int minimumBuyPrice, int maximumBuyPrice, cell tokenData, int activeRoundIndex) inline {
+    return (USDTAmount, balance, presaleStatus, presaleTime, BZZNPriceInUSD, referralPercentage, minimumBuyPrice, maximumBuyPrice, tokenData, activeRoundIndex);
+}
+
+;;
+;; Type: DynamicRoundInfo
+;; TLB: _ roundIndex:int257 startTime:int257 endTime:int257 price:int257 totalToken:coins remainingToken:coins active:bool = DynamicRoundInfo
+;;
+
+builder $DynamicRoundInfo$_store(builder build_0, (int, int, int, int, int, int, int) v) inline_ref {
+    var (v'roundIndex, v'startTime, v'endTime, v'price, v'totalToken, v'remainingToken, v'active) = v;
+    build_0 = build_0.store_int(v'roundIndex, 257);
+    build_0 = build_0.store_int(v'startTime, 257);
+    build_0 = build_0.store_int(v'endTime, 257);
+    var build_1 = begin_cell();
+    build_1 = build_1.store_int(v'price, 257);
+    build_1 = build_1.store_coins(v'totalToken);
+    build_1 = build_1.store_coins(v'remainingToken);
+    build_1 = build_1.store_int(v'active, 1);
+    build_0 = store_ref(build_0, build_1.end_cell());
+    return build_0;
+}
+
+cell $DynamicRoundInfo$_store_cell((int, int, int, int, int, int, int) v) inline {
+    return $DynamicRoundInfo$_store(begin_cell(), v).end_cell();
+}
+
+(slice, ((int, int, int, int, int, int, int))) $DynamicRoundInfo$_load(slice sc_0) inline_ref {
+    var v'roundIndex = sc_0~load_int(257);
+    var v'startTime = sc_0~load_int(257);
+    var v'endTime = sc_0~load_int(257);
+    slice sc_1 = sc_0~load_ref().begin_parse();
+    var v'price = sc_1~load_int(257);
+    var v'totalToken = sc_1~load_coins();
+    var v'remainingToken = sc_1~load_coins();
+    var v'active = sc_1~load_int(1);
+    return (sc_0, (v'roundIndex, v'startTime, v'endTime, v'price, v'totalToken, v'remainingToken, v'active));
+}
+
+tuple $DynamicRoundInfo$_as_optional((int, int, int, int, int, int, int) v) inline {
+    var (v'roundIndex, v'startTime, v'endTime, v'price, v'totalToken, v'remainingToken, v'active) = v;
+    return __tact_tuple_create_7(v'roundIndex, v'startTime, v'endTime, v'price, v'totalToken, v'remainingToken, v'active);
+}
+
+tuple $DynamicRoundInfo$_load_opt(cell cl) inline {
+    if (null?(cl)) {
+        return null();
+    }
+    var sc = cl.begin_parse();
+    return $DynamicRoundInfo$_as_optional(sc~$DynamicRoundInfo$_load());
+}
+
+((int, int, int, int, int, int, int)) $DynamicRoundInfo$_not_null(tuple v) inline {
+    throw_if(128, null?(v));
+    var (int vvv'roundIndex, int vvv'startTime, int vvv'endTime, int vvv'price, int vvv'totalToken, int vvv'remainingToken, int vvv'active) = __tact_tuple_destroy_7(v);
+    return (vvv'roundIndex, vvv'startTime, vvv'endTime, vvv'price, vvv'totalToken, vvv'remainingToken, vvv'active);
+}
+
+((int, int, int, int, int, int, int)) $DynamicRoundInfo$_constructor_roundIndex_startTime_endTime_price_totalToken_remainingToken_active(int roundIndex, int startTime, int endTime, int price, int totalToken, int remainingToken, int active) inline {
+    return (roundIndex, startTime, endTime, price, totalToken, remainingToken, active);
 }
 
 ;;
 ;; Type: BuyTokens
-;; Header: 0x9ab69a78
-;; TLB: buy_tokens#9ab69a78 referrer:address tonAmount:coins usdtAmount:coins = BuyTokens
+;; Header: 0xd6faa0a4
+;; TLB: buy_tokens#d6faa0a4 referrer:address tonAmount:coins usdtAmount:coins buyType:int257 = BuyTokens
 ;;
 
-(slice, ((slice, int, int))) $BuyTokens$_load(slice sc_0) inline {
-    throw_unless(129, sc_0~load_uint(32) == 2595658360);
+(slice, ((slice, int, int, int))) $BuyTokens$_load(slice sc_0) inline {
+    throw_unless(129, sc_0~load_uint(32) == 3606749348);
     var v'referrer = sc_0~__tact_load_address();
     var v'tonAmount = sc_0~load_coins();
     var v'usdtAmount = sc_0~load_coins();
-    return (sc_0, (v'referrer, v'tonAmount, v'usdtAmount));
+    var v'buyType = sc_0~load_int(257);
+    return (sc_0, (v'referrer, v'tonAmount, v'usdtAmount, v'buyType));
 }
 
 ;;
@@ -733,19 +792,6 @@ tuple $TreasuryArrayData$_load_opt(cell cl) inline {
     throw_unless(129, sc_0~load_uint(32) == 1990817087);
     var v'cenderadd = sc_0~__tact_load_address();
     return (sc_0, (v'cenderadd));
-}
-
-;;
-;; Type: PrivateSaleMessage
-;; Header: 0x9c65dad8
-;; TLB: private_sale_message#9c65dad8 amount:int257 UserAddress:address = PrivateSaleMessage
-;;
-
-(slice, ((int, slice))) $PrivateSaleMessage$_load(slice sc_0) inline {
-    throw_unless(129, sc_0~load_uint(32) == 2623920856);
-    var v'amount = sc_0~load_int(257);
-    var v'UserAddress = sc_0~__tact_load_address();
-    return (sc_0, (v'amount, v'UserAddress));
 }
 
 ;;
@@ -970,11 +1016,55 @@ tuple $TreasuryArrayData$_load_opt(cell cl) inline {
 }
 
 ;;
+;; Type: CreateDynamicRoundMessage
+;; Header: 0x514313eb
+;; TLB: create_dynamic_round_message#514313eb startTime:int257 endTime:int257 price:int257 totalToken:coins = CreateDynamicRoundMessage
+;;
+
+(slice, ((int, int, int, int))) $CreateDynamicRoundMessage$_load(slice sc_0) inline {
+    throw_unless(129, sc_0~load_uint(32) == 1363350507);
+    var v'startTime = sc_0~load_int(257);
+    var v'endTime = sc_0~load_int(257);
+    var v'price = sc_0~load_int(257);
+    var v'totalToken = sc_0~load_coins();
+    return (sc_0, (v'startTime, v'endTime, v'price, v'totalToken));
+}
+
+;;
+;; Type: UpdateDynamicRoundMessage
+;; Header: 0x76c144f1
+;; TLB: update_dynamic_round_message#76c144f1 roundIndex:int257 startTime:int257 endTime:int257 price:int257 totalToken:coins = UpdateDynamicRoundMessage
+;;
+
+(slice, ((int, int, int, int, int))) $UpdateDynamicRoundMessage$_load(slice sc_0) inline {
+    throw_unless(129, sc_0~load_uint(32) == 1992377585);
+    var v'roundIndex = sc_0~load_int(257);
+    var v'startTime = sc_0~load_int(257);
+    var v'endTime = sc_0~load_int(257);
+    slice sc_1 = sc_0~load_ref().begin_parse();
+    var v'price = sc_1~load_int(257);
+    var v'totalToken = sc_1~load_coins();
+    return (sc_0, (v'roundIndex, v'startTime, v'endTime, v'price, v'totalToken));
+}
+
+;;
+;; Type: StartDynamicRoundMessage
+;; Header: 0x4b7897ed
+;; TLB: start_dynamic_round_message#4b7897ed roundIndex:int257 = StartDynamicRoundMessage
+;;
+
+(slice, ((int))) $StartDynamicRoundMessage$_load(slice sc_0) inline {
+    throw_unless(129, sc_0~load_uint(32) == 1266194413);
+    var v'roundIndex = sc_0~load_int(257);
+    return (sc_0, (v'roundIndex));
+}
+
+;;
 ;; Type: SamplePresale
 ;;
 
-builder $SamplePresale$_store(builder build_0, (int, int, int, int, int, int, int, slice, cell, cell, cell, cell, cell, cell, cell, cell, cell) v) inline {
-    var (v'totalUsdtAmount, v'seedRoundTime, v'presaleStatus, v'BZZNPriceInUSDT, v'referralPercentage, v'minimumUSDTAmount, v'maximumUSDTAmount, v'owner, v'TokenData, v'SeedData, v'PrivateSaleData, v'MarketingData, v'TeamData, v'AdvisorData, v'TreasuryData, v'checkReferrers, v'refferInfo) = v;
+builder $SamplePresale$_store(builder build_0, (int, int, int, int, int, int, int, int, int, int, slice, cell, cell, cell, cell, cell, cell, cell, cell, cell, cell) v) inline {
+    var (v'totalUsdtAmount, v'seedRoundTime, v'presaleStatus, v'BZZNPriceInUSDT, v'referralPercentage, v'minimumUSDTAmount, v'maximumUSDTAmount, v'lastCreatedRound, v'activeRound, v'XYZ, v'owner, v'TokenData, v'DynamicRoundData, v'SeedData, v'PrivateSaleData, v'MarketingData, v'TeamData, v'AdvisorData, v'TreasuryData, v'checkReferrers, v'refferInfo) = v;
     build_0 = build_0.store_int(v'totalUsdtAmount, 257);
     build_0 = build_0.store_int(v'seedRoundTime, 257);
     build_0 = build_0.store_int(v'presaleStatus, 1);
@@ -984,18 +1074,26 @@ builder $SamplePresale$_store(builder build_0, (int, int, int, int, int, int, in
     build_1 = build_1.store_int(v'minimumUSDTAmount, 257);
     build_1 = build_1.store_int(v'maximumUSDTAmount, 257);
     var build_2 = begin_cell();
-    build_2 = __tact_store_address(build_2, v'owner);
-    build_2 = build_2.store_dict(v'TokenData);
-    build_2 = build_2.store_dict(v'SeedData);
-    build_2 = build_2.store_dict(v'PrivateSaleData);
+    build_2 = build_2.store_int(v'lastCreatedRound, 257);
+    build_2 = build_2.store_int(v'activeRound, 257);
+    build_2 = build_2.store_int(v'XYZ, 257);
     var build_3 = begin_cell();
-    build_3 = build_3.store_dict(v'MarketingData);
-    build_3 = build_3.store_dict(v'TeamData);
-    build_3 = build_3.store_dict(v'AdvisorData);
+    build_3 = __tact_store_address(build_3, v'owner);
+    build_3 = build_3.store_dict(v'TokenData);
+    build_3 = build_3.store_dict(v'DynamicRoundData);
+    build_3 = build_3.store_dict(v'SeedData);
     var build_4 = begin_cell();
-    build_4 = build_4.store_dict(v'TreasuryData);
-    build_4 = build_4.store_dict(v'checkReferrers);
-    build_4 = build_4.store_dict(v'refferInfo);
+    build_4 = build_4.store_dict(v'PrivateSaleData);
+    build_4 = build_4.store_dict(v'MarketingData);
+    build_4 = build_4.store_dict(v'TeamData);
+    var build_5 = begin_cell();
+    build_5 = build_5.store_dict(v'AdvisorData);
+    build_5 = build_5.store_dict(v'TreasuryData);
+    build_5 = build_5.store_dict(v'checkReferrers);
+    var build_6 = begin_cell();
+    build_6 = build_6.store_dict(v'refferInfo);
+    build_5 = store_ref(build_5, build_6.end_cell());
+    build_4 = store_ref(build_4, build_5.end_cell());
     build_3 = store_ref(build_3, build_4.end_cell());
     build_2 = store_ref(build_2, build_3.end_cell());
     build_1 = store_ref(build_1, build_2.end_cell());
@@ -1003,7 +1101,7 @@ builder $SamplePresale$_store(builder build_0, (int, int, int, int, int, int, in
     return build_0;
 }
 
-(slice, ((int, int, int, int, int, int, int, slice, cell, cell, cell, cell, cell, cell, cell, cell, cell))) $SamplePresale$_load(slice sc_0) inline {
+(slice, ((int, int, int, int, int, int, int, int, int, int, slice, cell, cell, cell, cell, cell, cell, cell, cell, cell, cell))) $SamplePresale$_load(slice sc_0) inline {
     var v'totalUsdtAmount = sc_0~load_int(257);
     var v'seedRoundTime = sc_0~load_int(257);
     var v'presaleStatus = sc_0~load_int(1);
@@ -1013,22 +1111,28 @@ builder $SamplePresale$_store(builder build_0, (int, int, int, int, int, int, in
     var v'minimumUSDTAmount = sc_1~load_int(257);
     var v'maximumUSDTAmount = sc_1~load_int(257);
     slice sc_2 = sc_1~load_ref().begin_parse();
-    var v'owner = sc_2~__tact_load_address();
-    var v'TokenData = sc_2~load_dict();
-    var v'SeedData = sc_2~load_dict();
-    var v'PrivateSaleData = sc_2~load_dict();
+    var v'lastCreatedRound = sc_2~load_int(257);
+    var v'activeRound = sc_2~load_int(257);
+    var v'XYZ = sc_2~load_int(257);
     slice sc_3 = sc_2~load_ref().begin_parse();
-    var v'MarketingData = sc_3~load_dict();
-    var v'TeamData = sc_3~load_dict();
-    var v'AdvisorData = sc_3~load_dict();
+    var v'owner = sc_3~__tact_load_address();
+    var v'TokenData = sc_3~load_dict();
+    var v'DynamicRoundData = sc_3~load_dict();
+    var v'SeedData = sc_3~load_dict();
     slice sc_4 = sc_3~load_ref().begin_parse();
-    var v'TreasuryData = sc_4~load_dict();
-    var v'checkReferrers = sc_4~load_dict();
-    var v'refferInfo = sc_4~load_dict();
-    return (sc_0, (v'totalUsdtAmount, v'seedRoundTime, v'presaleStatus, v'BZZNPriceInUSDT, v'referralPercentage, v'minimumUSDTAmount, v'maximumUSDTAmount, v'owner, v'TokenData, v'SeedData, v'PrivateSaleData, v'MarketingData, v'TeamData, v'AdvisorData, v'TreasuryData, v'checkReferrers, v'refferInfo));
+    var v'PrivateSaleData = sc_4~load_dict();
+    var v'MarketingData = sc_4~load_dict();
+    var v'TeamData = sc_4~load_dict();
+    slice sc_5 = sc_4~load_ref().begin_parse();
+    var v'AdvisorData = sc_5~load_dict();
+    var v'TreasuryData = sc_5~load_dict();
+    var v'checkReferrers = sc_5~load_dict();
+    slice sc_6 = sc_5~load_ref().begin_parse();
+    var v'refferInfo = sc_6~load_dict();
+    return (sc_0, (v'totalUsdtAmount, v'seedRoundTime, v'presaleStatus, v'BZZNPriceInUSDT, v'referralPercentage, v'minimumUSDTAmount, v'maximumUSDTAmount, v'lastCreatedRound, v'activeRound, v'XYZ, v'owner, v'TokenData, v'DynamicRoundData, v'SeedData, v'PrivateSaleData, v'MarketingData, v'TeamData, v'AdvisorData, v'TreasuryData, v'checkReferrers, v'refferInfo));
 }
 
-(int, int, int, int, int, int, int, slice, cell, cell, cell, cell, cell, cell, cell, cell, cell) $SamplePresale$_contract_load() impure inline_ref {
+(int, int, int, int, int, int, int, int, int, int, slice, cell, cell, cell, cell, cell, cell, cell, cell, cell, cell) $SamplePresale$_contract_load() impure inline_ref {
     slice $sc = get_data().begin_parse();
     __tact_context_sys = $sc~load_ref();
     int $loaded = $sc~load_int(1);
@@ -1041,7 +1145,7 @@ builder $SamplePresale$_store(builder build_0, (int, int, int, int, int, int, in
     }
 }
 
-() $SamplePresale$_contract_store((int, int, int, int, int, int, int, slice, cell, cell, cell, cell, cell, cell, cell, cell, cell) v) impure inline {
+() $SamplePresale$_contract_store((int, int, int, int, int, int, int, int, int, int, slice, cell, cell, cell, cell, cell, cell, cell, cell, cell, cell) v) impure inline {
     builder b = begin_cell();
     b = b.store_ref(__tact_context_sys);
     b = b.store_int(true, 1);

@@ -81,20 +81,20 @@ cell $TokenTransfer$_store_cell((int, int, slice, slice, cell, int, slice) v) in
 ;; $TokenExcesses$_load
 (slice, ((int))) $TokenExcesses$_load(slice sc_0) inline;
 
-;; $TokenDistrubuteInfo$_store
-builder $TokenDistrubuteInfo$_store(builder build_0, (slice, int, int, int, int) v) inline;
+;; $TokenDistributeInfo$_store
+builder $TokenDistributeInfo$_store(builder build_0, (slice, int, int, int, int) v) inline;
 
-;; $TokenDistrubuteInfo$_store_cell
-cell $TokenDistrubuteInfo$_store_cell((slice, int, int, int, int) v) inline;
+;; $TokenDistributeInfo$_store_cell
+cell $TokenDistributeInfo$_store_cell((slice, int, int, int, int) v) inline;
 
-;; $TokenDistrubuteInfo$_load
-(slice, ((slice, int, int, int, int))) $TokenDistrubuteInfo$_load(slice sc_0) inline;
+;; $TokenDistributeInfo$_load
+(slice, ((slice, int, int, int, int))) $TokenDistributeInfo$_load(slice sc_0) inline;
 
-;; $TokenDistrubuteInfo$_as_optional
-tuple $TokenDistrubuteInfo$_as_optional((slice, int, int, int, int) v) inline;
+;; $TokenDistributeInfo$_as_optional
+tuple $TokenDistributeInfo$_as_optional((slice, int, int, int, int) v) inline;
 
-;; $TokenDistrubuteInfo$_load_opt
-tuple $TokenDistrubuteInfo$_load_opt(cell cl) inline;
+;; $TokenDistributeInfo$_load_opt
+tuple $TokenDistributeInfo$_load_opt(cell cl) inline;
 
 ;; $UserData$_store
 builder $UserData$_store(builder build_0, (slice, int, int, int, int, int, int, int, slice, int, int) v) inline_ref;
@@ -246,14 +246,26 @@ tuple $TreasuryArrayData$_as_optional((cell, int) v) inline;
 ;; $TreasuryArrayData$_load_opt
 tuple $TreasuryArrayData$_load_opt(cell cl) inline;
 
+;; $DynamicRoundInfo$_store
+builder $DynamicRoundInfo$_store(builder build_0, (int, int, int, int, int, int, int) v) inline_ref;
+
+;; $DynamicRoundInfo$_store_cell
+cell $DynamicRoundInfo$_store_cell((int, int, int, int, int, int, int) v) inline;
+
+;; $DynamicRoundInfo$_load
+(slice, ((int, int, int, int, int, int, int))) $DynamicRoundInfo$_load(slice sc_0) inline_ref;
+
+;; $DynamicRoundInfo$_as_optional
+tuple $DynamicRoundInfo$_as_optional((int, int, int, int, int, int, int) v) inline;
+
+;; $DynamicRoundInfo$_load_opt
+tuple $DynamicRoundInfo$_load_opt(cell cl) inline;
+
 ;; $BuyTokens$_load
-(slice, ((slice, int, int))) $BuyTokens$_load(slice sc_0) inline;
+(slice, ((slice, int, int, int))) $BuyTokens$_load(slice sc_0) inline;
 
 ;; $ClaimReferralTokens$_load
 (slice, ((slice))) $ClaimReferralTokens$_load(slice sc_0) inline;
-
-;; $PrivateSaleMessage$_load
-(slice, ((int, slice))) $PrivateSaleMessage$_load(slice sc_0) inline;
 
 ;; $MarketingMessage$_load
 (slice, ((int, slice))) $MarketingMessage$_load(slice sc_0) inline;
@@ -306,17 +318,26 @@ tuple $TreasuryArrayData$_load_opt(cell cl) inline;
 ;; $MinimumUsdtAmountMessage$_load
 (slice, ((int))) $MinimumUsdtAmountMessage$_load(slice sc_0) inline;
 
+;; $CreateDynamicRoundMessage$_load
+(slice, ((int, int, int, int))) $CreateDynamicRoundMessage$_load(slice sc_0) inline;
+
+;; $UpdateDynamicRoundMessage$_load
+(slice, ((int, int, int, int, int))) $UpdateDynamicRoundMessage$_load(slice sc_0) inline;
+
+;; $StartDynamicRoundMessage$_load
+(slice, ((int))) $StartDynamicRoundMessage$_load(slice sc_0) inline;
+
 ;; $SamplePresale$_store
-builder $SamplePresale$_store(builder build_0, (int, int, int, int, int, int, int, slice, cell, cell, cell, cell, cell, cell, cell, cell, cell) v) inline;
+builder $SamplePresale$_store(builder build_0, (int, int, int, int, int, int, int, int, int, int, slice, cell, cell, cell, cell, cell, cell, cell, cell, cell, cell) v) inline;
 
 ;; $SamplePresale$_load
-(slice, ((int, int, int, int, int, int, int, slice, cell, cell, cell, cell, cell, cell, cell, cell, cell))) $SamplePresale$_load(slice sc_0) inline;
+(slice, ((int, int, int, int, int, int, int, int, int, int, slice, cell, cell, cell, cell, cell, cell, cell, cell, cell, cell))) $SamplePresale$_load(slice sc_0) inline;
 
 ;; $StateInit$_not_null
 ((cell, cell)) $StateInit$_not_null(tuple v) inline;
 
-;; $TokenDistrubuteInfo$_not_null
-((slice, int, int, int, int)) $TokenDistrubuteInfo$_not_null(tuple v) inline;
+;; $TokenDistributeInfo$_not_null
+((slice, int, int, int, int)) $TokenDistributeInfo$_not_null(tuple v) inline;
 
 ;; $UserData$_not_null
 ((slice, int, int, int, int, int, int, int, slice, int, int)) $UserData$_not_null(tuple v) inline;
@@ -364,19 +385,22 @@ _ $RefferDetails$_get_size((cell, int) v) inline;
 ((cell, int)) $TreasuryArrayData$_not_null(tuple v) inline;
 
 ;; $AllData$_to_external
-(int, slice, int, int, int, int, int, int, cell) $AllData$_to_external(((int, slice, int, int, int, int, int, int, cell)) v) inline;
+(int, slice, int, int, int, int, int, int, cell, int) $AllData$_to_external(((int, slice, int, int, int, int, int, int, cell, int)) v) inline;
 
-;; $TokenDistrubuteInfo$_constructor_name_tokenDistrubutedPercentage_totalPhaseToken_percentage_totalSuppliedToken
-((slice, int, int, int, int)) $TokenDistrubuteInfo$_constructor_name_tokenDistrubutedPercentage_totalPhaseToken_percentage_totalSuppliedToken(slice name, int tokenDistrubutedPercentage, int totalPhaseToken, int percentage, int totalSuppliedToken) inline;
+;; $DynamicRoundInfo$_not_null
+((int, int, int, int, int, int, int)) $DynamicRoundInfo$_not_null(tuple v) inline;
+
+;; $TokenDistributeInfo$_constructor_name_tokenDistrubutedPercentage_totalPhaseToken_percentage_totalSuppliedToken
+((slice, int, int, int, int)) $TokenDistributeInfo$_constructor_name_tokenDistrubutedPercentage_totalPhaseToken_percentage_totalSuppliedToken(slice name, int tokenDistrubutedPercentage, int totalPhaseToken, int percentage, int totalSuppliedToken) inline;
 
 ;; $SamplePresale$_contract_init
-(int, int, int, int, int, int, int, slice, cell, cell, cell, cell, cell, cell, cell, cell, cell) $SamplePresale$_contract_init() impure inline_ref;
+(int, int, int, int, int, int, int, int, int, int, slice, cell, cell, cell, cell, cell, cell, cell, cell, cell, cell) $SamplePresale$_contract_init() impure inline_ref;
 
 ;; $SamplePresale$_contract_load
-(int, int, int, int, int, int, int, slice, cell, cell, cell, cell, cell, cell, cell, cell, cell) $SamplePresale$_contract_load() impure inline_ref;
+(int, int, int, int, int, int, int, int, int, int, slice, cell, cell, cell, cell, cell, cell, cell, cell, cell, cell) $SamplePresale$_contract_load() impure inline_ref;
 
 ;; $SamplePresale$_contract_store
-() $SamplePresale$_contract_store((int, int, int, int, int, int, int, slice, cell, cell, cell, cell, cell, cell, cell, cell, cell) v) impure inline;
+() $SamplePresale$_contract_store((int, int, int, int, int, int, int, int, int, int, slice, cell, cell, cell, cell, cell, cell, cell, cell, cell, cell) v) impure inline;
 
 ;; $global_send
 () $global_send((int, slice, int, int, cell, cell, cell) $params) impure inline_ref;
@@ -391,58 +415,61 @@ slice $Int$_fun_toCoinsString(int $self) impure inline;
 ((cell, int)) $RefferDetails$_constructor_reffer_size(cell reffer, int size) inline;
 
 ;; $SamplePresale$_fun_AddReferAddress
-((int, int, int, int, int, int, int, slice, cell, cell, cell, cell, cell, cell, cell, cell, cell), ()) $SamplePresale$_fun_AddReferAddress((int, int, int, int, int, int, int, slice, cell, cell, cell, cell, cell, cell, cell, cell, cell) $self, slice $referrer, int $amount, slice $from) impure inline_ref;
+((int, int, int, int, int, int, int, int, int, int, slice, cell, cell, cell, cell, cell, cell, cell, cell, cell, cell), ()) $SamplePresale$_fun_AddReferAddress((int, int, int, int, int, int, int, int, int, int, slice, cell, cell, cell, cell, cell, cell, cell, cell, cell, cell) $self, slice $referrer, int $amount, slice $from) impure inline_ref;
 
 ;; $SamplePresale$_fun_getData
-((int, int, int, int, int, int, int, slice, cell, cell, cell, cell, cell, cell, cell, cell, cell), tuple) $SamplePresale$_fun_getData((int, int, int, int, int, int, int, slice, cell, cell, cell, cell, cell, cell, cell, cell, cell) $self, slice $addr, int $num) impure inline_ref;
+((int, int, int, int, int, int, int, int, int, int, slice, cell, cell, cell, cell, cell, cell, cell, cell, cell, cell), tuple) $SamplePresale$_fun_getData((int, int, int, int, int, int, int, int, int, int, slice, cell, cell, cell, cell, cell, cell, cell, cell, cell, cell) $self, slice $addr, int $num) impure inline_ref;
 
 ;; $SamplePresale$_fun_getAllSeedTokenData
-((int, int, int, int, int, int, int, slice, cell, cell, cell, cell, cell, cell, cell, cell, cell), cell) $SamplePresale$_fun_getAllSeedTokenData((int, int, int, int, int, int, int, slice, cell, cell, cell, cell, cell, cell, cell, cell, cell) $self, slice $addr) impure inline_ref;
+((int, int, int, int, int, int, int, int, int, int, slice, cell, cell, cell, cell, cell, cell, cell, cell, cell, cell), cell) $SamplePresale$_fun_getAllSeedTokenData((int, int, int, int, int, int, int, int, int, int, slice, cell, cell, cell, cell, cell, cell, cell, cell, cell, cell) $self, slice $addr) impure inline_ref;
 
 ;; $SamplePresale$_fun_getAllSeedData
-((int, int, int, int, int, int, int, slice, cell, cell, cell, cell, cell, cell, cell, cell, cell), cell) $SamplePresale$_fun_getAllSeedData((int, int, int, int, int, int, int, slice, cell, cell, cell, cell, cell, cell, cell, cell, cell) $self) impure inline_ref;
+((int, int, int, int, int, int, int, int, int, int, slice, cell, cell, cell, cell, cell, cell, cell, cell, cell, cell), cell) $SamplePresale$_fun_getAllSeedData((int, int, int, int, int, int, int, int, int, int, slice, cell, cell, cell, cell, cell, cell, cell, cell, cell, cell) $self) impure inline_ref;
 
-;; $AllData$_constructor_USDTAmount_balance_presaleStatus_presaleTime_BZZNPriceInUSD_referralPercentage_minimumBuyPrice_maximumBuyPrice_tokenData
-((int, slice, int, int, int, int, int, int, cell)) $AllData$_constructor_USDTAmount_balance_presaleStatus_presaleTime_BZZNPriceInUSD_referralPercentage_minimumBuyPrice_maximumBuyPrice_tokenData(int USDTAmount, slice balance, int presaleStatus, int presaleTime, int BZZNPriceInUSD, int referralPercentage, int minimumBuyPrice, int maximumBuyPrice, cell tokenData) inline;
+;; $AllData$_constructor_USDTAmount_balance_presaleStatus_presaleTime_BZZNPriceInUSD_referralPercentage_minimumBuyPrice_maximumBuyPrice_tokenData_activeRoundIndex
+((int, slice, int, int, int, int, int, int, cell, int)) $AllData$_constructor_USDTAmount_balance_presaleStatus_presaleTime_BZZNPriceInUSD_referralPercentage_minimumBuyPrice_maximumBuyPrice_tokenData_activeRoundIndex(int USDTAmount, slice balance, int presaleStatus, int presaleTime, int BZZNPriceInUSD, int referralPercentage, int minimumBuyPrice, int maximumBuyPrice, cell tokenData, int activeRoundIndex) inline;
 
 ;; $SamplePresale$_fun_getAllData
-((int, int, int, int, int, int, int, slice, cell, cell, cell, cell, cell, cell, cell, cell, cell), (int, slice, int, int, int, int, int, int, cell)) $SamplePresale$_fun_getAllData((int, int, int, int, int, int, int, slice, cell, cell, cell, cell, cell, cell, cell, cell, cell) $self) impure inline_ref;
+((int, int, int, int, int, int, int, int, int, int, slice, cell, cell, cell, cell, cell, cell, cell, cell, cell, cell), (int, slice, int, int, int, int, int, int, cell, int)) $SamplePresale$_fun_getAllData((int, int, int, int, int, int, int, int, int, int, slice, cell, cell, cell, cell, cell, cell, cell, cell, cell, cell) $self) impure inline_ref;
 
 ;; $SamplePresale$_fun_getAllPrivateTokenData
-((int, int, int, int, int, int, int, slice, cell, cell, cell, cell, cell, cell, cell, cell, cell), cell) $SamplePresale$_fun_getAllPrivateTokenData((int, int, int, int, int, int, int, slice, cell, cell, cell, cell, cell, cell, cell, cell, cell) $self, slice $addr) impure inline_ref;
+((int, int, int, int, int, int, int, int, int, int, slice, cell, cell, cell, cell, cell, cell, cell, cell, cell, cell), cell) $SamplePresale$_fun_getAllPrivateTokenData((int, int, int, int, int, int, int, int, int, int, slice, cell, cell, cell, cell, cell, cell, cell, cell, cell, cell) $self, slice $addr) impure inline_ref;
 
 ;; $SamplePresale$_fun_getAllMarketingTokenData
-((int, int, int, int, int, int, int, slice, cell, cell, cell, cell, cell, cell, cell, cell, cell), cell) $SamplePresale$_fun_getAllMarketingTokenData((int, int, int, int, int, int, int, slice, cell, cell, cell, cell, cell, cell, cell, cell, cell) $self, slice $addr) impure inline_ref;
+((int, int, int, int, int, int, int, int, int, int, slice, cell, cell, cell, cell, cell, cell, cell, cell, cell, cell), cell) $SamplePresale$_fun_getAllMarketingTokenData((int, int, int, int, int, int, int, int, int, int, slice, cell, cell, cell, cell, cell, cell, cell, cell, cell, cell) $self, slice $addr) impure inline_ref;
 
 ;; $SamplePresale$_fun_getAllTeamTokenData
-((int, int, int, int, int, int, int, slice, cell, cell, cell, cell, cell, cell, cell, cell, cell), cell) $SamplePresale$_fun_getAllTeamTokenData((int, int, int, int, int, int, int, slice, cell, cell, cell, cell, cell, cell, cell, cell, cell) $self, slice $addr) impure inline_ref;
+((int, int, int, int, int, int, int, int, int, int, slice, cell, cell, cell, cell, cell, cell, cell, cell, cell, cell), cell) $SamplePresale$_fun_getAllTeamTokenData((int, int, int, int, int, int, int, int, int, int, slice, cell, cell, cell, cell, cell, cell, cell, cell, cell, cell) $self, slice $addr) impure inline_ref;
 
 ;; $SamplePresale$_fun_getAllAdvisorTokenData
-((int, int, int, int, int, int, int, slice, cell, cell, cell, cell, cell, cell, cell, cell, cell), cell) $SamplePresale$_fun_getAllAdvisorTokenData((int, int, int, int, int, int, int, slice, cell, cell, cell, cell, cell, cell, cell, cell, cell) $self, slice $addr) impure inline_ref;
+((int, int, int, int, int, int, int, int, int, int, slice, cell, cell, cell, cell, cell, cell, cell, cell, cell, cell), cell) $SamplePresale$_fun_getAllAdvisorTokenData((int, int, int, int, int, int, int, int, int, int, slice, cell, cell, cell, cell, cell, cell, cell, cell, cell, cell) $self, slice $addr) impure inline_ref;
 
 ;; $SamplePresale$_fun_getAllTreasuryTokenData
-((int, int, int, int, int, int, int, slice, cell, cell, cell, cell, cell, cell, cell, cell, cell), cell) $SamplePresale$_fun_getAllTreasuryTokenData((int, int, int, int, int, int, int, slice, cell, cell, cell, cell, cell, cell, cell, cell, cell) $self, slice $addr) impure inline_ref;
-
-;; $SamplePresale$_fun_getTokonomicsData
-((int, int, int, int, int, int, int, slice, cell, cell, cell, cell, cell, cell, cell, cell, cell), cell) $SamplePresale$_fun_getTokonomicsData((int, int, int, int, int, int, int, slice, cell, cell, cell, cell, cell, cell, cell, cell, cell) $self) impure inline_ref;
+((int, int, int, int, int, int, int, int, int, int, slice, cell, cell, cell, cell, cell, cell, cell, cell, cell, cell), cell) $SamplePresale$_fun_getAllTreasuryTokenData((int, int, int, int, int, int, int, int, int, int, slice, cell, cell, cell, cell, cell, cell, cell, cell, cell, cell) $self, slice $addr) impure inline_ref;
 
 ;; $SamplePresale$_fun_getAllReferralDetails
-((int, int, int, int, int, int, int, slice, cell, cell, cell, cell, cell, cell, cell, cell, cell), cell) $SamplePresale$_fun_getAllReferralDetails((int, int, int, int, int, int, int, slice, cell, cell, cell, cell, cell, cell, cell, cell, cell) $self, slice $referrerAddress) impure inline_ref;
+((int, int, int, int, int, int, int, int, int, int, slice, cell, cell, cell, cell, cell, cell, cell, cell, cell, cell), cell) $SamplePresale$_fun_getAllReferralDetails((int, int, int, int, int, int, int, int, int, int, slice, cell, cell, cell, cell, cell, cell, cell, cell, cell, cell) $self, slice $referrerAddress) impure inline_ref;
 
 ;; $SamplePresale$_fun_getReferrer
-((int, int, int, int, int, int, int, slice, cell, cell, cell, cell, cell, cell, cell, cell, cell), slice) $SamplePresale$_fun_getReferrer((int, int, int, int, int, int, int, slice, cell, cell, cell, cell, cell, cell, cell, cell, cell) $self, slice $userAddress) impure inline_ref;
+((int, int, int, int, int, int, int, int, int, int, slice, cell, cell, cell, cell, cell, cell, cell, cell, cell, cell), slice) $SamplePresale$_fun_getReferrer((int, int, int, int, int, int, int, int, int, int, slice, cell, cell, cell, cell, cell, cell, cell, cell, cell, cell) $self, slice $userAddress) impure inline_ref;
+
+;; $SamplePresale$_fun_getDynamicRoundData
+((int, int, int, int, int, int, int, int, int, int, slice, cell, cell, cell, cell, cell, cell, cell, cell, cell, cell), cell) $SamplePresale$_fun_getDynamicRoundData((int, int, int, int, int, int, int, int, int, int, slice, cell, cell, cell, cell, cell, cell, cell, cell, cell, cell) $self) impure inline_ref;
 
 ;; $SendParameters$_constructor_bounce_to_value_mode_body_code_data
 ((int, slice, int, int, cell, cell, cell)) $SendParameters$_constructor_bounce_to_value_mode_body_code_data(int bounce, slice to, int value, int mode, cell body, cell code, cell data) inline;
 
 ;; $SamplePresale$_fun_forward
-((int, int, int, int, int, int, int, slice, cell, cell, cell, cell, cell, cell, cell, cell, cell), ()) $SamplePresale$_fun_forward((int, int, int, int, int, int, int, slice, cell, cell, cell, cell, cell, cell, cell, cell, cell) $self, slice $to, cell $body, int $bounce, tuple $init) impure inline_ref;
+((int, int, int, int, int, int, int, int, int, int, slice, cell, cell, cell, cell, cell, cell, cell, cell, cell, cell), ()) $SamplePresale$_fun_forward((int, int, int, int, int, int, int, int, int, int, slice, cell, cell, cell, cell, cell, cell, cell, cell, cell, cell) $self, slice $to, cell $body, int $bounce, tuple $init) impure inline_ref;
 
 ;; $SamplePresale$_fun_notify
-((int, int, int, int, int, int, int, slice, cell, cell, cell, cell, cell, cell, cell, cell, cell), ()) $SamplePresale$_fun_notify((int, int, int, int, int, int, int, slice, cell, cell, cell, cell, cell, cell, cell, cell, cell) $self, cell $body) impure inline;
+((int, int, int, int, int, int, int, int, int, int, slice, cell, cell, cell, cell, cell, cell, cell, cell, cell, cell), ()) $SamplePresale$_fun_notify((int, int, int, int, int, int, int, int, int, int, slice, cell, cell, cell, cell, cell, cell, cell, cell, cell, cell) $self, cell $body) impure inline;
 
 ;; $SamplePresale$_fun_owner
-((int, int, int, int, int, int, int, slice, cell, cell, cell, cell, cell, cell, cell, cell, cell), slice) $SamplePresale$_fun_owner((int, int, int, int, int, int, int, slice, cell, cell, cell, cell, cell, cell, cell, cell, cell) $self) impure inline_ref;
+((int, int, int, int, int, int, int, int, int, int, slice, cell, cell, cell, cell, cell, cell, cell, cell, cell, cell), slice) $SamplePresale$_fun_owner((int, int, int, int, int, int, int, int, int, int, slice, cell, cell, cell, cell, cell, cell, cell, cell, cell, cell) $self) impure inline_ref;
+
+;; $DynamicRoundInfo$_constructor_roundIndex_startTime_endTime_price_totalToken_remainingToken_active
+((int, int, int, int, int, int, int)) $DynamicRoundInfo$_constructor_roundIndex_startTime_endTime_price_totalToken_remainingToken_active(int roundIndex, int startTime, int endTime, int price, int totalToken, int remainingToken, int active) inline;
 
 ;; $UserData$_constructor_beneficiary_totalToken_remainingToken_startTime_vestingDuration_lastClaimTime_initialCliff_releaseInterval_phaseName_active_USDTToken
 ((slice, int, int, int, int, int, int, int, slice, int, int)) $UserData$_constructor_beneficiary_totalToken_remainingToken_startTime_vestingDuration_lastClaimTime_initialCliff_releaseInterval_phaseName_active_USDTToken(slice beneficiary, int totalToken, int remainingToken, int startTime, int vestingDuration, int lastClaimTime, int initialCliff, int releaseInterval, slice phaseName, int active, int USDTToken) inline;
@@ -452,9 +479,6 @@ slice $Int$_fun_toCoinsString(int $self) impure inline;
 
 ;; $TokenVestingInfo$_constructor_beneficiary_totalToken_remainingToken_startTime_vestingDuration_lastClaimTime_releaseInterval_initialCliff_phaseName_active_USDTToken
 ((slice, int, int, int, int, int, int, int, slice, int, int)) $TokenVestingInfo$_constructor_beneficiary_totalToken_remainingToken_startTime_vestingDuration_lastClaimTime_releaseInterval_initialCliff_phaseName_active_USDTToken(slice beneficiary, int totalToken, int remainingToken, int startTime, int vestingDuration, int lastClaimTime, int releaseInterval, int initialCliff, slice phaseName, int active, int USDTToken) inline;
-
-;; $PrivateSaleArrayData$_constructor_data_size
-((cell, int)) $PrivateSaleArrayData$_constructor_data_size(cell data, int size) inline;
 
 ;; $MarketingArrayData$_constructor_data_size
 ((cell, int)) $MarketingArrayData$_constructor_data_size(cell data, int size) inline;
@@ -476,6 +500,9 @@ slice $Int$_fun_toCoinsString(int $self) impure inline;
 
 ;; $TokenTransfer$_constructor_queryId_amount_destination_response_destination_custom_payload_forward_ton_amount_forward_payload
 ((int, int, slice, slice, cell, int, slice)) $TokenTransfer$_constructor_queryId_amount_destination_response_destination_custom_payload_forward_ton_amount_forward_payload(int queryId, int amount, slice destination, slice response_destination, cell custom_payload, int forward_ton_amount, slice forward_payload) inline;
+
+;; $PrivateSaleArrayData$_constructor_data_size
+((cell, int)) $PrivateSaleArrayData$_constructor_data_size(cell data, int size) inline;
 
 ;; $DeployOk$_constructor_queryId
 ((int)) $DeployOk$_constructor_queryId(int queryId) inline;

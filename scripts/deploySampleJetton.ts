@@ -17,28 +17,28 @@ export async function run(provider: NetworkProvider) {
 
     // const sampleJetton = provider.open(await SampleJetton.fromInit(provider.sender().address as Address, content, 1000000000000000000n));
 
-    const sampleJetton = provider.open(await SampleJetton.fromAddress(Address.parse("EQCnQmewXEhBOpAmZKITlNl4QaHMkaFIJqSNdJPfvwiR77er")));
+    const sampleJetton = provider.open(await SampleJetton.fromAddress(Address.parse("kQDJzhivSoepw8GTVJDxDsa05rl6ZszRUSQF3aBgRWd8osNJ")));
 
-    // await sampleJetton.send(
-    //     provider.sender(),
-    //     {
-    //         value: toNano('0.05'),
-    //     },
-    //     {
-    //         $$type: 'Mint',
-    //         amount: 100000000000000000n,
-    //         receiver: provider.sender().address as Address
-    //     }
-    // );
+    await sampleJetton.send(
+        provider.sender(),
+        {
+            value: toNano('0.05'),
+        },
+        {
+            $$type: 'Mint',
+            amount: 100000000000000000n,
+            receiver: provider.sender().address as Address
+        }
+    );
 
     // await provider.waitForDeploy(sampleJetton.address);
 
-    const jettonWalletContract = await provider.open(
-        await JettonDefaultWallet.fromInit(
-            Address.parse("EQCnQmewXEhBOpAmZKITlNl4QaHMkaFIJqSNdJPfvwiR77er"),
-            Address.parse("0QCL20gS8GdNJy5hLuJjxwCFTL9kveyW3yiC4wqdosCT2Q0A")
-        )
-    );
+    // const jettonWalletContract = await provider.open(
+    //     await JettonDefaultWallet.fromInit(
+    //         Address.parse("EQCnQmewXEhBOpAmZKITlNl4QaHMkaFIJqSNdJPfvwiR77er"),
+    //         Address.parse("0QCL20gS8GdNJy5hLuJjxwCFTL9kveyW3yiC4wqdosCT2Q0A")
+    //     )
+    // );
 
     // await jettonWalletContract.send(
     //     provider.sender(),
@@ -60,9 +60,9 @@ export async function run(provider: NetworkProvider) {
 
     console.log("-------------------------------------")
 
-    const walletData = await jettonWalletContract.getGetWalletData();
-    console.log(`jetton wallet owner: ${walletData.owner}`);
-    console.log(`jetton wallet master: ${walletData.master}`);
-    console.log(`jetton wallet balance: ${walletData.balance}`);
-    console.log(`jetton wallet balance: ${walletData.walletCode}`);
+    // const walletData = await jettonWalletContract.getGetWalletData();
+    // console.log(`jetton wallet owner: ${walletData.owner}`);
+    // console.log(`jetton wallet master: ${walletData.master}`);
+    // console.log(`jetton wallet balance: ${walletData.balance}`);
+    // console.log(`jetton wallet balance: ${walletData.walletCode}`);
 }

@@ -1,9 +1,9 @@
 # TACT Compilation Report
 Contract: SamplePresale
-BOC Size: 12630 bytes
+BOC Size: 15281 bytes
 
 # Types
-Total Types: 48
+Total Types: 52
 
 ## StateInit
 TLB: `_ code:^cell data:^cell = StateInit`
@@ -69,9 +69,9 @@ Signature: `TokenExcesses{queryId:uint64}`
 TLB: `token_update_content#af1ca26a content:^cell = TokenUpdateContent`
 Signature: `TokenUpdateContent{content:^cell}`
 
-## TokenDistrubuteInfo
-TLB: `_ name:^string tokenDistrubutedPercentage:int257 totalPhaseToken:coins percentage:int257 totalSuppliedToken:coins = TokenDistrubuteInfo`
-Signature: `TokenDistrubuteInfo{name:^string,tokenDistrubutedPercentage:int257,totalPhaseToken:coins,percentage:int257,totalSuppliedToken:coins}`
+## TokenDistributeInfo
+TLB: `_ name:^string tokenDistrubutedPercentage:int257 totalPhaseToken:coins percentage:int257 totalSuppliedToken:coins = TokenDistributeInfo`
+Signature: `TokenDistributeInfo{name:^string,tokenDistrubutedPercentage:int257,totalPhaseToken:coins,percentage:int257,totalSuppliedToken:coins}`
 
 ## UserData
 TLB: `_ beneficiary:address totalToken:coins remainingToken:coins startTime:int257 vestingDuration:int257 lastClaimTime:int257 initialCliff:int257 releaseInterval:int257 phaseName:^string active:bool USDTToken:coins = UserData`
@@ -114,12 +114,16 @@ TLB: `_ data:dict<int, ^TokenVestingInfo{beneficiary:address,totalToken:coins,re
 Signature: `TreasuryArrayData{data:dict<int, ^TokenVestingInfo{beneficiary:address,totalToken:coins,remainingToken:coins,startTime:int257,vestingDuration:int257,lastClaimTime:int257,releaseInterval:int257,initialCliff:int257,phaseName:^string,active:bool,USDTToken:coins}>,size:int257}`
 
 ## AllData
-TLB: `_ USDTAmount:coins balance:^string presaleStatus:bool presaleTime:int257 BZZNPriceInUSD:int257 referralPercentage:int257 minimumBuyPrice:coins maximumBuyPrice:coins tokenData:dict<int, ^TokenDistrubuteInfo{name:^string,tokenDistrubutedPercentage:int257,totalPhaseToken:coins,percentage:int257,totalSuppliedToken:coins}> = AllData`
-Signature: `AllData{USDTAmount:coins,balance:^string,presaleStatus:bool,presaleTime:int257,BZZNPriceInUSD:int257,referralPercentage:int257,minimumBuyPrice:coins,maximumBuyPrice:coins,tokenData:dict<int, ^TokenDistrubuteInfo{name:^string,tokenDistrubutedPercentage:int257,totalPhaseToken:coins,percentage:int257,totalSuppliedToken:coins}>}`
+TLB: `_ USDTAmount:coins balance:^string presaleStatus:bool presaleTime:int257 BZZNPriceInUSD:int257 referralPercentage:int257 minimumBuyPrice:coins maximumBuyPrice:coins tokenData:dict<int, ^TokenDistributeInfo{name:^string,tokenDistrubutedPercentage:int257,totalPhaseToken:coins,percentage:int257,totalSuppliedToken:coins}> activeRoundIndex:int257 = AllData`
+Signature: `AllData{USDTAmount:coins,balance:^string,presaleStatus:bool,presaleTime:int257,BZZNPriceInUSD:int257,referralPercentage:int257,minimumBuyPrice:coins,maximumBuyPrice:coins,tokenData:dict<int, ^TokenDistributeInfo{name:^string,tokenDistrubutedPercentage:int257,totalPhaseToken:coins,percentage:int257,totalSuppliedToken:coins}>,activeRoundIndex:int257}`
+
+## DynamicRoundInfo
+TLB: `_ roundIndex:int257 startTime:int257 endTime:int257 price:int257 totalToken:coins remainingToken:coins active:bool = DynamicRoundInfo`
+Signature: `DynamicRoundInfo{roundIndex:int257,startTime:int257,endTime:int257,price:int257,totalToken:coins,remainingToken:coins,active:bool}`
 
 ## BuyTokens
-TLB: `buy_tokens#9ab69a78 referrer:address tonAmount:coins usdtAmount:coins = BuyTokens`
-Signature: `BuyTokens{referrer:address,tonAmount:coins,usdtAmount:coins}`
+TLB: `buy_tokens#d6faa0a4 referrer:address tonAmount:coins usdtAmount:coins buyType:int257 = BuyTokens`
+Signature: `BuyTokens{referrer:address,tonAmount:coins,usdtAmount:coins,buyType:int257}`
 
 ## ClaimReferralTokens
 TLB: `claim_referral_tokens#76a9753f cenderadd:address = ClaimReferralTokens`
@@ -197,6 +201,18 @@ Signature: `MaximumUsdtAmountMessage{amount:int257}`
 TLB: `minimum_usdt_amount_message#5c420d4c amount:int257 = MinimumUsdtAmountMessage`
 Signature: `MinimumUsdtAmountMessage{amount:int257}`
 
+## CreateDynamicRoundMessage
+TLB: `create_dynamic_round_message#514313eb startTime:int257 endTime:int257 price:int257 totalToken:coins = CreateDynamicRoundMessage`
+Signature: `CreateDynamicRoundMessage{startTime:int257,endTime:int257,price:int257,totalToken:coins}`
+
+## UpdateDynamicRoundMessage
+TLB: `update_dynamic_round_message#76c144f1 roundIndex:int257 startTime:int257 endTime:int257 price:int257 totalToken:coins = UpdateDynamicRoundMessage`
+Signature: `UpdateDynamicRoundMessage{roundIndex:int257,startTime:int257,endTime:int257,price:int257,totalToken:coins}`
+
+## StartDynamicRoundMessage
+TLB: `start_dynamic_round_message#4b7897ed roundIndex:int257 = StartDynamicRoundMessage`
+Signature: `StartDynamicRoundMessage{roundIndex:int257}`
+
 # Get Methods
 Total Get Methods: 13
 
@@ -226,13 +242,13 @@ Argument: addr
 ## getAllTreasuryTokenData
 Argument: addr
 
-## getTokonomicsData
-
 ## getAllReferralDetails
 Argument: referrerAddress
 
 ## getReferrer
 Argument: userAddress
+
+## getDynamicRoundData
 
 ## owner
 
@@ -262,6 +278,11 @@ Argument: userAddress
 136: Invalid address
 137: Masterchain support is not enabled for this contract
 1275: Presale is not start yet
+7212: Invalid Token
+10278: Invalid Round Index
+12033: Invalid Time
+12812: Invalid Price
+23478: Presale is not over Yet
 27921: Only owner is allowed to withdraw
 30183: NO_REFERRAL_TOKENS_AVAILABLE
 32633: Presale is over
