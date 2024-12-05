@@ -61,9 +61,9 @@ export async function run(provider: NetworkProvider) {
     // await samplePresale.send(
     //     provider.sender(),
     //     {
-    //         value: toNano('0.5'),
+    //         value: toNano('0.1'),
     //     },
-    //      'start Presale'
+    //      'close Presale'
     // );
 
     // const tx =  await samplePresale.send(
@@ -78,8 +78,8 @@ export async function run(provider: NetworkProvider) {
     // for (let i = 0n; i < 10n; i++) {
     //  const walletData = await samplePresale.getGetAllData();
     //  console.log(walletData);
-     const walletData = await samplePresale.getGetDynamicRoundData();
-     console.log(walletData.values());
+    //  const walletData = await samplePresale.getGetDynamicRoundData();
+    //  console.log(walletData.values());
     //  const data = walletData.get(Address.parse("0QBony_meSMNl6w6cMQpEvW9dQbvy-AwJFKDJeA5CydJ4p4q"));
     //  console.log(data?.data.values());
     // }
@@ -89,8 +89,8 @@ export async function run(provider: NetworkProvider) {
     //  const walletDatas = await samplePresale.getGetData( Address.parse("0QBony_meSMNl6w6cMQpEvW9dQbvy-AwJFKDJeA5CydJ4p4q") as Address,2n);
     //  console.log(walletDatas);
 
-    //  const balance = await samplePresale.getBalance();
-    //  console.log(balance);
+     const balance = await samplePresale.getGetAllData();
+     console.log(balance);
 
     // const sampleJetton = provider.open(await SampleJetton.fromAddress(Address.parse("EQCnQmewXEhBOpAmZKITlNl4QaHMkaFIJqSNdJPfvwiR77er")));
 
@@ -115,10 +115,8 @@ export async function run(provider: NetworkProvider) {
     //         value: toNano(0.05),
     //     },  
     //     {
-    //         $$type: 'ClaimTokens',
-    //         amount:10n,
-    //         cenderadd:contwalladd,
-    //         senderadd:Address.parse("0QBony_meSMNl6w6cMQpEvW9dQbvy-AwJFKDJeA5CydJ4p4q"),
+    //         $$type: 'StartDynamicRoundMessage',
+    //         roundIndex: 2n
     //     }
     // );
     // await provider.waitForDeploy(sampleJetton.address);

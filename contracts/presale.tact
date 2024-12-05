@@ -85,6 +85,7 @@ struct AllData{
   USDTAmount: Int as coins;
   balance: String;
   presaleStatus: Bool;
+  privatesaleStatus: Bool;
   presaleTime: Int;
   BZZNPriceInUSD: Int;
   referralPercentage: Int;
@@ -229,13 +230,13 @@ contract SamplePresale with Ownable, Deployable {
   totalUsdtAmount : Int = 0;
   seedRoundTime : Int = 0;
   presaleStatus : Bool = false;
+  privateSaleStatus : Bool = false;
   BZZNPriceInUSDT : Int = 250;
   referralPercentage : Int = 50;
   minimumUSDTAmount : Int = 1000000000;
   maximumUSDTAmount : Int = 100000000000;
   lastCreatedRound: Int = 0;
   activeRound: Int = 0;
-  XYZ: Int = 0;
   owner: Address;
   TokenData: map<Int, TokenDistributeInfo>;
   DynamicRoundData: map<Int, DynamicRoundInfo>;
@@ -411,6 +412,7 @@ contract SamplePresale with Ownable, Deployable {
   receive(msg : StartDynamicRoundMessage){
     require(sender() == self.owner,"You are not owner");
     require(msg.roundIndex > 0 && msg.roundIndex <= self.lastCreatedRound,"Invalid Round Index");
+    require(now() > self.seedRoundTime, "Presale is not over Yet");
     if(self.activeRound != 0){
       let roundInfo: DynamicRoundInfo = self.DynamicRoundData.get(self.activeRound)!!;
       self.DynamicRoundData.set(self.activeRound,
@@ -437,6 +439,7 @@ contract SamplePresale with Ownable, Deployable {
         active: true
       }
     );
+    self.privateSaleStatus = true;
     self.activeRound = msg.roundIndex;
   }
 
@@ -455,6 +458,7 @@ contract SamplePresale with Ownable, Deployable {
         active: false
       }
     );
+    self.privateSaleStatus = false;
     self.activeRound = 0;
   }
 
@@ -489,7 +493,6 @@ contract SamplePresale with Ownable, Deployable {
         self.SeedData.set(msg.from,gotButsure);
       } else {
         let newadd : Address = newAddress(0,0);
-        // let reffrel : Address = msg.forward_payload.loadAddress();
         if(reffrel != newadd){
           self.AddReferAddress(reffrel, TokenAmount,msg.from);
         }
@@ -520,10 +523,12 @@ contract SamplePresale with Ownable, Deployable {
       self.TokenData.set(0,tokonomicsData);
     }else{
       require(now() > self.seedRoundTime, "Presale is not over Yet");
+      require(self.privateSaleStatus, "privatesale is not start yet");
       let roundInfo : DynamicRoundInfo = self.DynamicRoundData.get(self.activeRound)!!;
       let TokenAmount : Int = (msg.amount *1000) / roundInfo.price;
       require(roundInfo.remainingToken >= TokenAmount,"Seed Token Supply is completed");
       require( self.minimumUSDTAmount <= msg.amount && msg.amount <= self.maximumUSDTAmount, "Invalid USDT Amount");
+      require(now() > roundInfo.startTime && now() < roundInfo.endTime,"Invalid Time");
       let gotButUnsure: UserArrayData? = self.SeedData.get(msg.from);
       let tokonomicsData : TokenDistributeInfo = self.TokenData.get(1)!!;
       require(tokonomicsData.totalPhaseToken >= tokonomicsData.totalSuppliedToken + TokenAmount,"Seed Token Supply is completed");
@@ -547,7 +552,6 @@ contract SamplePresale with Ownable, Deployable {
         self.SeedData.set(msg.from,gotButsure);
       } else {
         let newadd : Address = newAddress(0,0);
-        // let reffrel : Address = msg.forward_payload.loadAddress();
         if(reffrel != newadd){
           self.AddReferAddress(reffrel, TokenAmount,msg.from);
         }
@@ -650,10 +654,12 @@ contract SamplePresale with Ownable, Deployable {
       self.TokenData.set(0,seedData);
     }else{
       require(now() > self.seedRoundTime, "Presale is not over Yet");
+      require(self.privateSaleStatus, "privatesale is not start yet");
       let roundInfo : DynamicRoundInfo = self.DynamicRoundData.get(self.activeRound)!!;
       let TokenAmount : Int = (msg.usdtAmount *1000) / roundInfo.price;
       require( self.minimumUSDTAmount <= msg.usdtAmount && msg.usdtAmount <= self.maximumUSDTAmount, "Invalid USDT Amount");
       require(roundInfo.remainingToken >= TokenAmount,"Seed Token Supply is completed");
+      require(now() > roundInfo.startTime && now() < roundInfo.endTime,"Invalid Time");
       let gotButUnsure: UserArrayData? = self.SeedData.get(sender());
       let seedData : TokenDistributeInfo = self.TokenData.get(1)!!;
       require(seedData.totalPhaseToken >= seedData.totalSuppliedToken + TokenAmount,"Seed Token Supply is completed");
@@ -720,57 +726,6 @@ contract SamplePresale with Ownable, Deployable {
   
   receive(msg: TokenExcesses){
   }
-
-  // receive(msg : PrivateSaleMessage){
-  //   require(sender() == self.owner,"You are not owner");
-  //   let ctx:Context = context();
-  //   let gotButUnsure: PrivateSaleArrayData? = self.PrivateSaleData.get(msg.UserAddress);
-  //   let seedData : TokenDistributeInfo = self.TokenData.get(1)!!;
-  //   require(seedData.totalPhaseToken >= seedData.totalSuppliedToken + msg.amount,"Seed Token Supply is completed");
-  //   if (gotButUnsure != null) {
-  //     let gotButsure: PrivateSaleArrayData = self.PrivateSaleData.get(msg.UserAddress)!!;
-  //     let userInfo : TokenVestingInfo = TokenVestingInfo{
-  //       beneficiary : msg.UserAddress,
-  //       totalToken : msg.amount ,
-  //       remainingToken : msg.amount,
-  //       startTime : now() ,
-  //       vestingDuration : now() + 750 ,
-  //       lastClaimTime : now() + 90 ,
-  //       releaseInterval : 30,
-  //       initialCliff : 90 ,
-  //       phaseName : seedData.name,
-  //       active: true,
-  //       USDTToken : 0
-  //   };
-  //   gotButsure.data.set(gotButsure.size + 1,userInfo);
-  //   gotButsure.size = gotButsure.size + 1;
-  //   self.PrivateSaleData.set(msg.UserAddress,gotButsure);
-  //   } else {
-  //     let getData: PrivateSaleArrayData? = self.PrivateSaleData.get(msg.UserAddress);
-  //     let x : map<Int,TokenVestingInfo> = emptyMap();
-  //     let userInfo : TokenVestingInfo = TokenVestingInfo{
-  //       beneficiary : msg.UserAddress,
-  //       totalToken : msg.amount ,
-  //       remainingToken : msg.amount,
-  //       startTime : now() ,
-  //       vestingDuration : now() + 750 ,
-  //       lastClaimTime : now() + 90 ,
-  //       releaseInterval : 30,
-  //       initialCliff : 90 ,
-  //       phaseName : seedData.name,
-  //       active: true,
-  //       USDTToken : 0
-  //   };
-  //   x.set(1,userInfo);
-  //   let storeData : PrivateSaleArrayData  = PrivateSaleArrayData {
-  //     data : x,
-  //     size:1,
-  //   };
-  //   self.PrivateSaleData.set(msg.UserAddress,storeData);
-  //   }
-  //   seedData.totalSuppliedToken += msg.amount;
-  //   self.TokenData.set(1,seedData);
-  // }
 
   receive(msg : MarketingMessage){
     require(sender() == self.owner,"You are not owner");
@@ -1485,6 +1440,7 @@ contract SamplePresale with Ownable, Deployable {
       USDTAmount: self.totalUsdtAmount,
       balance: myBalance().toCoinsString(),
       presaleStatus: self.presaleStatus,
+      privatesaleStatus: self.privateSaleStatus,
       presaleTime: self.seedRoundTime,
       BZZNPriceInUSD: self.BZZNPriceInUSDT,
       referralPercentage: self.referralPercentage,
