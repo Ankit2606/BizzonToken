@@ -1,9 +1,9 @@
 # TACT Compilation Report
 Contract: SamplePresale
-BOC Size: 15281 bytes
+BOC Size: 15147 bytes
 
 # Types
-Total Types: 52
+Total Types: 53
 
 ## StateInit
 TLB: `_ code:^cell data:^cell = StateInit`
@@ -114,8 +114,8 @@ TLB: `_ data:dict<int, ^TokenVestingInfo{beneficiary:address,totalToken:coins,re
 Signature: `TreasuryArrayData{data:dict<int, ^TokenVestingInfo{beneficiary:address,totalToken:coins,remainingToken:coins,startTime:int257,vestingDuration:int257,lastClaimTime:int257,releaseInterval:int257,initialCliff:int257,phaseName:^string,active:bool,USDTToken:coins}>,size:int257}`
 
 ## AllData
-TLB: `_ USDTAmount:coins balance:^string presaleStatus:bool presaleTime:int257 BZZNPriceInUSD:int257 referralPercentage:int257 minimumBuyPrice:coins maximumBuyPrice:coins tokenData:dict<int, ^TokenDistributeInfo{name:^string,tokenDistrubutedPercentage:int257,totalPhaseToken:coins,percentage:int257,totalSuppliedToken:coins}> activeRoundIndex:int257 = AllData`
-Signature: `AllData{USDTAmount:coins,balance:^string,presaleStatus:bool,presaleTime:int257,BZZNPriceInUSD:int257,referralPercentage:int257,minimumBuyPrice:coins,maximumBuyPrice:coins,tokenData:dict<int, ^TokenDistributeInfo{name:^string,tokenDistrubutedPercentage:int257,totalPhaseToken:coins,percentage:int257,totalSuppliedToken:coins}>,activeRoundIndex:int257}`
+TLB: `_ USDTAmount:coins balance:^string presaleStatus:bool privatesaleStatus:bool presaleTime:int257 BZZNPriceInUSD:int257 referralPercentage:int257 minimumBuyPrice:coins maximumBuyPrice:coins tokenData:dict<int, ^TokenDistributeInfo{name:^string,tokenDistrubutedPercentage:int257,totalPhaseToken:coins,percentage:int257,totalSuppliedToken:coins}> activeRoundIndex:int257 = AllData`
+Signature: `AllData{USDTAmount:coins,balance:^string,presaleStatus:bool,privatesaleStatus:bool,presaleTime:int257,BZZNPriceInUSD:int257,referralPercentage:int257,minimumBuyPrice:coins,maximumBuyPrice:coins,tokenData:dict<int, ^TokenDistributeInfo{name:^string,tokenDistrubutedPercentage:int257,totalPhaseToken:coins,percentage:int257,totalSuppliedToken:coins}>,activeRoundIndex:int257}`
 
 ## DynamicRoundInfo
 TLB: `_ roundIndex:int257 startTime:int257 endTime:int257 price:int257 totalToken:coins remainingToken:coins active:bool = DynamicRoundInfo`
@@ -176,6 +176,10 @@ Signature: `ClaimTreasuryTokens{index:int257,cenderadd:address,senderadd:address
 ## WithdrawUsdt
 TLB: `withdraw_usdt#d69f6004 cenderadd:address = WithdrawUsdt`
 Signature: `WithdrawUsdt{cenderadd:address}`
+
+## WithdrawUsdtWithNumber
+TLB: `withdraw_usdt_with_number#051d549a cenderadd:address amount:int257 = WithdrawUsdtWithNumber`
+Signature: `WithdrawUsdtWithNumber{cenderadd:address,amount:int257}`
 
 ## WithdrawBZZN
 TLB: `withdraw_bzzn#82ed1338 cenderadd:address amount:int257 = WithdrawBZZN`
@@ -287,11 +291,13 @@ Argument: userAddress
 30183: NO_REFERRAL_TOKENS_AVAILABLE
 32633: Presale is over
 35441: Seed Token Supply is completed
+36571: SEEDROUND_PERIOD_INCOMPLETE
 38387: Contract does not have usdt
 43297: Index not found!
 44418: You have not sufficient Token
 46387: not have any refferals
 48332: Invalid USDT Amount
-49708: PRIVATESALE_PERIOD_INCOMPLETE
 54634: You are not owner
 60511: ALREADY_ADDED_REFERRER
+63386: privatesale is not start yet
+63810: Privatesale Token Supply is completed

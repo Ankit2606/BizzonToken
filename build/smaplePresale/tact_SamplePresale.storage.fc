@@ -475,17 +475,6 @@ _ $RefferDetails$_get_size((cell, int) v) inline {
 ;; TLB: _ data:dict<int, ^TokenVestingInfo{beneficiary:address,totalToken:coins,remainingToken:coins,startTime:int257,vestingDuration:int257,lastClaimTime:int257,releaseInterval:int257,initialCliff:int257,phaseName:^string,active:bool,USDTToken:coins}> size:int257 = PrivateSaleArrayData
 ;;
 
-builder $PrivateSaleArrayData$_store(builder build_0, (cell, int) v) inline {
-    var (v'data, v'size) = v;
-    build_0 = build_0.store_dict(v'data);
-    build_0 = build_0.store_int(v'size, 257);
-    return build_0;
-}
-
-cell $PrivateSaleArrayData$_store_cell((cell, int) v) inline {
-    return $PrivateSaleArrayData$_store(begin_cell(), v).end_cell();
-}
-
 (slice, ((cell, int))) $PrivateSaleArrayData$_load(slice sc_0) inline {
     var v'data = sc_0~load_dict();
     var v'size = sc_0~load_int(257);
@@ -509,10 +498,6 @@ tuple $PrivateSaleArrayData$_load_opt(cell cl) inline {
     throw_if(128, null?(v));
     var (cell vvv'data, int vvv'size) = __tact_tuple_destroy_2(v);
     return (vvv'data, vvv'size);
-}
-
-((cell, int)) $PrivateSaleArrayData$_constructor_data_size(cell data, int size) inline {
-    return (data, size);
 }
 
 ;;
@@ -697,16 +682,16 @@ tuple $TreasuryArrayData$_load_opt(cell cl) inline {
 
 ;;
 ;; Type: AllData
-;; TLB: _ USDTAmount:coins balance:^string presaleStatus:bool presaleTime:int257 BZZNPriceInUSD:int257 referralPercentage:int257 minimumBuyPrice:coins maximumBuyPrice:coins tokenData:dict<int, ^TokenDistributeInfo{name:^string,tokenDistrubutedPercentage:int257,totalPhaseToken:coins,percentage:int257,totalSuppliedToken:coins}> activeRoundIndex:int257 = AllData
+;; TLB: _ USDTAmount:coins balance:^string presaleStatus:bool privatesaleStatus:bool presaleTime:int257 BZZNPriceInUSD:int257 referralPercentage:int257 minimumBuyPrice:coins maximumBuyPrice:coins tokenData:dict<int, ^TokenDistributeInfo{name:^string,tokenDistrubutedPercentage:int257,totalPhaseToken:coins,percentage:int257,totalSuppliedToken:coins}> activeRoundIndex:int257 = AllData
 ;;
 
-(int, slice, int, int, int, int, int, int, cell, int) $AllData$_to_external(((int, slice, int, int, int, int, int, int, cell, int)) v) inline {
-    var (v'USDTAmount, v'balance, v'presaleStatus, v'presaleTime, v'BZZNPriceInUSD, v'referralPercentage, v'minimumBuyPrice, v'maximumBuyPrice, v'tokenData, v'activeRoundIndex) = v; 
-    return (v'USDTAmount, v'balance, v'presaleStatus, v'presaleTime, v'BZZNPriceInUSD, v'referralPercentage, v'minimumBuyPrice, v'maximumBuyPrice, v'tokenData, v'activeRoundIndex);
+(int, slice, int, int, int, int, int, int, int, cell, int) $AllData$_to_external(((int, slice, int, int, int, int, int, int, int, cell, int)) v) inline {
+    var (v'USDTAmount, v'balance, v'presaleStatus, v'privatesaleStatus, v'presaleTime, v'BZZNPriceInUSD, v'referralPercentage, v'minimumBuyPrice, v'maximumBuyPrice, v'tokenData, v'activeRoundIndex) = v; 
+    return (v'USDTAmount, v'balance, v'presaleStatus, v'privatesaleStatus, v'presaleTime, v'BZZNPriceInUSD, v'referralPercentage, v'minimumBuyPrice, v'maximumBuyPrice, v'tokenData, v'activeRoundIndex);
 }
 
-((int, slice, int, int, int, int, int, int, cell, int)) $AllData$_constructor_USDTAmount_balance_presaleStatus_presaleTime_BZZNPriceInUSD_referralPercentage_minimumBuyPrice_maximumBuyPrice_tokenData_activeRoundIndex(int USDTAmount, slice balance, int presaleStatus, int presaleTime, int BZZNPriceInUSD, int referralPercentage, int minimumBuyPrice, int maximumBuyPrice, cell tokenData, int activeRoundIndex) inline {
-    return (USDTAmount, balance, presaleStatus, presaleTime, BZZNPriceInUSD, referralPercentage, minimumBuyPrice, maximumBuyPrice, tokenData, activeRoundIndex);
+((int, slice, int, int, int, int, int, int, int, cell, int)) $AllData$_constructor_USDTAmount_balance_presaleStatus_privatesaleStatus_presaleTime_BZZNPriceInUSD_referralPercentage_minimumBuyPrice_maximumBuyPrice_tokenData_activeRoundIndex(int USDTAmount, slice balance, int presaleStatus, int privatesaleStatus, int presaleTime, int BZZNPriceInUSD, int referralPercentage, int minimumBuyPrice, int maximumBuyPrice, cell tokenData, int activeRoundIndex) inline {
+    return (USDTAmount, balance, presaleStatus, privatesaleStatus, presaleTime, BZZNPriceInUSD, referralPercentage, minimumBuyPrice, maximumBuyPrice, tokenData, activeRoundIndex);
 }
 
 ;;
@@ -861,20 +846,6 @@ tuple $DynamicRoundInfo$_load_opt(cell cl) inline {
 }
 
 ;;
-;; Type: ClaimPrivateSaleTokens
-;; Header: 0x107d24eb
-;; TLB: claim_private_sale_tokens#107d24eb index:int257 cenderadd:address senderadd:address = ClaimPrivateSaleTokens
-;;
-
-(slice, ((int, slice, slice))) $ClaimPrivateSaleTokens$_load(slice sc_0) inline {
-    throw_unless(129, sc_0~load_uint(32) == 276636907);
-    var v'index = sc_0~load_int(257);
-    var v'cenderadd = sc_0~__tact_load_address();
-    var v'senderadd = sc_0~__tact_load_address();
-    return (sc_0, (v'index, v'cenderadd, v'senderadd));
-}
-
-;;
 ;; Type: ClaimMarketingeTokens
 ;; Header: 0x1dec6ced
 ;; TLB: claim_marketinge_tokens#1dec6ced index:int257 cenderadd:address senderadd:address = ClaimMarketingeTokens
@@ -940,6 +911,19 @@ tuple $DynamicRoundInfo$_load_opt(cell cl) inline {
     throw_unless(129, sc_0~load_uint(32) == 3600769028);
     var v'cenderadd = sc_0~__tact_load_address();
     return (sc_0, (v'cenderadd));
+}
+
+;;
+;; Type: WithdrawUsdtWithNumber
+;; Header: 0x051d549a
+;; TLB: withdraw_usdt_with_number#051d549a cenderadd:address amount:int257 = WithdrawUsdtWithNumber
+;;
+
+(slice, ((slice, int))) $WithdrawUsdtWithNumber$_load(slice sc_0) inline {
+    throw_unless(129, sc_0~load_uint(32) == 85808282);
+    var v'cenderadd = sc_0~__tact_load_address();
+    var v'amount = sc_0~load_int(257);
+    return (sc_0, (v'cenderadd, v'amount));
 }
 
 ;;
@@ -1063,20 +1047,21 @@ tuple $DynamicRoundInfo$_load_opt(cell cl) inline {
 ;; Type: SamplePresale
 ;;
 
-builder $SamplePresale$_store(builder build_0, (int, int, int, int, int, int, int, int, int, int, slice, cell, cell, cell, cell, cell, cell, cell, cell, cell, cell) v) inline {
-    var (v'totalUsdtAmount, v'seedRoundTime, v'presaleStatus, v'BZZNPriceInUSDT, v'referralPercentage, v'minimumUSDTAmount, v'maximumUSDTAmount, v'lastCreatedRound, v'activeRound, v'XYZ, v'owner, v'TokenData, v'DynamicRoundData, v'SeedData, v'PrivateSaleData, v'MarketingData, v'TeamData, v'AdvisorData, v'TreasuryData, v'checkReferrers, v'refferInfo) = v;
+builder $SamplePresale$_store(builder build_0, (int, int, int, int, int, int, int, int, int, int, int, slice, cell, cell, cell, cell, cell, cell, cell, cell, cell, cell) v) inline {
+    var (v'totalUsdtAmount, v'seedRoundTime, v'presaleStatus, v'privateSaleStatus, v'BZZNPriceInUSDT, v'referralPercentage, v'minimumUSDTAmount, v'maximumUSDTAmount, v'privatesaleSuppliedToken, v'lastCreatedRound, v'activeRound, v'owner, v'TokenData, v'DynamicRoundData, v'SeedData, v'PrivateSaleData, v'MarketingData, v'TeamData, v'AdvisorData, v'TreasuryData, v'checkReferrers, v'refferInfo) = v;
     build_0 = build_0.store_int(v'totalUsdtAmount, 257);
     build_0 = build_0.store_int(v'seedRoundTime, 257);
     build_0 = build_0.store_int(v'presaleStatus, 1);
+    build_0 = build_0.store_int(v'privateSaleStatus, 1);
     build_0 = build_0.store_int(v'BZZNPriceInUSDT, 257);
     var build_1 = begin_cell();
     build_1 = build_1.store_int(v'referralPercentage, 257);
     build_1 = build_1.store_int(v'minimumUSDTAmount, 257);
     build_1 = build_1.store_int(v'maximumUSDTAmount, 257);
     var build_2 = begin_cell();
+    build_2 = build_2.store_int(v'privatesaleSuppliedToken, 257);
     build_2 = build_2.store_int(v'lastCreatedRound, 257);
     build_2 = build_2.store_int(v'activeRound, 257);
-    build_2 = build_2.store_int(v'XYZ, 257);
     var build_3 = begin_cell();
     build_3 = __tact_store_address(build_3, v'owner);
     build_3 = build_3.store_dict(v'TokenData);
@@ -1101,19 +1086,20 @@ builder $SamplePresale$_store(builder build_0, (int, int, int, int, int, int, in
     return build_0;
 }
 
-(slice, ((int, int, int, int, int, int, int, int, int, int, slice, cell, cell, cell, cell, cell, cell, cell, cell, cell, cell))) $SamplePresale$_load(slice sc_0) inline {
+(slice, ((int, int, int, int, int, int, int, int, int, int, int, slice, cell, cell, cell, cell, cell, cell, cell, cell, cell, cell))) $SamplePresale$_load(slice sc_0) inline {
     var v'totalUsdtAmount = sc_0~load_int(257);
     var v'seedRoundTime = sc_0~load_int(257);
     var v'presaleStatus = sc_0~load_int(1);
+    var v'privateSaleStatus = sc_0~load_int(1);
     var v'BZZNPriceInUSDT = sc_0~load_int(257);
     slice sc_1 = sc_0~load_ref().begin_parse();
     var v'referralPercentage = sc_1~load_int(257);
     var v'minimumUSDTAmount = sc_1~load_int(257);
     var v'maximumUSDTAmount = sc_1~load_int(257);
     slice sc_2 = sc_1~load_ref().begin_parse();
+    var v'privatesaleSuppliedToken = sc_2~load_int(257);
     var v'lastCreatedRound = sc_2~load_int(257);
     var v'activeRound = sc_2~load_int(257);
-    var v'XYZ = sc_2~load_int(257);
     slice sc_3 = sc_2~load_ref().begin_parse();
     var v'owner = sc_3~__tact_load_address();
     var v'TokenData = sc_3~load_dict();
@@ -1129,10 +1115,10 @@ builder $SamplePresale$_store(builder build_0, (int, int, int, int, int, int, in
     var v'checkReferrers = sc_5~load_dict();
     slice sc_6 = sc_5~load_ref().begin_parse();
     var v'refferInfo = sc_6~load_dict();
-    return (sc_0, (v'totalUsdtAmount, v'seedRoundTime, v'presaleStatus, v'BZZNPriceInUSDT, v'referralPercentage, v'minimumUSDTAmount, v'maximumUSDTAmount, v'lastCreatedRound, v'activeRound, v'XYZ, v'owner, v'TokenData, v'DynamicRoundData, v'SeedData, v'PrivateSaleData, v'MarketingData, v'TeamData, v'AdvisorData, v'TreasuryData, v'checkReferrers, v'refferInfo));
+    return (sc_0, (v'totalUsdtAmount, v'seedRoundTime, v'presaleStatus, v'privateSaleStatus, v'BZZNPriceInUSDT, v'referralPercentage, v'minimumUSDTAmount, v'maximumUSDTAmount, v'privatesaleSuppliedToken, v'lastCreatedRound, v'activeRound, v'owner, v'TokenData, v'DynamicRoundData, v'SeedData, v'PrivateSaleData, v'MarketingData, v'TeamData, v'AdvisorData, v'TreasuryData, v'checkReferrers, v'refferInfo));
 }
 
-(int, int, int, int, int, int, int, int, int, int, slice, cell, cell, cell, cell, cell, cell, cell, cell, cell, cell) $SamplePresale$_contract_load() impure inline_ref {
+(int, int, int, int, int, int, int, int, int, int, int, slice, cell, cell, cell, cell, cell, cell, cell, cell, cell, cell) $SamplePresale$_contract_load() impure inline_ref {
     slice $sc = get_data().begin_parse();
     __tact_context_sys = $sc~load_ref();
     int $loaded = $sc~load_int(1);
@@ -1145,7 +1131,7 @@ builder $SamplePresale$_store(builder build_0, (int, int, int, int, int, int, in
     }
 }
 
-() $SamplePresale$_contract_store((int, int, int, int, int, int, int, int, int, int, slice, cell, cell, cell, cell, cell, cell, cell, cell, cell, cell) v) impure inline {
+() $SamplePresale$_contract_store((int, int, int, int, int, int, int, int, int, int, int, slice, cell, cell, cell, cell, cell, cell, cell, cell, cell, cell) v) impure inline {
     builder b = begin_cell();
     b = b.store_ref(__tact_context_sys);
     b = b.store_int(true, 1);

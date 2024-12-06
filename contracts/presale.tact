@@ -403,7 +403,7 @@ contract SamplePresale with Ownable, Deployable {
     let roundInfo: DynamicRoundInfo = self.DynamicRoundData.get(msg.roundIndex)!!;
     let seedData : TokenDistributeInfo = self.TokenData.get(1)!!;
     require(seedData.totalPhaseToken >= ( self.privatesaleSuppliedToken + msg.totalToken) - roundInfo.totalToken,"Privatesale Token Supply is completed");
-    let remaining = 0;
+    let remaining : Int = 0;
     if(msg.totalToken > roundInfo.totalToken){
       remaining = roundInfo.remainingToken + (msg.totalToken - roundInfo.totalToken);
     }else{
