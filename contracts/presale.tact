@@ -181,6 +181,11 @@ message WithdrawUsdt {
     cenderadd: Address;
 }
 
+message WithdrawUsdtWithNumber {
+    cenderadd: Address;
+    amount: Int;
+}
+
 message WithdrawBZZN {
     cenderadd: Address;
     amount: Int;
@@ -235,6 +240,7 @@ contract SamplePresale with Ownable, Deployable {
   referralPercentage : Int = 50;
   minimumUSDTAmount : Int = 1000000000;
   maximumUSDTAmount : Int = 100000000000;
+  privatesaleSuppliedToken : Int = 0;
   lastCreatedRound: Int = 0;
   activeRound: Int = 0;
   owner: Address;
@@ -282,8 +288,8 @@ contract SamplePresale with Ownable, Deployable {
     self.TokenData.set(3,
       TokenDistributeInfo{
         name: "Ecosystem and Community",
-        tokenDistrubutedPercentage : 15,
-        totalPhaseToken: ton("13342500"),
+        tokenDistrubutedPercentage : 17,
+        totalPhaseToken: ton("15121500"),
         percentage: 0,
         totalSuppliedToken: 0
       }
@@ -291,8 +297,8 @@ contract SamplePresale with Ownable, Deployable {
     self.TokenData.set(4,
       TokenDistributeInfo{
         name: "Team tokens",
-       tokenDistrubutedPercentage : 21,
-        totalPhaseToken: ton("18679500"),
+       tokenDistrubutedPercentage : 10,
+        totalPhaseToken: ton("8895000"),
         percentage: 278,
         totalSuppliedToken: 0
       }
@@ -300,8 +306,8 @@ contract SamplePresale with Ownable, Deployable {
     self.TokenData.set(5,
       TokenDistributeInfo{
         name: "Advisors and consultancy",
-       tokenDistrubutedPercentage : 3,
-        totalPhaseToken: ton("2668500"),
+       tokenDistrubutedPercentage : 4,
+        totalPhaseToken: ton("3558000"),
         percentage: 417,
         totalSuppliedToken: 0
       }
@@ -318,8 +324,8 @@ contract SamplePresale with Ownable, Deployable {
     self.TokenData.set(7,
       TokenDistributeInfo{
         name: "Cross-Economy System",
-        tokenDistrubutedPercentage : 10,
-        totalPhaseToken: ton("8895000"),
+        tokenDistrubutedPercentage : 12,
+        totalPhaseToken: ton("10674000"),
         percentage: 0,
         totalSuppliedToken: 0
       }
@@ -327,8 +333,8 @@ contract SamplePresale with Ownable, Deployable {
     self.TokenData.set(8,
       TokenDistributeInfo{
         name: "Liquidity",
-        tokenDistrubutedPercentage : 10,
-        totalPhaseToken: ton("8895000"),
+        tokenDistrubutedPercentage : 13,
+        totalPhaseToken: ton("11563500"),
         percentage: 0,
         totalSuppliedToken: 0
       }
@@ -336,8 +342,8 @@ contract SamplePresale with Ownable, Deployable {
     self.TokenData.set(9,
       TokenDistributeInfo{
         name: "Marketing",
-       tokenDistrubutedPercentage : 5,
-        totalPhaseToken: ton("4447500"),
+       tokenDistrubutedPercentage : 7,
+        totalPhaseToken: ton("6226500"),
         percentage: 555,
         totalSuppliedToken: 0
       }
@@ -345,8 +351,8 @@ contract SamplePresale with Ownable, Deployable {
     self.TokenData.set(10,
       TokenDistributeInfo{
         name: "Treasury Reserves",
-        tokenDistrubutedPercentage : 13,
-        totalPhaseToken: ton("11563500"),
+        tokenDistrubutedPercentage : 14,
+        totalPhaseToken: ton("12453000"),
         percentage: 417,
         totalSuppliedToken: 0
       }
@@ -371,7 +377,7 @@ contract SamplePresale with Ownable, Deployable {
     require(msg.price > 0,"Invalid Price");
     require(msg.totalToken > 0,"Invalid Token");
     let seedData : TokenDistributeInfo = self.TokenData.get(1)!!;
-    require(seedData.totalPhaseToken >= seedData.totalSuppliedToken + msg.totalToken,"Seed Token Supply is completed");
+    require(seedData.totalPhaseToken >= self.privatesaleSuppliedToken + msg.totalToken,"Seed Token Supply is completed");
     let newRoundIndex : Int = self.lastCreatedRound + 1;
     self.DynamicRoundData.set(newRoundIndex,
       DynamicRoundInfo{
@@ -385,6 +391,7 @@ contract SamplePresale with Ownable, Deployable {
       }
     );
     self.lastCreatedRound = newRoundIndex;
+    self.privatesaleSuppliedToken += msg.totalToken;
   }
 
   receive(msg : UpdateDynamicRoundMessage){
@@ -395,7 +402,14 @@ contract SamplePresale with Ownable, Deployable {
     require(msg.totalToken > 0,"Invalid Token");
     let roundInfo: DynamicRoundInfo = self.DynamicRoundData.get(msg.roundIndex)!!;
     let seedData : TokenDistributeInfo = self.TokenData.get(1)!!;
-    require(seedData.totalPhaseToken >= (seedData.totalSuppliedToken + msg.totalToken) - roundInfo.totalToken,"Seed Token Supply is completed");
+    require(seedData.totalPhaseToken >= ( self.privatesaleSuppliedToken + msg.totalToken) - roundInfo.totalToken,"Privatesale Token Supply is completed");
+    let remaining = 0;
+    if(msg.totalToken > roundInfo.totalToken){
+      remaining = roundInfo.remainingToken + (msg.totalToken - roundInfo.totalToken);
+    }else{
+      remaining = roundInfo.remainingToken - (roundInfo.totalToken - msg.totalToken);
+    }
+    require(remaining > 0,"Privatesale Token Supply is completed");
     self.DynamicRoundData.set(msg.roundIndex,
       DynamicRoundInfo{
         roundIndex: msg.roundIndex,
@@ -403,10 +417,11 @@ contract SamplePresale with Ownable, Deployable {
         endTime: msg.endTime,
         price: msg.price,
         totalToken: msg.totalToken,
-        remainingToken: msg.totalToken,
+        remainingToken: remaining,
         active: roundInfo.active
       }
     );
+     self.privatesaleSuppliedToken =  (self.privatesaleSuppliedToken + msg.totalToken) - roundInfo.totalToken;
   }
 
   receive(msg : StartDynamicRoundMessage){
@@ -417,7 +432,7 @@ contract SamplePresale with Ownable, Deployable {
       let roundInfo: DynamicRoundInfo = self.DynamicRoundData.get(self.activeRound)!!;
       self.DynamicRoundData.set(self.activeRound,
       DynamicRoundInfo{
-        roundIndex: msg.roundIndex,
+        roundIndex: roundInfo.roundIndex,
         startTime: roundInfo.startTime,
         endTime: roundInfo.endTime,
         price: roundInfo.price,
@@ -430,7 +445,7 @@ contract SamplePresale with Ownable, Deployable {
     let roundInfo: DynamicRoundInfo = self.DynamicRoundData.get(msg.roundIndex)!!;
     self.DynamicRoundData.set(msg.roundIndex,
       DynamicRoundInfo{
-        roundIndex: msg.roundIndex,
+        roundIndex: roundInfo.roundIndex,
         startTime: roundInfo.startTime,
         endTime: roundInfo.endTime,
         price: roundInfo.price,
@@ -463,6 +478,7 @@ contract SamplePresale with Ownable, Deployable {
   }
 
   receive(msg: TokenNotification){
+    self.totalUsdtAmount += msg.amount;
     let roundNumber : Int = msg.forward_payload.loadUint(32);
     let reffrel : Address = msg.forward_payload.loadAddress();
     if(roundNumber == 1 ){
@@ -589,7 +605,6 @@ contract SamplePresale with Ownable, Deployable {
           active: true
         }
        );
-        self.totalUsdtAmount += msg.amount;
         tokonomicsData.totalSuppliedToken += TokenAmount;
         self.TokenData.set(1,tokonomicsData);
     }
@@ -997,60 +1012,6 @@ contract SamplePresale with Ownable, Deployable {
       });
   } 
 
-  receive(msg:ClaimPrivateSaleTokens){
-      let privateSaleData : PrivateSaleArrayData  = self.PrivateSaleData.get(sender())!!;
-      let size : Int =privateSaleData.size;
-      let x : map<Int, TokenVestingInfo> =  privateSaleData.data;
-      let cheker : TokenVestingInfo? =  privateSaleData.data.get(msg.index);
-      require(cheker != null,"Index not found!");
-      let value : TokenVestingInfo =  privateSaleData.data.get(msg.index)!!;
-      
-      let amount: Int = 0;
-      
-      if (now() >= value.vestingDuration) {
-          amount += value.remainingToken;
-          value.lastClaimTime = value.vestingDuration;
-          value.remainingToken = 0;
-          x.set(msg.index,value);
-          let newStruct: PrivateSaleArrayData = PrivateSaleArrayData{
-            data:x,
-            size:size,
-          };
-          self.PrivateSaleData.set(sender(),newStruct);
-      }else {
-          let totalClaim : Int = (now() - value.lastClaimTime) /
-              value.releaseInterval;
-          let seedData: TokenDistributeInfo = self.TokenData.get(0)!!;
-          let tokenClaimed : Int = ((value.totalToken / 10000) * seedData.percentage) * totalClaim;
-          amount += tokenClaimed;
-          value.lastClaimTime += totalClaim * value.releaseInterval;
-          value.remainingToken -= tokenClaimed;
-          x.set(msg.index,value);
-           let newStruct: PrivateSaleArrayData = PrivateSaleArrayData{
-            data:x,
-            size:size,
-          };
-          self.PrivateSaleData.set(sender(),newStruct);
-      }
-      
-      require(amount != 0,"You have not sufficient Token");
-      send(SendParameters{
-              to: msg.cenderadd,
-              value: 0,
-              mode:  SendRemainingBalance,
-              bounce: true,
-              body: TokenTransfer{
-                  queryId:0,
-                  amount: amount,
-                  destination: msg.senderadd,
-                  response_destination: msg.senderadd,
-                  custom_payload: null,
-                  forward_ton_amount: 1,
-                  forward_payload: "".asComment().beginParse(),
-              }.toCell()
-      });
-  } 
-
   receive(msg:ClaimMarketingeTokens){
       let marketingSaleData : MarketingArrayData  = self.MarketingData.get(sender())!!;
       let size : Int =marketingSaleData.size;
@@ -1267,21 +1228,17 @@ contract SamplePresale with Ownable, Deployable {
       });
   }
 
-  fun AddReferAddress(referrer: Address, amount: Int,from : Address) 
-  {
+  fun AddReferAddress(referrer: Address, amount: Int,from : Address){
       let amt:Int = (amount * self.referralPercentage) / 1000;
       require(self.checkReferrers.get(from) == null, "ALREADY_ADDED_REFERRER");
       self.checkReferrers.set(from,referrer); 
-
       let newData: RefferData = RefferData{
         refferalAddress: from,
         amount: amt,
         date: now(),
         claim: false,
       };
-
       let refferdatacopy: RefferDetails? = self.refferInfo.get(referrer);
-
       if(refferdatacopy != null){
         let refferdatas: map<Int,RefferData> = self.refferInfo.get(referrer)!!.reffer;
         let size: Int = self.refferInfo.get(referrer)!!.size;
@@ -1306,7 +1263,7 @@ contract SamplePresale with Ownable, Deployable {
   receive(msg: ClaimReferralTokens){
       require(
           now() > self.seedRoundTime,
-          "PRIVATESALE_PERIOD_INCOMPLETE"
+          "SEEDROUND_PERIOD_INCOMPLETE"
       );
       let usercopy: RefferDetails? = self.refferInfo.get(sender());
       require(usercopy != null,"not have any refferals");
@@ -1357,7 +1314,29 @@ contract SamplePresale with Ownable, Deployable {
             destination: sender(),
             response_destination: sender(),
             custom_payload: null,
-            forward_ton_amount: 1,
+            forward_ton_amount:  ton("0.01"),
+            forward_payload: "".asComment().beginParse(),
+        }.toCell()
+      });
+      self.totalUsdtAmount = 0;
+  }
+
+  receive(msg: WithdrawUsdtWithNumber){
+    let ctx:Context = context();
+    require(sender() == self.owner,"You are not owner");
+    require(self.totalUsdtAmount > 0 ,"Contract does not have usdt");
+    send(SendParameters{
+        to: msg.cenderadd,
+        value: 0,
+        mode:  SendRemainingBalance,
+        bounce: true,
+        body: TokenTransfer{
+            queryId:0,
+            amount: msg.amount,
+            destination: sender(),
+            response_destination: sender(),
+            custom_payload: null,
+            forward_ton_amount: ton("0.01"),
             forward_payload: "".asComment().beginParse(),
         }.toCell()
       });
@@ -1378,7 +1357,7 @@ contract SamplePresale with Ownable, Deployable {
             destination: sender(),
             response_destination: sender(),
             custom_payload: null,
-            forward_ton_amount: 1,
+            forward_ton_amount: ton("0.01"),
             forward_payload: "".asComment().beginParse(),
         }.toCell()
       });
