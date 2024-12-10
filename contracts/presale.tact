@@ -93,6 +93,7 @@ struct AllData{
   maximumBuyPrice: Int as coins;
   tokenData: map<Int, TokenDistributeInfo>;
   activeRoundIndex: Int;
+  privatesaleSuppliedToken:Int;
 }
 
 struct DynamicRoundInfo{
@@ -1426,7 +1427,8 @@ contract SamplePresale with Ownable, Deployable {
       minimumBuyPrice: self.minimumUSDTAmount,
       maximumBuyPrice: self.maximumUSDTAmount,
       tokenData: self.TokenData,
-      activeRoundIndex: self.activeRound
+      activeRoundIndex: self.activeRound,
+      privatesaleSuppliedToken: self.privatesaleSuppliedToken
     };
     return data;
   }
